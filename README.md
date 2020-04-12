@@ -15,4 +15,4 @@ How to Install?
 
 How to Use?
 
-It's very simple to use AutoLike. First open the main.py archive, then switch your Instagram Email in "Mudar Instagram". After write the "Hashtags" what you will search in Instagram. Finally write the number of likes you need to the robot like.
+AutoLike is very simple to use. First open the "main.py" file and then change your Instagram email in "Change Instagram". Then write the "Hashtags" that will be searched on Instagram. Finally, write down the number of likes you want the robot to like.
