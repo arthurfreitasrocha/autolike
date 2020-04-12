@@ -3,9 +3,9 @@ A simple robot that can be like a number of photos in Instagram
 
 Steps to run
 
-01º Install Python\n
-02º Install Selenium (A Python Library)\n
-03º Have fun!\n
+- 01º Install Python
+- 02º Install Selenium (A Python Library)
+- 03º Have fun!
 
 How to Install?
 
