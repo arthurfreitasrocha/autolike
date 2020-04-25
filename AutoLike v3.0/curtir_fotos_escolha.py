@@ -42,16 +42,18 @@ class CurtirFotosEscolha():
             conteudo_file = file.read()
             file.close()
 
-            erro = 0
+            if conteudo_file == '':
+
+                erro = 1
 
         except:
 
             erro = 1
 
-        erro = 0 # REMOVER =====================================
+
         if erro == 1:
 
-            messagebox.showinfo('Banco de Dados não encontrado', 'Banco de Dados (BD) ainda não criado. Para dar inicio ao seu BD selecione a opção "Curtir Fotos usando uma Hashtag"')
+            messagebox.showinfo('Banco de Dados não encontrado', 'Banco de Dados (BD) ainda não criado.\nPara dar inicio ao seu BD selecione a opção "Curtir Fotos usando uma Hashtag"')
 
             janela.destroy()
             
@@ -63,9 +65,12 @@ class CurtirFotosEscolha():
 
             a = CurtirFotosEscolhaBancoDeDados(email_curto, 0, 0)
 
-    def escolha(self):
+    def escolha(self, janela):
 
         messagebox.showinfo('Ainda em manutenção', 'Opção ainda não programada')
+
+        janela.destroy()
+
 
     def __init__(self):
 
@@ -108,7 +113,7 @@ class CurtirFotosEscolha():
         b_informar_usuario = Button(f_opcoes,
         text='Informar Usuário', font=('arial', 15,'bold'), bg='dark salmon',
         activebackground='salmon', activeforeground='white',
-        command=self.escolha)
+        command=lambda: self.escolha(janela))
         b_informar_usuario.place(x=160, y=30)
 
         janela.resizable(width=False, height=False)
