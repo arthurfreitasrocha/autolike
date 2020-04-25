@@ -36,7 +36,7 @@ class CurtirFotosEscolhaBancoDeDados():
 
 
     def abrir_mini_bd(self, email_curto):
-
+        
         a = CurtirFotosEscolhaBancoDeDadosAbrirMiniBD(email_curto)
         resp = a.retorno()
         a = CurtirFotosEscolhaBancoDeDados(resp[0], resp[1], resp[2])
@@ -67,7 +67,7 @@ class CurtirFotosEscolhaBancoDeDados():
 
             conteudo = conteudo_file.split('-')
 
-            if conteudo != []:
+            if conteudo != [] and conteudo != '':
 
                 n_usuarios = len(conteudo)
 
