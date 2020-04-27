@@ -30,7 +30,7 @@ class Start():
             def curtir_fotos_escolha():
                 
                 janela.destroy()
-                a = CurtirFotosEscolha() # CASO NAO HAJA BD PRONTO O 'curtir_fotos_escolha.py' DEVE RETORNAR 1
+                a = CurtirFotosEscolha()
                 resp = a.retornar()
 
                 if resp == 1:
