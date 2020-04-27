@@ -157,10 +157,13 @@ class CurtirFotosHashtag():
                 var = int(var)
                 
                 file = open('email_senha_instagram.txt', 'r')
-                conteudo = file.readlines()
+                conteudo_file = file.read()
+                file.close()
+
+                conteudo = conteudo_file.split('-')
+
                 email = conteudo[0]
                 senha = conteudo[1]
-                file.close()
 
                 # ACESSING INSTAGRAM
                 options = Options()
