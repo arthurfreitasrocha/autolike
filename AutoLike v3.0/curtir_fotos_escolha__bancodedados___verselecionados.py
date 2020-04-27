@@ -9,7 +9,7 @@ class CurtirFotosEscolhaBancoDeDadosVerSelecionados:
             janela.destroy()
 
 
-        janela = Toplevel()
+        janela = Tk()
         
         # WINDOW GEOMETRY
         lado = janela.winfo_screenwidth()
