@@ -11,6 +11,7 @@ class CurtirFotosEscolha():
 
         return 1
 
+
     def mini_bd(self, janela):
         
         # TAKING THE NAME_USER OF THE BD
@@ -56,14 +57,14 @@ class CurtirFotosEscolha():
             messagebox.showinfo('Banco de Dados não encontrado', 'Banco de Dados (BD) ainda não criado.\nPara dar inicio ao seu BD selecione a opção "Curtir Fotos usando uma Hashtag"')
 
             janela.destroy()
-            
             self.retornar()
 
         else:
 
             janela.destroy()
-
             a = CurtirFotosEscolhaBancoDeDados(email_curto, 0, 0)
+            a = CurtirFotosEscolha()
+
 
     def escolha(self, janela):
 
