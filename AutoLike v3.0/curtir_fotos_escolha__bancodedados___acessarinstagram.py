@@ -14,9 +14,46 @@ import os
 
 class CurtirFotosEscolhaBancoDeDadosAcessarInstagram:
 
-    def __init__(self, janela, conteudo, quant_curtidas):
+    def remover_usuario(self, conteudo, indice):
 
-        print(len(conteudo))
+        if indice == -1:
+            
+            file = open('curtir_fotos_usuarios.txt', 'w')
+            file.close()
+
+        else:
+            
+            conteudo.pop(indice)
+
+            # REMOVING USERS WITH ALREADY LIKED PHOTOS FROM THE LIST
+            conteudo_string = ''
+            i = 0
+            while(i < len(conteudo)):
+                        
+                if i == 0:
+
+                    conteudo_string = conteudo[i]
+                        
+                else:
+
+                    conteudo_string += "-" + conteudo[i]
+
+                i += 1
+
+            if conteudo == []:
+
+                file = open('curtir_fotos_usuarios.txt', 'w')
+                file.close()
+
+            else:
+                
+                file = open('curtir_fotos_usuarios.txt', 'w')
+                file.write(conteudo_string)
+                file.close()
+
+
+
+    def __init__(self, janela, conteudo, quant_curtidas):
 
         # VARIABLES
         tempo = 2
@@ -55,19 +92,44 @@ class CurtirFotosEscolhaBancoDeDadosAcessarInstagram:
         erro = 0
         perfis = 0
         fotos = 0
-        while(i < len(conteudo)):
+        ultimo = 0
+        while(i <= len(conteudo)):
+
+            if i == len(conteudo):
+
+                ultimo = 1
+
+            if ultimo == 1:
+                
+                file = open('curtir_fotos_usuarios.txt', 'r')
+                conteudo = file.read()
+                file.close()
+
+            else:
+
+                file = open('curtir_fotos_usuarios.txt', 'r')
+                conteudo_file = file.read()
+                file.close()
+
+                conteudo = conteudo_file.split('-')
 
             try:
-
+                
                 time.sleep(tempo)
-
-                print(conteudo[i])
 
                 erro += 1
 
                 # ENTERING THE USERNAME IN THE INSTAGRAM TEXT BOX
-                inp = driver.find_element_by_xpath('/html/body/div[1]/section/nav/div[2]/div/div/div[2]/input')
-                inp.send_keys(conteudo[i])
+                if ultimo == 1:
+
+                    inp = driver.find_element_by_xpath('/html/body/div[1]/section/nav/div[2]/div/div/div[2]/input')
+                    inp.send_keys(conteudo)
+
+                else:
+
+                    inp = driver.find_element_by_xpath('/html/body/div[1]/section/nav/div[2]/div/div/div[2]/input')
+                    inp.send_keys(conteudo[i])
+
 
                 erro += 1
 
@@ -77,7 +139,8 @@ class CurtirFotosEscolhaBancoDeDadosAcessarInstagram:
 
                 erro += 1
 
-                time.sleep(tempo)
+                driver.implicitly_wait(1)
+                time.sleep(tempo+2)
 
                 # CLICKING ON THE FIRST PHOTO
                 foto = driver.find_elements(By.CLASS_NAME, 'v1Nh3.kIKUG._bz0w')
@@ -89,6 +152,7 @@ class CurtirFotosEscolhaBancoDeDadosAcessarInstagram:
 
                 # LIKE PHOTOS PROCESS
                 j = 0
+                print('PERFIL SENDO ACESSADO: {}'.format(conteudo[i]))
                 while(j < quant_curtidas):
 
                     coracao = driver.find_element_by_xpath('/html/body/div[4]/div[2]/div/article/div[2]/section[1]/span[1]/button')
@@ -102,6 +166,9 @@ class CurtirFotosEscolhaBancoDeDadosAcessarInstagram:
                     j += 1
                     fotos += 1
 
+                    print('{} FOTOS CURTIDAS DE {}'.format(j, conteudo[i]))
+
+                print('====================')
                 erro += 1
 
                 time.sleep(tempo)
@@ -114,75 +181,38 @@ class CurtirFotosEscolhaBancoDeDadosAcessarInstagram:
 
                 perfis += 1
 
-                conteudo.pop(i)
+                if ultimo != 1:
+
+                    self.remover_usuario(conteudo, i)
+
+                else:
+
+                    self.remover_usuario(conteudo, -1)
+
+                    # IF ALL GOES WELL A SUCCESS MESSAGE WILL BE SHOWN
+                    messagebox.showinfo('Sucesso', 'Total de {} perfis acessados e {} fotos curtidas com sucesso!'.format(perfis, fotos))
+
+                    break
 
 
             except:
                 
-                # REMOVING USERS WITH ALREADY LIKED PHOTOS FROM THE LIST
-                conteudo_string = ''
-                k = 0
-                while(i < len(conteudo)):
-                    
-                    if k == 0:
-
-                        conteudo_string = conteudo[k]
-                    
-                    else:
-
-                        conteudo_string = "-" + conteudo[k]
-
-                    k += 1
-
-                
-                if conteudo == []:
-
-                    file = open('curtir_fotos_usuarios.txt', 'w')
-                    file.close()
-
-                else:
-
-                    file = open('curtir_fotos_usuarios.txt', 'w')
-                    file.write(conteudo_string)
-                    file.close()
+                self.remover_usuario(conteudo, i)
 
                 # IF ANY ERROR HAS OCURRED, A MESSAGE WILL BE SHOWN
                 messagebox.showinfo('Erro', 'Algo deu errado e não foi possível concluir esta ação.\nTotal de {} perfis acessados e {} fotos curtidas. ERRO: 00{}'.format(perfis, fotos, erro))
 
                 erro = 1
 
+            erro = 0
             i += 1
 
-        if erro < 1:
+        #if erro < 1:
             
-            # REMOVING USERS WITH ALREADY LIKED PHOTOS FROM THE LIST
-            conteudo_string = ''
-            k = 0
-            while(i < len(conteudo)):
-                    
-                if k == 0:
-
-                    conteudo_string = conteudo[k]
-                    
-                else:
-
-                    conteudo_string = "-" + conteudo[k]
-
-                k += 1
-
-            if conteudo == []:
-
-                file = open('curtir_fotos_usuarios.txt', 'w')
-                file.close()
-
-            else:
-
-                file = open('curtir_fotos_usuarios.txt', 'w')
-                file.write(conteudo_string)
-                file.close()
+            #self.remover_usuario(conteudo, -1)
 
             # IF ALL GOES WELL A SUCCESS MESSAGE WILL BE SHOWN
-            messagebox.showinfo('Sucesso', 'Total de {} perfis acessados e {} fotos curtidas com sucesso!'.format(perfis, fotos))
+            #messagebox.showinfo('Sucesso', 'Total de {} perfis acessados e {} fotos curtidas com sucesso!'.format(perfis, fotos))
 
         driver.close()
 
