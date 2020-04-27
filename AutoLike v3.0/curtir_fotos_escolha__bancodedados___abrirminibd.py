@@ -1,5 +1,6 @@
 # TKINTER LIBRAY
 from tkinter import *
+from tkinter import messagebox
 
 
 class CurtirFotosEscolhaBancoDeDadosAbrirMiniBD():
@@ -14,22 +15,48 @@ class CurtirFotosEscolhaBancoDeDadosAbrirMiniBD():
         conteudo = conteudo_file.split('-')
 
         lista = []
-        lista.append(conteudo[0], conteudo[1], conteudo[2])
+        lista.append(conteudo[0])
+        lista.append(conteudo[1])
+        lista.append(conteudo[2])
 
         return lista
 
     
     def __init__(self, email_curto):
 
+        def aviso(janela, valor):
+            
+            if valor == 1:
+
+                messagebox.showinfo('Todos os usuários selecionados', 'Todos os usuários selecionados!')
+
+
+
         def confirmacao(janela, valor, conteudo, email_curto, lbox):
             
             # THIS FUNCTION WRITE THE RETURN OF THE PROCESS IN THE FILE BELOW
-            temp = lbox.curselection()
-            n_usuarios = len(temp)
+            var_controle = 0
+            if valor == 1:
+                
+                i = 0
+                temp = []
+                while(i < len(conteudo)):
+ 
+                    temp.append(i)
+                    n_usuarios = len(temp)-1
+
+                    i += 1
+
+                var_controle = 1
+            
+            else:
+
+                temp = lbox.curselection()
+                n_usuarios = len(temp)
+
 
             i = 0
-            cont = 0
-            while(i < len(temp)):
+            while(i < len(temp)-var_controle):
 
                 if i == 0:
 
@@ -37,34 +64,32 @@ class CurtirFotosEscolhaBancoDeDadosAbrirMiniBD():
                     file.write(conteudo[temp[i]])
                     file.close()
 
-                    cont += 1
-
                 else:
 
                     file = open('curtir_fotos_usuarios.txt', 'a')
                     file.write('-{}'.format(conteudo[temp[i]]))
                     file.close()
 
-                    cont += 1
-
                 i += 1
-
-            janela.destroy()
-            self.retorno()
 
             file = open('informacoes.txt', 'w')
             file.write('{}-{}-{}'.format(email_curto, 1, n_usuarios))
             file.close()
 
+            messagebox.showinfo('Sucesso', 'Lista de usuários selecionados atualizada com sucesso!')
+            janela.destroy()
+
+            self.retorno()
 
 
-        janela = Toplevel()
+
+        janela = Tk()
         
         # WINDOW GEOMETRY
         lado = janela.winfo_screenwidth()
         cima = janela.winfo_screenheight()
         l = int(lado/3)
-        c = int(cima/5)
+        c = int(cima/8)
         g = '{}x{}+{}+{}'.format(500, 510, l, c)
 
         # VARIABLES
@@ -136,7 +161,8 @@ class CurtirFotosEscolhaBancoDeDadosAbrirMiniBD():
         cbutton = Checkbutton(f_selecionar_usuarios_button, text='Selecionar todos', font=('arial', 15, 'bold'),
         bg='dark salmon',
         activebackground='salmon', activeforeground='white',
-        variable=checkvar, onvalue=1, offvalue=0)
+        variable=checkvar, onvalue=1, offvalue=0,
+        command=lambda: aviso(janela, checkvar.get()))
         cbutton.place(x=80, y=25)
 
         # BUTTON SELECT USERS 03
