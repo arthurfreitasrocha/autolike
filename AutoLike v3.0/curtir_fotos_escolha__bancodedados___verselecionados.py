@@ -25,6 +25,19 @@ class CurtirFotosEscolhaBancoDeDadosVerSelecionados:
 
         conteudo = conteudo_file.split('-')
 
+        lista = conteudo
+        valor_conteudo = len(conteudo)
+        i = 0
+        while(i < valor_conteudo):
+
+            if conteudo[i] == '':
+
+                lista.pop(i)
+
+            i += 1
+
+        conteudo = lista
+
 
         # ROOT ====================
         # FRAME ROOT PROGRAM
