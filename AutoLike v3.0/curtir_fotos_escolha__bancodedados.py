@@ -13,7 +13,7 @@ class CurtirFotosEscolhaBancoDeDados():
 
     def curtir_fotos(self, janela, quant_curtidas_usuarios, email_curto, status, n_usuarios):
 
-        if quant_curtidas_usuarios.isalpha == True or quant_curtidas_usuarios == '':
+        if quant_curtidas_usuarios.isnumeric() == False:
 
             messagebox.showinfo('Digite apenas números', 'Por favor informe um valor válido')
 
