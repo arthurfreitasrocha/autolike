@@ -9,7 +9,7 @@ from curtir_fotos_escolha__bancodedados___removerselecionados import CurtirFotos
 from curtir_fotos_escolha__bancodedados___acessarinstagram import CurtirFotosEscolhaBancoDeDadosAcessarInstagram
 
 
-class CurtirFotosEscolhaBancoDeDados():
+class CurtirFotosEscolhaBancoDeDados:
 
     def curtir_fotos(self, janela, quant_curtidas_usuarios, email_curto, status, n_usuarios):
 
@@ -27,9 +27,10 @@ class CurtirFotosEscolhaBancoDeDados():
 
             conteudo = conteudo_file.split('-')
 
-            a = CurtirFotosEscolhaBancoDeDadosAcessarInstagram(janela, conteudo, quant_curtidas_usuarios)
             janela.destroy()
-            a = CurtirFotosEscolhaBancoDeDados(email_curto, status, n_usuarios)
+            a = CurtirFotosEscolhaBancoDeDadosAcessarInstagram()
+            a.abrir_navegador(janela, conteudo, quant_curtidas_usuarios)
+            a = CurtirFotosEscolhaBancoDeDados(email_curto, 2, n_usuarios)
 
 
     # THIS FUNCTION CAN REMOVE ANY USER YOU HAVE
@@ -62,7 +63,18 @@ class CurtirFotosEscolhaBancoDeDados():
 
         conteudo = conteudo_file.split('-')
 
-        if conteudo == [] or conteudo == '' or conteudo == ['']:
+        valor_conteudo = len(conteudo)
+        cont = 0
+        i = 0
+        while(i < valor_conteudo):
+
+            if conteudo[i] == '':
+
+                cont += 1
+
+            i += 1
+
+        if conteudo == [] or conteudo == '' or conteudo == [''] or cont == valor_conteudo:
 
             messagebox.showinfo('Você ainda não escolheu nenhum usuário', 'Por favor selecione pelo menos 1 usuário para continuar')
 
@@ -88,12 +100,27 @@ class CurtirFotosEscolhaBancoDeDados():
         try:
 
             file = open('curtir_fotos_usuarios.txt', 'r')
-            conteudo = file.read()
+            conteudo_file = file.read()
             file.close()
 
-            if conteudo == '':
+            conteudo = conteudo_file.split('-')
 
-                status = 0
+            lista = conteudo
+            valor_conteudo = len(conteudo)
+            i = 0
+            while(i < valor_conteudo):
+
+                if conteudo[i] == '':
+
+                    lista.pop(i)
+
+                else:
+
+                    n_usuarios += 1
+
+                i += 1
+
+            conteudo = lista
 
         except:
 
@@ -112,23 +139,6 @@ class CurtirFotosEscolhaBancoDeDados():
         # VARIABLES
         n_usuarios = n_usuarios
         status = status
-
-        # ADDITIONAL CONFIGURATION
-        try:
-            file = open('curtir_fotos_usuarios.txt', 'r')
-            conteudo_file = file.read()
-            file.close()
-
-            conteudo = conteudo_file.split('-')
-
-            if conteudo != [] and conteudo != '' and conteudo != ['']:
-
-                n_usuarios = len(conteudo)
-                status = 1
-
-        except:
-            
-            pass
         
 
         # ROOT ====================
@@ -151,7 +161,7 @@ class CurtirFotosEscolhaBancoDeDados():
         f_escolha = Frame(f_raiz, width=500, height=140, bg='floral white')
         f_escolha.pack(side=TOP)
         
-        if status == 0:
+        if status == 0 or status == 2:
             
             # LABEL CHOICE
             l_escolha = Label(f_escolha, text='Aqui aparecerão a quantidade de\nusuários selecionados',
@@ -215,6 +225,27 @@ class CurtirFotosEscolhaBancoDeDados():
         janela.resizable(width=False, height=False)
         janela.title('AutoLike 3.0 - Curtir Fotos De Um Perfil Específico - Banco de Dados')
         janela.geometry(g)
+
+
+        # RETORNA AS INFORMAÇÕES DA AUTOMATIZAÇÃO
+        if status == 2:
+
+            file = open('informacoes.txt', 'r')
+            resp_file = file.read()
+            file.close()
+
+            resp = resp_file.split('-')
+
+            if resp[0] == '1':
+
+                messagebox.showinfo('Sucesso', 'Total de {} perfi(s) acessados e {} foto(s) curtidas com sucesso!'.format(resp[1], resp[2]))
+
+            else:
+
+                messagebox.showinfo('Fracasso', 'Algo deu errado. ERRO: 00{}'.format(resp[3]))
+
+            status = 0
+
         janela.mainloop()
  
 
