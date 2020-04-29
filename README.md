@@ -1,18 +1,5 @@
 # autolike
 
-====== NEW UPDATE v3.0.7 ======
-
- - What's new?
-  -> New interface
-  -> More options to use
-    - 01º Like publications using a Hashtag
-    - 02º Like publications using the DB created with the previous option
-  -> Bug Fix
-    
-====== NEW UPDATE v3.0.7 =====
-
-
-
 ====== INTRODUCTION & HOW TO USE ======
 
 A simple robot that can be like a number of photos in Instagram
