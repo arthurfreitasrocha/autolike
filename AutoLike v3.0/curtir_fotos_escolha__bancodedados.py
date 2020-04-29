@@ -237,8 +237,14 @@ class CurtirFotosEscolhaBancoDeDados:
             resp = resp_file.split('-')
 
             if resp[0] == '1':
+                
+                if resp[2] == 0:
 
-                messagebox.showinfo('Sucesso', 'Total de {} perfi(s) acessados e {} foto(s) curtidas com sucesso!'.format(resp[1], resp[2]))
+                    messagebox.showinfo('Sucesso', 'Nenhuma publicação curtida')
+                
+                else:
+
+                    messagebox.showinfo('Sucesso', 'Total de {} perfi(s) acessados e {} foto(s) curtidas com sucesso!'.format(resp[1], resp[2]))
 
             else:
 
