@@ -38,6 +38,12 @@ class CurtirFotosEscolhaBancoDeDadosAcessarInstagram:
         time.sleep(tempo)
         driver.implicitly_wait(10)
 
+    
+    # THIS METHOD UPDATE THE VALUES OF 'i' AND 'j'
+    def atualizar_valores(self, conteudo, i, j):
+
+        pass
+
 
     # THIS METHOD CHECK IF ALL THE USERS ALREADY LIKED
     def verificacao_conteudo(self, conteudo):
@@ -101,6 +107,7 @@ class CurtirFotosEscolhaBancoDeDadosAcessarInstagram:
                 file.write(conteudo_string)
                 file.close()
 
+
             return conteudo
 
 
@@ -134,12 +141,23 @@ class CurtirFotosEscolhaBancoDeDadosAcessarInstagram:
 
         print('====================')
 
-        self.remover_usuario(conteudo, cont)
+        # CHECKS IF THE ACTUAL VALUE IS THE LAST
+        resp = self.verificacao_conteudo(conteudo)
+
+        # IF IS THE LAST VALUE, THE LIST IS CLEARED
+        if resp == 'True':
+
+            conteudo = self.remover_usuario(conteudo, -1)
+
+        else:
+                    
+            conteudo = self.remover_usuario(conteudo, i)
+
 
         perfis += 1
         cont += 1
 
-        lista = [cont, perfis, fotos]
+        lista = [cont, perfis, fotos, conteudo]
 
         return lista
 
@@ -147,21 +165,25 @@ class CurtirFotosEscolhaBancoDeDadosAcessarInstagram:
     # THIS METHOD CHECKS IF THE USER 'x' HAS THE PREREQUISITES TO LIKE HIM PUBLICATIONS
     def verificacao_interna_usuario(self, driver, quant_curtidas):
 
-        temp = driver.find_elements_by_class_name('g47SY')
-        quant_publicacoes_usuario = int(temp[0].text)
-        
-        conta_privada = driver.find_element_by_xpath('/html/body/div[1]/section/main/div/div/article/div[1]/div/h2').text
         lista = ['', '']
 
-        if conta_privada == 'Esta conta é privada':
-            
-            lista[0] = 'True'
+        # CHECKS IF THE USER ACCOUNT IS PRIVATE
+        try:
 
-        else:
+            conta_privada = driver.find_element_by_xpath('/html/body/div[1]/section/main/div/div/article/div[1]/div/h2').text
+        
+            if conta_privada == 'Esta conta é privada':
+                
+                lista[0] = 'True'
+        
+        except:
 
             lista[0] = 'False'
 
-        
+
+        temp = driver.find_elements_by_class_name('g47SY')
+        quant_publicacoes_usuario = int(temp[0].text)
+  
         if quant_curtidas <= quant_publicacoes_usuario:
 
             lista[1] = 'True'
@@ -181,7 +203,6 @@ class CurtirFotosEscolhaBancoDeDadosAcessarInstagram:
         valor_conteudo = len(conteudo)
         while(j < valor_conteudo):
             
-            # TENTA INSERIR O ITEM 'I' DA LISTA
             # TRY TO INSERT THE 'i' ITEM IN THE LIST
             try:
         
@@ -251,7 +272,6 @@ class CurtirFotosEscolhaBancoDeDadosAcessarInstagram:
 
         erro = 0
         perfis = 0
-        fotos = 0
         quant_fotos_curtidas = 0
 
 
@@ -304,52 +324,45 @@ class CurtirFotosEscolhaBancoDeDadosAcessarInstagram:
                 
                 print('O USUÁRIO {} NÃO PASSOU NOS CRITÉRIOS DO TESTE DE VERIFICAÇÃO'.format(conteudo[i]))
 
+                j += 1
+
             else:
 
-                if i != valor_conteudo-1:
+                # PAUSE OF 2 SECONDS
+                self.tempo(driver)
 
-                    # PAUSE OF 2 SECONDS
-                    self.tempo(driver)
+                erro += 1
+                # CLICKING ON THE FIRST PHOTO
+                foto = driver.find_elements(By.CLASS_NAME, 'v1Nh3.kIKUG._bz0w')
+                foto[0].click()
 
-                    erro += 1
-                    # CLICKING ON THE FIRST PHOTO
-                    foto = driver.find_elements(By.CLASS_NAME, 'v1Nh3.kIKUG._bz0w')
-                    foto[0].click()
+                # PAUSE OF 2 SECONDS
+                self.tempo(driver) 
 
-                    # PAUSE OF 2 SECONDS
-                    self.tempo(driver) 
+                erro += 1
+                # LIKE PHOTOS PROCESS
+                lista_curtir_fotos = self.curtir_fotos(driver, conteudo, quant_curtidas, perfis, quant_fotos_curtidas, j)
 
-                    erro += 1
-                    # LIKE PHOTOS PROCESS
-                    lista_curtir_fotos = self.curtir_fotos(driver, conteudo, quant_curtidas, perfis, fotos, j)
-
-                    j = lista_curtir_fotos[0]
-                    perfis = lista_curtir_fotos[1]
-                    quant_fotos_curtidas = lista_curtir_fotos[2]
+                j = lista_curtir_fotos[0]
+                perfis = lista_curtir_fotos[1]
+                quant_fotos_curtidas = lista_curtir_fotos[2]
+                conteudo = lista_curtir_fotos[3]
                     
-                    erro += 1
-                    # CLOSE THE WINDOW OF PHOTOS
-                    fechar = driver.find_element_by_xpath('/html/body/div[4]/div[3]/button')
-                    fechar.click()
+                erro += 1
+                # CLOSE THE WINDOW OF PHOTOS
+                fechar = driver.find_element_by_xpath('/html/body/div[4]/div[3]/button')
+                fechar.click()
 
-                    # PAUSE OF 2 SECONDS
-                    self.tempo(driver)
+                # PAUSE OF 2 SECONDS
+                self.tempo(driver)
 
-                    erro += 1
+                erro += 1
 
-
-            resp = self.verificacao_conteudo(conteudo)
 
             # IF IS THE LAST VALUE, THE LIST IS CLEARED
-            if resp == 'True':
-
-                conteudo = self.remover_usuario(conteudo, -1)
+            if conteudo == '':
 
                 break
-
-            else:
-                    
-                conteudo = self.remover_usuario(conteudo, i)
 
 
             erro = 0
