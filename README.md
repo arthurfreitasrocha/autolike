@@ -1,6 +1,6 @@
 # autolike
 
-====== NEW UPDATE v3.0.6 ======
+====== NEW UPDATE v3.0.7 ======
 
  - What's new?
   -> New interface
@@ -9,7 +9,7 @@
     - 02º Like publications using the DB created with the previous option
   -> Bug Fix
     
-====== NEW UPDATE v3.0.6 =====
+====== NEW UPDATE v3.0.7 =====
 
 
 
