@@ -238,7 +238,7 @@ class CurtirFotosEscolhaBancoDeDados:
 
             if resp[0] == '1':
                 
-                if resp[2] == 0:
+                if resp[2] == '0':
 
                     messagebox.showinfo('Sucesso', 'Nenhuma publicação curtida')
                 
