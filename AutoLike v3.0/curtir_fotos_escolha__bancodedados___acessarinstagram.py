@@ -200,7 +200,20 @@ class CurtirFotosEscolhaBancoDeDadosAcessarInstagram:
 
 
         temp = driver.find_elements_by_class_name('g47SY')
-        quant_publicacoes_usuario = int(temp[0].text)
+        quant_publicacoes_usuario = temp[0].text
+        temp = ''
+
+        i = 0
+        for letra in quant_publicacoes_usuario:
+
+            if quant_publicacoes_usuario[i] == '.':
+
+                temp += quant_publicacoes_usuario[i]
+
+            i += 1
+
+        quant_publicacoes_usuario = int(temp)
+
   
         if quant_curtidas <= quant_publicacoes_usuario:
 
