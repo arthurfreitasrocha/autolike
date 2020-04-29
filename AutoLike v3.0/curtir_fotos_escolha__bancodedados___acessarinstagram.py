@@ -10,12 +10,11 @@ from tkinter import messagebox
 
 # ADDITIONAL LIBRARY
 import time
-import os
 
 
 class CurtirFotosEscolhaBancoDeDadosAcessarInstagram:
 
-    # ESSE MÉTODO ESCREVE EM UM .TXT O RESULTADO DO PROCESSO
+    # THIS METHOD WRITE IN A .TXT DOCUMENT THE RESULT OF THE PROCESS
     def escrever_resultado(self, perfis, fotos, erro):
 
         if erro < 1:
@@ -31,7 +30,7 @@ class CurtirFotosEscolhaBancoDeDadosAcessarInstagram:
             file.close()
 
 
-    # ESSA FUNÇÃO PAUSA O PROGRAMA EM 2 SEGUNDOS
+    # THIS METHOD PAUSE THE PROGRAM IN 2 SECONDS
     def tempo(self, driver):
 
         tempo = 2
@@ -40,7 +39,8 @@ class CurtirFotosEscolhaBancoDeDadosAcessarInstagram:
         driver.implicitly_wait(10)
 
 
-    def verificacao(self, conteudo):
+    # THIS METHOD CHECK IF ALL THE USERS ALREADY LIKED
+    def verificacao_conteudo(self, conteudo):
         
         cont = 0
         valor_conteudo = len(conteudo)
@@ -63,7 +63,7 @@ class CurtirFotosEscolhaBancoDeDadosAcessarInstagram:
             return 'False'
 
 
-    # ESSA FUNÇÃO REMOVE OS USUÁRIOS INFORMADOS DA LISTA
+    # THIS METHOD REMOVE THE INFORMED USERS FROM THE LIST
     def remover_usuario(self, conteudo, indice):
 
         if indice == -1:
@@ -104,18 +104,25 @@ class CurtirFotosEscolhaBancoDeDadosAcessarInstagram:
             return conteudo
 
 
-    # ESSA FUNÇÃO CURTE AS FOTOS DO USUÁRIO 'x'
+    # THIS METHOD LIKE THE PHOTOS OF THE USER 'x'
     def curtir_fotos(self, driver, conteudo, quant_curtidas, perfis, fotos, cont):
 
         print('PERFIL SENDO ACESSADO: {}'.format(conteudo[cont]))
         i = 0
         while(i < quant_curtidas):
 
-            coracao = driver.find_element_by_xpath('/html/body/div[4]/div[2]/div/article/div[2]/section[1]/span[1]/button')
-            coracao.click()
+            if i == quant_curtidas-1:
 
-            seta_direita = driver.find_elements(By.CLASS_NAME, '_65Bje.coreSpriteRightPaginationArrow')
-            seta_direita[0].click()
+                coracao = driver.find_element_by_xpath('/html/body/div[4]/div[2]/div/article/div[2]/section[1]/span[1]/button')
+                coracao.click()
+
+            else:
+
+                coracao = driver.find_element_by_xpath('/html/body/div[4]/div[2]/div/article/div[2]/section[1]/span[1]/button')
+                coracao.click()
+
+                seta_direita = driver.find_elements(By.CLASS_NAME, '_65Bje.coreSpriteRightPaginationArrow')
+                seta_direita[0].click()
 
             # PAUSE OF 2 SECONDS
             self.tempo(driver)
@@ -136,8 +143,38 @@ class CurtirFotosEscolhaBancoDeDadosAcessarInstagram:
 
         return lista
 
+    
+    # THIS METHOD CHECKS IF THE USER 'x' HAS THE PREREQUISITES TO LIKE HIM PUBLICATIONS
+    def verificacao_interna_usuario(self, driver, quant_curtidas):
 
-    # ESSA FUNÇÃO VERIFICA SE O USUÁRIO 'x' EXISTE
+        temp = driver.find_elements_by_class_name('g47SY')
+        quant_publicacoes_usuario = int(temp[0].text)
+        
+        conta_privada = driver.find_element_by_xpath('/html/body/div[1]/section/main/div/div/article/div[1]/div/h2').text
+        lista = ['', '']
+
+        if conta_privada == 'Esta conta é privada':
+            
+            lista[0] = 'True'
+
+        else:
+
+            lista[0] = 'False'
+
+        
+        if quant_curtidas <= quant_publicacoes_usuario:
+
+            lista[1] = 'True'
+
+        else:
+
+            lista[1] = 'False'
+
+
+        return lista
+
+
+    # THIS METHOD CHECKS IF THE USER 'x' EXIST
     def verificar_existencia_usuario(self, driver, conteudo, indice, cont):
 
         j = cont
@@ -145,6 +182,7 @@ class CurtirFotosEscolhaBancoDeDadosAcessarInstagram:
         while(j < valor_conteudo):
             
             # TENTA INSERIR O ITEM 'I' DA LISTA
+            # TRY TO INSERT THE 'i' ITEM IN THE LIST
             try:
         
                 inp = driver.find_element_by_xpath('/html/body/div[1]/section/nav/div[2]/div/div/div[2]/input')
@@ -183,7 +221,7 @@ class CurtirFotosEscolhaBancoDeDadosAcessarInstagram:
         return lista
 
 
-    # ESSA FUNÇÃO PEGA O EMAIIL E SENHA DO INSTAGRAM INFORMADO
+    # THIS METHOD CATCH THE MAIL AND PASSWORD OF THE INFORMED INSTAGRAM
     def pegar_email_senha_instagram(self):
 
         # CATCH MAIL AND PASSWORD OF INSTAGRAM
@@ -201,7 +239,7 @@ class CurtirFotosEscolhaBancoDeDadosAcessarInstagram:
         return lista
 
 
-    # ESSA FUNÇÃO INICIA A AUTOMATIZAÇÃO
+    # THIS METHOD START THE AUTOMATIZATION
     def abrir_navegador(self, janela, conteudo, quant_curtidas):
 
         # VARIABLES
@@ -214,6 +252,7 @@ class CurtirFotosEscolhaBancoDeDadosAcessarInstagram:
         erro = 0
         perfis = 0
         fotos = 0
+        quant_fotos_curtidas = 0
 
 
         # ACESSING INSTAGRAM
@@ -248,47 +287,60 @@ class CurtirFotosEscolhaBancoDeDadosAcessarInstagram:
         j = 0
         while(i < valor_conteudo):
             
-            # VERIFICA SE O USUÁRIO NA POSIÇÃO 'i' EXISTE
+            # CHECK IF THE USER 'x' EXIST
             erro += 1
             lista_verificar = self.verificar_existencia_usuario(driver, conteudo, i, j)
 
             j = lista_verificar[0]
             i = lista_verificar[1]
 
-            if i != valor_conteudo-1:
+            # PAUSE OF 2 SECONDS
+            self.tempo(driver)
 
-                # PAUSE OF 2 SECONDS
-                self.tempo(driver)
+            retorno_verificacao_interna_usuario = self.verificacao_interna_usuario(driver, quant_curtidas)
+            rvi = retorno_verificacao_interna_usuario
 
-                erro += 1
-                # CLICKING ON THE FIRST PHOTO
-                foto = driver.find_elements(By.CLASS_NAME, 'v1Nh3.kIKUG._bz0w')
-                foto[0].click()
-
-                # PAUSE OF 2 SECONDS
-                self.tempo(driver) 
-
-                erro += 1
-                # LIKE PHOTOS PROCESS
-                lista_curtir_fotos = self.curtir_fotos(driver, conteudo, quant_curtidas, perfis, fotos, j)
-
-                j = lista_curtir_fotos[0]
-                perfis = lista_curtir_fotos[1]
-                quant_fotos_curtidas = lista_curtir_fotos[2]
+            if (rvi[0] == 'True' and rvi[1] == 'False') or (rvi[0] == 'True' and rvi[1] == 'True'):
                 
-                erro += 1
-                # CLOSE THE WINDOW OF PHOTOS
-                fechar = driver.find_element_by_xpath('/html/body/div[4]/div[3]/button')
-                fechar.click()
+                print('O USUÁRIO {} NÃO PASSOU NOS CRITÉRIOS DO TESTE DE VERIFICAÇÃO'.format(conteudo[i]))
 
-                # PAUSE OF 2 SECONDS
-                self.tempo(driver)
+            else:
 
-                erro += 1
+                if i != valor_conteudo-1:
 
-            resp = self.verificacao(conteudo)
+                    # PAUSE OF 2 SECONDS
+                    self.tempo(driver)
 
-            # SE ESTIVER NO ÚLTIMO VALOR, A LISTA É ZERADA
+                    erro += 1
+                    # CLICKING ON THE FIRST PHOTO
+                    foto = driver.find_elements(By.CLASS_NAME, 'v1Nh3.kIKUG._bz0w')
+                    foto[0].click()
+
+                    # PAUSE OF 2 SECONDS
+                    self.tempo(driver) 
+
+                    erro += 1
+                    # LIKE PHOTOS PROCESS
+                    lista_curtir_fotos = self.curtir_fotos(driver, conteudo, quant_curtidas, perfis, fotos, j)
+
+                    j = lista_curtir_fotos[0]
+                    perfis = lista_curtir_fotos[1]
+                    quant_fotos_curtidas = lista_curtir_fotos[2]
+                    
+                    erro += 1
+                    # CLOSE THE WINDOW OF PHOTOS
+                    fechar = driver.find_element_by_xpath('/html/body/div[4]/div[3]/button')
+                    fechar.click()
+
+                    # PAUSE OF 2 SECONDS
+                    self.tempo(driver)
+
+                    erro += 1
+
+
+            resp = self.verificacao_conteudo(conteudo)
+
+            # IF IS THE LAST VALUE, THE LIST IS CLEARED
             if resp == 'True':
 
                 conteudo = self.remover_usuario(conteudo, -1)
@@ -296,7 +348,7 @@ class CurtirFotosEscolhaBancoDeDadosAcessarInstagram:
                 break
 
             else:
-                
+                    
                 conteudo = self.remover_usuario(conteudo, i)
 
 
@@ -309,7 +361,7 @@ class CurtirFotosEscolhaBancoDeDadosAcessarInstagram:
         self.escrever_resultado(perfis, quant_fotos_curtidas, erro)
 
 
-    # ESSE MÉTODO INICIA A CLASSE
+    # THIS METHOD START THE CLASS
     def __init__(self):
 
         pass
