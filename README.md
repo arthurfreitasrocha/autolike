@@ -27,6 +27,7 @@ How to Install?
 
 - To install Python enter in this link: https://www.python.org/downloads/.
 - To install Selenium open a CMD and write: pip install selenium. Please wait until the installation finish.
+(Note: Python must be included in the environment variables for this command to work)
 
 
 How to Use?
