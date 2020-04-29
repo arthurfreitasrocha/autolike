@@ -119,17 +119,35 @@ class CurtirFotosEscolhaBancoDeDadosAcessarInstagram:
         while(i < quant_curtidas):
 
             if i == quant_curtidas-1:
+                
+                try:
 
-                coracao = driver.find_element_by_xpath('/html/body/div[4]/div[2]/div/article/div[2]/section[1]/span[1]/button')
-                coracao.click()
+                    coracao = driver.find_element_by_xpath('/html/body/div[4]/div[2]/div/article/div[2]/section[1]/span[1]/button')
+                    coracao.click()
+
+                except:
+
+                    messagebox.showerror('Algo deu errado', 'Falha ao tentar curtir')
 
             else:
+                
+                try:
 
-                coracao = driver.find_element_by_xpath('/html/body/div[4]/div[2]/div/article/div[2]/section[1]/span[1]/button')
-                coracao.click()
+                    coracao = driver.find_element_by_xpath('/html/body/div[4]/div[2]/div/article/div[2]/section[1]/span[1]/button')
+                    coracao.click()
 
-                seta_direita = driver.find_elements(By.CLASS_NAME, '_65Bje.coreSpriteRightPaginationArrow')
-                seta_direita[0].click()
+                except:
+
+                    messagebox.showerror('Algo deu errado', 'Falha ao tentar curtir')
+
+                try:
+
+                    seta_direita = driver.find_elements(By.CLASS_NAME, '_65Bje.coreSpriteRightPaginationArrow')
+                    seta_direita[0].click()
+
+                except:
+
+                    messagebox.showerror('Algo deu errado', 'Falha ao tentar passar para próxima publicação')
 
             # PAUSE OF 2 SECONDS
             self.tempo(driver)
