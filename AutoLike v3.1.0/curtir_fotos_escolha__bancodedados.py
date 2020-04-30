@@ -136,6 +136,11 @@ class CurtirFotosEscolhaBancoDeDados:
         c = int(cima/5)
         g = '{}x{}+{}+{}'.format(500, 400, l, c)
 
+        # ADDITIONAL CONFIGURATION
+        file = open('app_version.txt', 'r')
+        app_version = file.read()
+        file.close()
+
         # VARIABLES
         n_usuarios = n_usuarios
         status = status
@@ -223,7 +228,7 @@ class CurtirFotosEscolhaBancoDeDados:
 
         # WINDOW CONFIGURATION
         janela.resizable(width=False, height=False)
-        janela.title('AutoLike 3.0 - Curtir Fotos De Um Perfil Específico - Banco de Dados')
+        janela.title('AutoLike {} - Curtir Fotos De Perfil Específico - Banco de Dados'.format(app_version))
         janela.geometry(g)
 
 

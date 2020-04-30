@@ -192,6 +192,11 @@ class CurtirFotosHashtag():
         c = int(cima/5)
         g = '{}x{}+{}+{}'.format(500, 320, l, c)
 
+        # ADDITIONAL CONFIGURATION
+        file = open('app_version.txt', 'r')
+        app_version = file.read()
+        file.close()
+
 
         # FRAME ROOT PROGRAM
         f_logo = Frame(janela, width=500, height=100, bg='dark salmon')
@@ -222,7 +227,7 @@ class CurtirFotosHashtag():
                         activebackground='salmon', activeforeground='white', command=info)
         b_enviar.place(x=165, y=150)
 
-        janela.title('Auto Like 3.0 - Curtir Fotos Usando A Hashtag')
+        janela.title('Auto Like {} - Curtir Fotos Usando A Hashtag'.format(app_versions))
         janela.resizable(width=False, height=False)
         janela.geometry(g)
         janela.mainloop()

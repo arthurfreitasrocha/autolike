@@ -66,7 +66,11 @@ class Start():
         c = int(cima/13)
         g = '{}x{}+{}+{}'.format(500, 570, l, c)
 
-        # ADDITIONAL INFORMATION
+        # ADDITIONAL CONFIGURATION
+        file = open('app_version.txt', 'r')
+        app_version = file.read()
+        file.close()
+
         conteudo = ''
         erro = 0
 
@@ -175,7 +179,7 @@ class Start():
         b_options.place(x=180, y=250)
 
         janela.resizable(width=False, height=False)
-        janela.title('AutoLike 3.0')
+        janela.title('AutoLike {}'.format(app_version))
         janela.geometry(g)
         janela.mainloop()
 

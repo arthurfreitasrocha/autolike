@@ -84,6 +84,11 @@ class CurtirFotosEscolha():
         c = int(cima/5)
         g = '{}x{}+{}+{}'.format(500, 280, l, c)
 
+        # ADDITIONAL CONFIGURATION
+        file = open('app_version.txt', 'r')
+        app_version = file.read()
+        file.close()
+
         # ROOT ====================
         # FRAME ROOT PROGRAM
         f_raiz = Frame(janela, width=500, height=330)
@@ -118,7 +123,7 @@ class CurtirFotosEscolha():
         b_informar_usuario.place(x=160, y=30)
 
         janela.resizable(width=False, height=False)
-        janela.title('AutoLike 3.0 - Curtir Fotos De Um Perfil Específico')
+        janela.title('AutoLike {} - Curtir Fotos De Perfil Específico'.format(app_version))
         janela.geometry(g)
         janela.mainloop()
 

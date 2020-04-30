@@ -28,6 +28,11 @@ class MudarEmailInstagram:
         c = int(cima/5)
         g = '{}x{}+{}+{}'.format(500, 370, l, c)
 
+        # ADDITIONAL CONFIGURATION
+        file = open('app_version.txt', 'r')
+        app_version = file.read()
+        file.close()
+
         # FRAME LOGO
         f_logo = Frame(window, width=500, height=100, bg='dark salmon')
         f_logo.pack(side=TOP)
@@ -60,7 +65,7 @@ class MudarEmailInstagram:
                         activebackground='salmon', activeforeground='white', command=alterar)
         b_enviar.place(x=200, y=205)
 
-        window.title('Auto Like 3.0 - Mudar Email Instagram')
+        window.title('Auto Like {} - Mudar Email Instagram'.format(app_version))
         window.geometry(g)
         window.resizable(width=False, height=False)
         window.mainloop()

@@ -96,6 +96,10 @@ class CurtirFotosEscolhaBancoDeDadosAbrirMiniBD():
         checkvar = IntVar()
 
         # ADDITIONAL CONFIGURATION
+        file = open('app_version.txt', 'r')
+        app_version = file.read()
+        file.close()
+
         txt = 'bd_{}.txt'.format(email_curto)
 
         file = open(txt, 'r')
@@ -174,6 +178,6 @@ class CurtirFotosEscolhaBancoDeDadosAbrirMiniBD():
 
         # WINDOW CONFIGURATION
         janela.resizable(width=False, height=False)
-        janela.title('AutoLike 3.0 - Curtir Fotos De Um Perfil Específico - Banco de Dados')
+        janela.title('AutoLike {} - Curtir Fotos De Perfil Específico - Banco de Dados'.format(app_version))
         janela.geometry(g)
         janela.mainloop()
