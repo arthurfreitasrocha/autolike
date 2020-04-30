@@ -21,39 +21,51 @@ class Start():
 
         def escolha(opcao):
 
-            def curtir_fotos_hashtag():
-            
-                janela.destroy()
-                a = CurtirFotosHashtag()
-                a = Start()
+            file = open('email_senha_instagram.txt', 'r')
+            conteudo_file = file.read()
+            file.close()
 
-            def curtir_fotos_escolha():
-                
-                janela.destroy()
-                a = CurtirFotosEscolha()
-                resp = a.retornar()
+            conteudo = conteudo_file.split('-')
 
-                if resp == 1:
-                    resp = Start()
+            if conteudo[2] == '2':
 
-            def curtir_fotos_msg_direct():
-                
-                messagebox.showinfo('Ainda em manutenção', 'Opção ainda não programada')
-                #janela.destroy()
-                #a = CurtirFotosMsgDirect()
-                #a = Start()
-
-            if opcao == 0:
-
-                curtir_fotos_hashtag()
-
-            elif opcao == 1:
-
-                curtir_fotos_escolha()
+                messagebox.showwarning('ERRO: Conta do Instagram não cadastrada', 'Para prosseguir você precisa informar sua conta do Instagram.')
 
             else:
 
-                curtir_fotos_msg_direct()
+                def curtir_fotos_hashtag():
+                
+                    janela.destroy()
+                    a = CurtirFotosHashtag()
+                    a = Start()
+
+                def curtir_fotos_escolha():
+                    
+                    janela.destroy()
+                    a = CurtirFotosEscolha()
+                    resp = a.retornar()
+
+                    if resp == 1:
+                        resp = Start()
+
+                def curtir_fotos_msg_direct():
+                    
+                    messagebox.showinfo('Ainda em manutenção', 'Opção ainda não programada')
+                    #janela.destroy()
+                    #a = CurtirFotosMsgDirect()
+                    #a = Start()
+
+                if opcao == 0:
+
+                    curtir_fotos_hashtag()
+
+                elif opcao == 1:
+
+                    curtir_fotos_escolha()
+
+                else:
+
+                    curtir_fotos_msg_direct()
 
 
 

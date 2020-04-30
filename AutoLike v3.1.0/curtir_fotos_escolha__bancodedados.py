@@ -6,18 +6,22 @@ from tkinter import messagebox
 from curtir_fotos_escolha__bancodedados___abrirminibd import CurtirFotosEscolhaBancoDeDadosAbrirMiniBD
 from curtir_fotos_escolha__bancodedados___verselecionados import CurtirFotosEscolhaBancoDeDadosVerSelecionados
 from curtir_fotos_escolha__bancodedados___removerselecionados import CurtirFotosEscolhaBancoDeDadosRemoverSelecionados
+from curtir_fotos_escolha__bancodedados___metodocurtidas import CurtirFotosEscolhaBancoDeDadosMetodoCurtidas
 from curtir_fotos_escolha__bancodedados___acessarinstagram import CurtirFotosEscolhaBancoDeDadosAcessarInstagram
 
 
 class CurtirFotosEscolhaBancoDeDados:
 
-    def curtir_fotos(self, janela, quant_curtidas_usuarios, email_curto, status, n_usuarios):
+    def curtir_fotos(self, janela, conteudo, quant_curtidas_usuarios, email_curto, status, n_usuarios):
 
         if quant_curtidas_usuarios.isnumeric() == False:
 
             messagebox.showinfo('Digite apenas números', 'Por favor informe um valor válido')
 
         else:
+
+            a = CurtirFotosEscolhaBancoDeDadosMetodoCurtidas(conteudo)
+            
 
             quant_curtidas_usuarios = int(quant_curtidas_usuarios)
 
@@ -35,7 +39,7 @@ class CurtirFotosEscolhaBancoDeDados:
 
     # THIS FUNCTION CAN REMOVE ANY USER YOU HAVE
     def remover_selecionados(self, janela, email_curto):
-
+        
         file = open('curtir_fotos_usuarios.txt', 'r')
         conteudo_file = file.read()
         file.close()
@@ -90,8 +94,15 @@ class CurtirFotosEscolhaBancoDeDados:
         
         janela.destroy()
         a = CurtirFotosEscolhaBancoDeDadosAbrirMiniBD(email_curto)
-        resp = a.retorno()
-        a = CurtirFotosEscolhaBancoDeDados(resp[0], resp[1], resp[2])
+
+        try:
+            
+            resp = a.retorno()
+            a = CurtirFotosEscolhaBancoDeDados(resp[0], resp[1], resp[2])
+
+        except:
+
+            a = CurtirFotosEscolhaBancoDeDados(email_curto, 0, 0)
 
 
 
@@ -222,7 +233,7 @@ class CurtirFotosEscolhaBancoDeDados:
         b_quant_curtidas = Button(f_quant_curtidas, text='ENVIAR', font=('arial', 15, 'bold'),
         bg='dark salmon',
         activebackground='salmon', activeforeground='white',
-        command=lambda: self.curtir_fotos(janela, e_quant_curtidas.get(), email_curto, status, n_usuarios))
+        command=lambda: self.curtir_fotos(janela, conteudo, e_quant_curtidas.get(), email_curto, status, n_usuarios))
         b_quant_curtidas.place(x=280, y=90)
         
 

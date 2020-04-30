@@ -1,12 +1,19 @@
+# TKINTER LIBRARY
 from tkinter import *
 from tkinter import messagebox
+
+# RANDOM LIBRARY
+from random import *
+
+# CUSTOM LIBRARY'S
+from curtir_fotos_escolha__bancodedados___acessarinstagram import CapturarInformacoes
 
 class CurtirFotosEscolhaBancoDeDadosMetodoCurtidas:
 
     # THIS FUNCTION RETURNS THE USER CHOICE
     def retorno(self):
 
-        file = open('informacoes.txt', 'r')
+        file = open('curtir_fotos_usuarios.txt', 'r')
         conteudo = file.read()
         file.close()
 
@@ -19,18 +26,48 @@ class CurtirFotosEscolhaBancoDeDadosMetodoCurtidas:
         valor = int(valor)
 
         if valor == 1:
-            
-            file = open('informacoes.txt', 'w')
-            file.write('1')
-            file.close()
 
             messagebox.showinfo('Sucesso', 'Você selecionou a opção Curtidas em Sequência.')
 
         else:
 
-            file = open('informacoes.txt', 'w')
-            file.write('2')
-            file.close()
+            messagebox.showinfo('Capturando informações', 'Por favor, aguarde. Estamos capturando informações necessárias para continuarmos com o processo')
+
+
+
+            valor = len(self.conteudo)
+            valores = self.conteudo
+            valores_escolhidos = []
+
+            i = 0
+            while(i < valor):
+
+                menor_valor = int(valores[0])
+                maior_valor = int(valores[-1])
+
+                valores_escolhidos.append(valores[randint(menor_valor, maior_valor)])
+                valores.pop(valores_escolhidos[i])
+
+                i += 1
+
+            i = 0
+            while(i < valor):
+
+                if i == 0:
+
+                    file = open('curtir_fotos_usuarios.txt', 'w')
+                    file.write(valores[i])
+                    file.close()
+
+                else:
+
+                    txt = '-' + valores[i]
+
+                    file = open('curtir_fotos_usuarios.txt', 'a')
+                    file.write(txt)
+                    file.close()
+
+                i += 1
 
             messagebox.showinfo('Sucesso', 'Você selecionou a opção Curtidas Aleatórias.')
 
@@ -44,8 +81,8 @@ class CurtirFotosEscolhaBancoDeDadosMetodoCurtidas:
         lado = janela.winfo_screenwidth()
         cima = janela.winfo_screenheight()
         l = int(lado/3)
-        c = int(cima/5)
-        g = '{}x{}+{}+{}'.format(500, 400, l, c)
+        c = int(cima/4)
+        g = '{}x{}+{}+{}'.format(500, 230, l, c)
 
         # ADDITIONAL CONFIGURATION
         file = open('app_version.txt', 'r')
@@ -73,24 +110,24 @@ class CurtirFotosEscolhaBancoDeDadosMetodoCurtidas:
 
         # LIKE OPTIONS
         # FRAME LIKE OPTIONS
-        f_opcoes_curtir = Frame(f_raiz, width=500, height=100, bg='floral white')
+        f_opcoes_curtir = Frame(f_raiz, width=500, height=130, bg='floral white')
         f_opcoes_curtir.pack(side=TOP)
 
         rb_curtidas_sequencia = Radiobutton(f_opcoes_curtir, text='Curtidas em Sequência',
         font=('arial', 12, 'bold'), bg='floral white',
         variable=valor_cb, value=1)
-        rb_curtidas_sequencia.place(x=20, y=20)
+        rb_curtidas_sequencia.place(x=50, y=20)
 
         rb_curtidas_aleatorias = Radiobutton(f_opcoes_curtir, text='Curtidas Aleatórias',
         font=('arial', 12, 'bold'), bg='floral white',
-        variable=valor_cb, value=1)
-        rb_curtidas_aleatorias.place(x=100, y=20)
+        variable=valor_cb, value=2)
+        rb_curtidas_aleatorias.place(x=270, y=20)
 
         b_opcoes_curtidas = Button(f_opcoes_curtir, text='ENVIAR', font=('arial', 15, 'bold'),
         bg='dark salmon',
         activebackground='salmon', activeforeground='white',
         command=lambda: self.opcao_escolhida(janela, valor_cb.get()))
-        b_opcoes_curtidas.place(x=150, y=50)
+        b_opcoes_curtidas.place(x=210, y=70)
 
         # WINDOW CONFIGURATION
         janela.resizable(width=False, height=False)
@@ -100,9 +137,10 @@ class CurtirFotosEscolhaBancoDeDadosMetodoCurtidas:
 
 
     # CONSTRUCTOR METHOD
-    def __init__(self):
+    def __init__(self, conteudo):
 
-        pass
+        self.interface()
+        self.conteudo = conteudo
 
-a = CurtirFotosEscolhaBancoDeDadosMetodoCurtidas()
-a.interface()
+#a = CurtirFotosEscolhaBancoDeDadosMetodoCurtidas()
+#a.interface()

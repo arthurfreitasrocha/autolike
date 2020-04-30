@@ -148,9 +148,9 @@ class CurtirFotosHashtag():
             htg = e_hashtag.get()
             var = e_curtidas.get()
 
-            if htg == '' or var == '':
+            if htg == '' or var == '' or htg[0] != '#' or var.isnumeric() == False:
 
-                messagebox.showinfo('Erro', 'Por favor, preencha todos os campos')
+                messagebox.showwarning('ERRO: Campos inválidos', 'Um ou mais campos inválidos.\nPor favor, forneça uma hashtag e uma quantidade de curtidas válidas')
 
             else:
 
@@ -227,7 +227,7 @@ class CurtirFotosHashtag():
                         activebackground='salmon', activeforeground='white', command=info)
         b_enviar.place(x=165, y=150)
 
-        janela.title('Auto Like {} - Curtir Fotos Usando A Hashtag'.format(app_versions))
+        janela.title('Auto Like {} - Curtir Fotos Usando A Hashtag'.format(app_version))
         janela.resizable(width=False, height=False)
         janela.geometry(g)
         janela.mainloop()
