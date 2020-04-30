@@ -10,13 +10,19 @@ class MudarEmailInstagram:
             email = e_login.get()
             senha = e_senha.get()
 
-            file = open('email_senha_instagram.txt', 'w')
-            file.write('{}-{}'.format(email, senha))
-            file.close()
+            if email == '' or senha == '':
 
-            messagebox.showinfo('Sucesso', 'Email e senha do Instagram alterados')
+                messagebox.showwarning('ERRO: Campos vazios', 'Um ou mais campos vazios.\nPor favor, forneça um email e senha válidos')
 
-            window.destroy()
+            else:
+
+                file = open('email_senha_instagram.txt', 'w')
+                file.write('{}-{}'.format(email, senha))
+                file.close()
+
+                messagebox.showinfo('Sucesso', 'Email e senha do Instagram alterados')
+
+                window.destroy()
 
 
         window = Tk()
