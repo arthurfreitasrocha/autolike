@@ -23,29 +23,43 @@ class ProgressBar():
         # WINDOW GEOMETRY
         lado = janela.winfo_screenwidth()
         cima = janela.winfo_screenheight()
-        l = int(lado/3)
-        c = int(cima/8)
-        g = '{}x{}+{}+{}'.format(300, 200, l, c)
+        l = int(lado)
+        c = int(cima/2)
+        g = '{}x{}+{}+{}'.format(300, 200, l, c) # preciso melhorar isso
 
-        var_usuario = 1
-        l_usuario_atual = Label(janela, text='Usuário Atual:', font=('arial', 12))
-        l_usuario_atual.grid(row=0, column=0)
+        # VARIABLES
+        var_usuario = 'nome_usuario'
 
-        l_var_usuario_atual = Label(janela, text=var_usuario, font=('arial', 12))
-        l_var_usuario_atual.grid(row=0, column=1)
+        # USUARIO ATUAL
+        # FRAME USUARIO ATUAL
+        f_usuario_atual = Frame(janela, width=300, height=50)
+        f_usuario_atual.pack(side=TOP)
+
+        # LABEL USUARIO ATUAL
+        l_usuario_atual = Label(f_usuario_atual, text='Usuário Atual:', font=('arial', 12))
+        l_usuario_atual.place(x=20, y=20)
+
+        # LABEL VAR USUARIO ATUAL
+        l_var_usuario_atual = Label(f_usuario_atual, text=var_usuario, font=('arial', 12))
+        l_var_usuario_atual.place(x=130, y=20)
         
+
         # PROGRESSBAR SITUATION
-        l_pb_usuario_atual = Label(janela, text='Progresso Usuário Atual', font=('arial', 12, 'bold'))
-        l_pb_usuario_atual.grid(row=1)
+        # FRAME PROGRESSBAR SITUATION
+        f_pb_usuario_atual = Frame(janela, width=300, height=150)
+        f_pb_usuario_atual.pack(side=TOP)
 
-        pb_usuario_atual = Progressbar(janela, orient=HORIZONTAL, length=200, mode='determinate')
-        pb_usuario_atual.grid(row=2)
+        l_pb_usuario_atual = Label(f_pb_usuario_atual, text='Progresso Usuário Atual', font=('arial', 12, 'bold'))
+        l_pb_usuario_atual.place(x=55, y=20)
 
-        l_pb_situacao_geral = Label(janela, text='Progresso Geral', font=('arial', 12, 'bold'))
-        l_pb_situacao_geral.grid(row=3)
+        pb_usuario_atual = Progressbar(f_pb_usuario_atual, orient=HORIZONTAL, length=260, mode='determinate')
+        pb_usuario_atual.place(x=20, y=50)
 
-        pb_situacao_geral = Progressbar(janela, orient=HORIZONTAL, length=200, mode='determinate')
-        pb_situacao_geral.grid(row=4)
+        l_pb_situacao_geral = Label(f_pb_usuario_atual, text='Progresso Geral', font=('arial', 12, 'bold'))
+        l_pb_situacao_geral.place(x=85, y=80)
+
+        pb_situacao_geral = Progressbar(f_pb_usuario_atual, orient=HORIZONTAL, length=260, mode='determinate')
+        pb_situacao_geral.place(x=20, y=110)
 
 
         #pb_situacao_geral(lista_usuarios)
