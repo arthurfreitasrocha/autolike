@@ -24,13 +24,19 @@ class CapturarInformacoes:
             file.close()
 
 
-            m = 0
+            m = 0 # TENHO Q PEGAR O CONTEUDO DE 'self.conteudo2' DENTRO DO .txt
             n = 0
-            for 
+            string_01_conteudo = ''
+            string_02_conteudo = ''
+            while(m < len(self.conteudo2)):
 
-            file = open('curtir_fotos_usuarios_aleatorio.txt', 'w')
-            file.write()
-            file.close()
+                if m == 0:
+
+                    string_01_conteudo += self.conteudo2[m] 
+
+                else:
+
+                    string_01_conteudo += self.conteudo2[m]
 
         else:
 
