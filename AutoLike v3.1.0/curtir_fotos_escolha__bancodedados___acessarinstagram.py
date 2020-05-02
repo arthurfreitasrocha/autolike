@@ -9,6 +9,7 @@ from tkinter import *
 from tkinter import messagebox
 
 # ADDITIONAL LIBRARY
+from random import *
 import time
 
 
@@ -22,9 +23,15 @@ class CapturarInformacoes:
             file = open('informacoes.txt', 'w')
             file.write('1-{}'.format(erro))
             file.close()
+            
+            m = 0
+            new_conteudo = []
+            while(m < len(self.conteudo2)):
+
+            # PRECISO RANDOMIZAR OS VALORES E DPS ESCREVER NO .txt
 
 
-            m = 0 # TENHO Q PEGAR O CONTEUDO DE 'self.conteudo2' DENTRO DO .txt
+            m = 0
             n = 0
             string_01_conteudo = ''
             string_02_conteudo = ''
@@ -32,16 +39,43 @@ class CapturarInformacoes:
 
                 if m == 0:
 
-                    string_01_conteudo += self.conteudo2[m] 
+                    string_01_conteudo += self.conteudo2[m][1]
 
                 else:
 
-                    string_01_conteudo += self.conteudo2[m]
+                    string_01_conteudo += '-' + self.conteudo2[m][1]
+
+                while(n < len(self.conteudo2)):
+
+                    if n == 0:
+
+                        string_02_conteudo += self.conteudo2[0][n]
+
+                    else:
+
+                        string_02_conteudo += '-' + self.conteudo2[0][n]
+
+                    n += 1
+
+                m += 1
+
+
+                if m == 0:
+
+                    file = open('curtir_fotos_escolha_informarusuario.txt', 'w')
+                    file.write('{}\n{}'.format(string_01_conteudo, string_02_conteudo))
+                    file.close()
+
+                else:
+
+                    file = open('curtir_fotos_escolha_informarusuario.txt', 'a')
+                    file.write('{}\n{}'.format(string_01_conteudo, string_02_conteudo))
+                    file.close()
 
         else:
 
             file = open('informacoes.txt', 'w')
-            file.write('0-{}'.format(perfis, fotos, erro))
+            file.write('0-{}'.format(erro))
             file.close()
 
     # THIS METHOD PAUSE THE PROGRAM IN 2 SECONDS

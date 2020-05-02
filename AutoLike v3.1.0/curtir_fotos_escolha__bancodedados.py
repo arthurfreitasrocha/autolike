@@ -20,14 +20,23 @@ class CurtirFotosEscolhaBancoDeDados:
 
         else:
 
-            a = CurtirFotosEscolhaBancoDeDadosMetodoCurtidas(conteudo)
-            
-
             quant_curtidas_usuarios = int(quant_curtidas_usuarios)
 
-            file = open('curtir_fotos_usuarios.txt', 'r')
-            conteudo_file = file.read()
-            file.close()
+            a = CurtirFotosEscolhaBancoDeDadosMetodoCurtidas(conteudo, quant_curtidas_usuarios)
+            resp = int(a.retorno())
+
+            if resp == 1:
+
+                file = open('curtir_fotos_usuarios_aleatorio.txt', 'r')
+                conteudo_file = file.read()
+                file.close()
+
+            else:
+
+                file = open('curtir_fotos_usuarios.txt', 'r')
+                conteudo_file = file.read()
+                file.close()
+                
 
             conteudo = conteudo_file.split('-')
 

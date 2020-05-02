@@ -2,9 +2,6 @@
 from tkinter import *
 from tkinter import messagebox
 
-# RANDOM LIBRARY
-from random import *
-
 # CUSTOM LIBRARY'S
 from curtir_fotos_escolha__bancodedados___acessarinstagram import CapturarInformacoes
 
@@ -27,47 +24,22 @@ class CurtirFotosEscolhaBancoDeDadosMetodoCurtidas:
 
         if valor == 1:
 
+            file = open('curtir_fotos_usuarios.txt', 'w')
+            file.write('1')
+            file.close()
+
             messagebox.showinfo('Sucesso', 'Você selecionou a opção Curtidas em Sequência.')
 
         else:
 
             messagebox.showinfo('Capturando informações', 'Por favor, aguarde. Estamos capturando informações necessárias para continuarmos com o processo')
 
+            file = open('curtir_fotos_usuarios.txt', 'w')
+            file.write('2')
+            file.close()
 
-
-            valor = len(self.conteudo)
-            valores = self.conteudo
-            valores_escolhidos = []
-
-            i = 0
-            while(i < valor):
-
-                menor_valor = int(valores[0])
-                maior_valor = int(valores[-1])
-
-                valores_escolhidos.append(valores[randint(menor_valor, maior_valor)])
-                valores.pop(valores_escolhidos[i])
-
-                i += 1
-
-            i = 0
-            while(i < valor):
-
-                if i == 0:
-
-                    file = open('curtir_fotos_usuarios.txt', 'w')
-                    file.write(valores[i])
-                    file.close()
-
-                else:
-
-                    txt = '-' + valores[i]
-
-                    file = open('curtir_fotos_usuarios.txt', 'a')
-                    file.write(txt)
-                    file.close()
-
-                i += 1
+            a = CapturarInformacoes()
+            a.abrir_navegador(janela, self.conteudo, self.quant_curtidas)
 
             messagebox.showinfo('Sucesso', 'Você selecionou a opção Curtidas Aleatórias.')
 
@@ -137,10 +109,11 @@ class CurtirFotosEscolhaBancoDeDadosMetodoCurtidas:
 
 
     # CONSTRUCTOR METHOD
-    def __init__(self, conteudo):
-
-        self.interface()
+    def __init__(self, conteudo, quant_curtidas):
+        
         self.conteudo = conteudo
+        self.quant_curtidas = quant_curtidas
+        self.interface()
 
 #a = CurtirFotosEscolhaBancoDeDadosMetodoCurtidas()
 #a.interface()
