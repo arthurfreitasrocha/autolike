@@ -24,11 +24,44 @@ class CapturarInformacoes:
             file.write('1-{}'.format(erro))
             file.close()
             
+            # TENHO Q RANDOMIZAR A POSIÇÃO DE CADA FOTO DE CADA USUÁRIO
             m = 0
-            new_conteudo = []
+            valores = []
             while(m < len(self.conteudo2)):
 
-            # PRECISO RANDOMIZAR OS VALORES E DPS ESCREVER NO .txt
+                valores.append(m)
+
+                m += 1
+
+
+            m = 0
+            n = 0
+            o = 0
+            selecionado = []
+            new_conteudo = []
+            while(m < len(self.conteudo2)): # RANDOMIZA OS PERFIS
+
+                if m > 0:
+
+                    while(n < len(new_conteudo)):
+
+                        while(o < len(new_conteudo)):
+
+                            if selecionado[n] != new_conteudo[0]:
+
+                                new_conteudo.append(randrange(primeiro, ultimo))
+                                selecionado.append(new_conteudo[m])
+
+                                o += 1
+                        
+                        n += 1
+
+                else:
+
+                    new_conteudo.append(randrange(primeiro, ultimo))
+                    selecionado.append(new_conteudo[m])
+
+                m += 1
 
 
             m = 0
