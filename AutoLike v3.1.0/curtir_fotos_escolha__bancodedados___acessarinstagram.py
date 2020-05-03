@@ -16,100 +16,85 @@ import time
 class CapturarInformacoes:
 
     # THIS METHOD WRITE IN A .TXT DOCUMENT THE RESULT OF THE PROCESS
-    def escrever_resultado(self, erro):
+    def escrever_resultado(self, conteudo, valores, i, erro):
+
+        nome_usuario = conteudo
+        v = valores
+        string_conteudo = ''
 
         if erro < 1:
 
+            m = 0
+            while(m < 3):
+
+                temp = str(v[m])
+
+                if m == 0:
+
+                    string_conteudo += nome_usuario
+                    string_conteudo += '-' + temp
+
+                else:
+
+                    string_conteudo += '-' + temp
+
+                m += 1
+
+
+            if i == 0:
+
+                file = open('curtir_fotos_usuarios_aleatorio.txt', 'w')
+                file.write(string_conteudo)
+                file.close()
+
+            else:
+
+                file = open('curtir_fotos_usuarios_aleatorio.txt', 'a')
+                file.write('\n{}'.format(string_conteudo))
+                file.close()
+
+            
             file = open('informacoes.txt', 'w')
             file.write('1-{}'.format(erro))
             file.close()
-            
-            # TENHO Q RANDOMIZAR A POSIÇÃO DE CADA FOTO DE CADA USUÁRIO
-            m = 0
-            valores = []
-            while(m < len(self.conteudo2)):
-
-                valores.append(m)
-
-                m += 1
-
-
-            m = 0
-            n = 0
-            o = 0
-            selecionado = []
-            new_conteudo = []
-            while(m < len(self.conteudo2)): # RANDOMIZA OS PERFIS
-
-                if m > 0:
-
-                    while(n < len(new_conteudo)):
-
-                        while(o < len(new_conteudo)):
-
-                            if selecionado[n] != new_conteudo[0]:
-
-                                new_conteudo.append(randrange(primeiro, ultimo))
-                                selecionado.append(new_conteudo[m])
-
-                                o += 1
-                        
-                        n += 1
-
-                else:
-
-                    new_conteudo.append(randrange(primeiro, ultimo))
-                    selecionado.append(new_conteudo[m])
-
-                m += 1
-
-
-            m = 0
-            n = 0
-            string_01_conteudo = ''
-            string_02_conteudo = ''
-            while(m < len(self.conteudo2)):
-
-                if m == 0:
-
-                    string_01_conteudo += self.conteudo2[m][1]
-
-                else:
-
-                    string_01_conteudo += '-' + self.conteudo2[m][1]
-
-                while(n < len(self.conteudo2)):
-
-                    if n == 0:
-
-                        string_02_conteudo += self.conteudo2[0][n]
-
-                    else:
-
-                        string_02_conteudo += '-' + self.conteudo2[0][n]
-
-                    n += 1
-
-                m += 1
-
-
-                if m == 0:
-
-                    file = open('curtir_fotos_escolha_informarusuario.txt', 'w')
-                    file.write('{}\n{}'.format(string_01_conteudo, string_02_conteudo))
-                    file.close()
-
-                else:
-
-                    file = open('curtir_fotos_escolha_informarusuario.txt', 'a')
-                    file.write('{}\n{}'.format(string_01_conteudo, string_02_conteudo))
-                    file.close()
-
+        
         else:
 
             file = open('informacoes.txt', 'w')
             file.write('0-{}'.format(erro))
             file.close()
+
+    
+    # THIS METHOD RANDOMIZE THE PHOTOS WILL BE LIKE
+    def aleatorizar(self, conteudo):
+
+        quant_publicacoes_usuario = conteudo
+        
+        m = 0
+        v = [0, 0, 0]
+
+        while(m < 3):
+            
+            if m == 0:
+                
+                v[m] = randrange(0, quant_publicacoes_usuario-1)
+
+                m += 1
+
+            else:
+
+                v[m] = randrange(0, quant_publicacoes_usuario-1)
+
+                if (m == 1) and (v[m] != v[m-1]):
+
+                    m += 1
+
+                elif (m == 2) and (v[m] != v[m-1] and v[m] != v[m-2]):
+
+                    m += 2
+
+        return v
+
 
     # THIS METHOD PAUSE THE PROGRAM IN 2 SECONDS
     def tempo(self, driver):
@@ -169,7 +154,6 @@ class CapturarInformacoes:
 
         temp = driver.find_elements_by_class_name('g47SY')
         quant_publicacoes_usuario = temp[0].text
-        temp = ''
 
         i = 0
         for letra in quant_publicacoes_usuario:
@@ -180,7 +164,7 @@ class CapturarInformacoes:
 
             i += 1
 
-        quant_publicacoes_usuario = int(temp)
+        quant_publicacoes_usuario = int(quant_publicacoes_usuario)
         lista[0] = quant_publicacoes_usuario
   
         if quant_curtidas <= quant_publicacoes_usuario:
@@ -270,14 +254,12 @@ class CapturarInformacoes:
         valor_conteudo = len(conteudo)
 
         erro = 0
-        perfis = 0
-        quant_fotos_curtidas = 0
-        self.conteudo2 = [[], []]
+        conteudo2 = ['', 0]
 
 
         # ACESSING INSTAGRAM
         options = Options()
-        options.headless = True
+        options.headless = False
 
         driver = webdriver.Chrome(executable_path='C:\chromedriver.exe', chrome_options=options)
         driver.get('https://www.instagram.com/')
@@ -322,8 +304,8 @@ class CapturarInformacoes:
 
             if rvi[1] == 'True':
                 
-                self.conteudo2[i][0] = conteudo[i]
-                self.conteudo2[i][1] = rvi[0]
+                conteudo2[0] = conteudo[i] # RECEIVE THE NAME OF THE USER IS ALREADY CHECKING
+                conteudo2[1] = rvi[0] # RECEIVE THE NUMBER OF PUBLICATIONS HIM HAS
 
                 j += 1
 
@@ -331,21 +313,24 @@ class CapturarInformacoes:
             if conteudo == '':
 
                 break
+                
 
+            valores = self.aleatorizar(conteudo2[1])
 
             erro = 0
+            self.escrever_resultado(conteudo2[0], valores, i, erro)
+
             i += 1
 
 
         driver.close()
-
-        self.escrever_resultado(erro)
 
 
     # CONSTRUCTOR METHOD
     def __init__(self):
 
         pass
+
 
 
 class CurtirFotosEscolhaBancoDeDadosAcessarInstagram:

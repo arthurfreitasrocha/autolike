@@ -5,12 +5,13 @@ from tkinter import messagebox
 # CUSTOM LIBRARY'S
 from curtir_fotos_escolha__bancodedados___acessarinstagram import CapturarInformacoes
 
+
 class CurtirFotosEscolhaBancoDeDadosMetodoCurtidas:
 
     # THIS FUNCTION RETURNS THE USER CHOICE
     def retorno(self):
 
-        file = open('curtir_fotos_usuarios.txt', 'r')
+        file = open('informacoes.txt', 'r')
         conteudo = file.read()
         file.close()
 
@@ -24,7 +25,7 @@ class CurtirFotosEscolhaBancoDeDadosMetodoCurtidas:
 
         if valor == 1:
 
-            file = open('curtir_fotos_usuarios.txt', 'w')
+            file = open('informacoes.txt', 'w')
             file.write('1')
             file.close()
 
@@ -34,7 +35,7 @@ class CurtirFotosEscolhaBancoDeDadosMetodoCurtidas:
 
             messagebox.showinfo('Capturando informações', 'Por favor, aguarde. Estamos capturando informações necessárias para continuarmos com o processo')
 
-            file = open('curtir_fotos_usuarios.txt', 'w')
+            file = open('informacoes.txt', 'w')
             file.write('2')
             file.close()
 
@@ -64,21 +65,21 @@ class CurtirFotosEscolhaBancoDeDadosMetodoCurtidas:
         # VARIABLES
         valor_cb = IntVar()
 
-        # ROOT ====================
+        # ROOT PROGRAM ====================
         # FRAME ROOT PROGRAM
         f_raiz = Frame(janela, width=500, height=330)
         f_raiz.pack(side=TOP)
 
+        """
         # FRAME LOGO PROGRAM
         f_logo = Frame(f_raiz, width=500, height=100)
         f_logo.pack(side=TOP)
 
         logo_programa = PhotoImage(file='logo.png')
 
-        # LABEL LOGO PROGRAM
         l_logo = Label(f_raiz, image=logo_programa)
         l_logo.place(x=0, y=0)
-
+        """
 
         # LIKE OPTIONS
         # FRAME LIKE OPTIONS
