@@ -11,7 +11,7 @@ from tkinter import messagebox
 # ADDITIONAL LIBRARY
 from random import *
 import time
-
+import os
 
 class CapturarInformacoes:
 
@@ -66,32 +66,54 @@ class CapturarInformacoes:
 
     
     # THIS METHOD RANDOMIZE THE PHOTOS WILL BE LIKE
-    def aleatorizar(self, conteudo):
+    def aleatorizar(self, quant_publicacoes_usuario, quant_curtidas):
 
-        quant_publicacoes_usuario = conteudo
-        
+        quant_curtidas = int(quant_curtidas)
+
         m = 0
-        v = [0, 0, 0]
+        n = 0
+        v = []
+        while(m < quant_curtidas):
 
-        while(m < 3):
-            
-            if m == 0:
+            v.append(-1)
+
+            m += 1
+
+        m = 0
+        n = 0
+        cont = 0
+        valor = 0
+        while(m < quant_curtidas):
                 
-                v[m] = randrange(0, quant_publicacoes_usuario-1)
+            # THIS VAR RECEIVE A RANDOM VALUE
+            valor = randrange(0, quant_publicacoes_usuario)
+                
+            # IF NOT, THE PROGRAM WILL CHECK IF THE LIST HAS NOT RECEIVED A REPEATED VALUE
+            while(n < quant_curtidas):
+
+                if valor != v[n]:
+                        
+                    cont += 1
+
+                else:
+                    
+                    cont -= 1
+
+                # IF ALL THE VALUES IS NOT REPEATED, THE LIST WILL RECEIVE THE VALUE OF 'valor' IN THE 'n' POSITION
+                if cont == quant_curtidas:
+                        
+                    v[m] = valor
+                    
+                n += 1
+
+            # IF ALL THE VALUES IS NOT REPEATED, 'm' IS INCREMENTED
+            if cont == quant_curtidas:
 
                 m += 1
 
-            else:
+            cont = 0
+            n = 0 
 
-                v[m] = randrange(0, quant_publicacoes_usuario-1)
-
-                if (m == 1) and (v[m] != v[m-1]):
-
-                    m += 1
-
-                elif (m == 2) and (v[m] != v[m-1] and v[m] != v[m-2]):
-
-                    m += 2
 
         return v
 
@@ -147,13 +169,168 @@ class CapturarInformacoes:
             return conteudo
 
 
+    # THIS METHOD CHECK IF ALL THE USERS ALREADY LIKED
+    def verificacao_conteudo(self, conteudo):
+        
+        cont = 0
+        valor_conteudo = len(conteudo)
+
+        i = 0
+        while(i < valor_conteudo):
+
+            if conteudo[i] == '':
+
+                cont += 1
+
+            i += 1
+
+        if cont == valor_conteudo:
+
+            return 'True'
+
+        else:
+
+            return 'False'
+
+
+    # THIS METHOD LIKE THE PHOTOS OF THE USER 'x'
+    def curtir_fotos(self, driver, conteudo, quant_curtidas, perfis, fotos, cont, v):
+
+        quant_curtidas = int(quant_curtidas)
+        perfis = int(perfis)
+        fotos = int(fotos)
+        cont = int(cont)
+        print(quant_curtidas)
+        print('PERFIL SENDO ACESSADO: {}'.format(conteudo[cont]))
+        m = 0
+        n = 0
+        anterior = 0
+        atual = -1
+        distancia = []
+        sentido = 0
+        while(m < quant_curtidas):
+            
+            print(n, quant_curtidas)
+            while(n < quant_curtidas):
+
+                if n == 0:
+
+                    atual = v[m]
+                    distancia.append(atual)
+                    sentido = 1
+
+                else:
+                    
+                    anterior = v[m-1]
+                    atual = v[m]
+
+                    print(atual > anterior)
+                    print(anterior > atual)
+
+                    # MOVE TO RIGHT
+                    if atual > anterior:
+                        
+                        temp = atual-anterior
+                        distancia.append(temp)
+                        sentido = 1
+
+                    # MOVE TO LEFT
+                    elif anterior > atual:
+                        
+                        temp = anterior-atual
+                        distancia.append(temp)
+                        sentido = -1
+
+                n += 1
+
+            print(atual, anterior, distancia, sentido)       
+
+            # PAUSE OF 2 SECONDS
+            self.tempo(driver)
+
+            n = 0
+            while(n < distancia[m]):
+                
+                if sentido == 1:
+
+                    seta_direita = driver.find_elements(By.CLASS_NAME, '_65Bje.coreSpriteRightPaginationArrow')
+                    seta_direita[0].click()
+
+                elif sentido == -1:
+
+                    seta_esquerda = driver.find_elements(By.CLASS_NAME, 'ITLxV.coreSpriteLeftPaginationArrow')
+                    seta_esquerda[0].click()
+
+                n += 1
+
+                print('n == {} --- v[{}] == {}'.format(n, m, v[m]))
+
+
+            try:
+
+                coracao = driver.find_element_by_xpath('/html/body/div[4]/div[2]/div/article/div[2]/section[1]/span[1]/button')
+                coracao.click()
+
+            except:
+
+                messagebox.showerror('Algo deu errado', 'Falha ao tentar curtir')
+
+
+            # PAUSE OF 2 SECONDS
+            self.tempo(driver)
+
+            os.system('pause')
+
+            m += 1
+            fotos += 1
+
+            print('{} FOTO(S) CURTIDA(S) DE {}'.format(m, conteudo[cont]))
+
+        print('====================')
+
+        # CHECKS IF THE ACTUAL VALUE IS THE LAST
+        resp = self.verificacao_conteudo(conteudo)
+
+        # IF IS THE LAST VALUE, THE LIST IS CLEARED
+        if resp == 'True':
+
+            conteudo = self.remover_usuario(conteudo, -1)
+
+        else:
+            
+            conteudo = self.remover_usuario(conteudo, cont)
+
+
+        perfis += 1
+        cont += 1
+
+        lista = [cont, perfis, fotos, conteudo]
+
+        return lista
+
+
     # THIS METHOD CHECKS IF THE USER 'x' HAS THE PREREQUISITES TO LIKE HIM PUBLICATIONS
     def verificacao_interna_usuario(self, driver, quant_curtidas):
 
-        lista = ['', 0]
+        lista = ['', '', 0]
+
+        # CHECKS IF THE USER ACCOUNT IS PRIVATE
+        try:
+
+            conta_privada = driver.find_element_by_xpath('/html/body/div[1]/section/main/div/div/article/div[1]/div/h2').text
+        
+            if conta_privada == 'Esta conta é privada':
+                
+                lista[0] = 'True'
+        
+        except:
+
+            lista[0] = 'False'
+
 
         temp = driver.find_elements_by_class_name('g47SY')
         quant_publicacoes_usuario = temp[0].text
+        temp = ''
 
         i = 0
         for letra in quant_publicacoes_usuario:
@@ -164,8 +341,6 @@ class CapturarInformacoes:
 
             i += 1
 
-        quant_publicacoes_usuario = int(quant_publicacoes_usuario)
-        lista[0] = quant_publicacoes_usuario
   
         if quant_curtidas <= quant_publicacoes_usuario:
 
@@ -174,6 +349,9 @@ class CapturarInformacoes:
         else:
 
             lista[1] = 'False'
+
+
+        lista[2] = int(quant_publicacoes_usuario)
 
 
         return lista
@@ -254,6 +432,8 @@ class CapturarInformacoes:
         valor_conteudo = len(conteudo)
 
         erro = 0
+        perfis = 0
+        fotos = 0
         conteudo2 = ['', 0]
 
 
@@ -302,23 +482,56 @@ class CapturarInformacoes:
             retorno_verificacao_interna_usuario = self.verificacao_interna_usuario(driver, quant_curtidas)
             rvi = retorno_verificacao_interna_usuario
 
-            if rvi[1] == 'True':
+            if (rvi[0] == 'True' and rvi[1] == 'False') or (rvi[0] == 'True' and rvi[1] == 'True'):
                 
-                conteudo2[0] = conteudo[i] # RECEIVE THE NAME OF THE USER IS ALREADY CHECKING
-                conteudo2[1] = rvi[0] # RECEIVE THE NUMBER OF PUBLICATIONS HIM HAS
+                print('O USUÁRIO {} NÃO PASSOU NOS CRITÉRIOS DO TESTE DE VERIFICAÇÃO'.format(conteudo[i]))
 
                 j += 1
+
+            else:
+
+                conteudo2[0] = conteudo[i] # RECEIVE THE NAME OF THE USER IS ALREADY CHECKING
+                conteudo2[1] = rvi[2] # RECEIVE THE NUMBER OF PUBLICATIONS HIM HAS
+                
+                # RANDOMIZES THE VALUES WILL BE LIKED
+                valores = self.aleatorizar(conteudo2[1], quant_curtidas)
+                print(valores)
+                # PAUSE OF 2 SECONDS
+                self.tempo(driver)
+
+                erro += 1
+                # CLICKING ON THE FIRST PHOTO
+                foto = driver.find_elements(By.CLASS_NAME, 'v1Nh3.kIKUG._bz0w')
+                foto[0].click()
+
+                # PAUSE OF 2 SECONDS
+                self.tempo(driver) 
+
+                erro += 1
+                # LIKE PHOTOS PROCESS
+                lista_curtir_fotos = self.curtir_fotos(driver, conteudo, quant_curtidas, perfis, fotos, j, valores)
+
+                j = lista_curtir_fotos[0]
+                perfis = lista_curtir_fotos[1]
+                fotos = lista_curtir_fotos[2]
+                conteudo = lista_curtir_fotos[3]
+                    
+                erro += 1
+                # CLOSE THE WINDOW OF PHOTOS
+                fechar = driver.find_element_by_xpath('/html/body/div[4]/div[3]/button')
+                fechar.click()
+
+                # PAUSE OF 2 SECONDS
+                self.tempo(driver)
+
+                erro = 0
+                self.escrever_resultado(conteudo2[0], valores, i, erro)
+
 
             # IF IS THE LAST VALUE, THE LIST IS CLEARED
             if conteudo == '':
 
                 break
-                
-
-            valores = self.aleatorizar(conteudo2[1])
-
-            erro = 0
-            self.escrever_resultado(conteudo2[0], valores, i, erro)
 
             i += 1
 
@@ -428,6 +641,8 @@ class CurtirFotosEscolhaBancoDeDadosAcessarInstagram:
 
     # THIS METHOD LIKE THE PHOTOS OF THE USER 'x'
     def curtir_fotos(self, driver, conteudo, quant_curtidas, perfis, fotos, cont):
+        
+        quant_curtidas = int(quant_curtidas)
 
         print('PERFIL SENDO ACESSADO: {}'.format(conteudo[cont]))
         i = 0
@@ -484,7 +699,7 @@ class CurtirFotosEscolhaBancoDeDadosAcessarInstagram:
 
         else:
                     
-            conteudo = self.remover_usuario(conteudo, i)
+            conteudo = self.remover_usuario(conteudo, cont)
 
 
         perfis += 1

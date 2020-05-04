@@ -6,18 +6,30 @@ from tkinter import messagebox
 from curtir_fotos_escolha__bancodedados___abrirminibd import CurtirFotosEscolhaBancoDeDadosAbrirMiniBD
 from curtir_fotos_escolha__bancodedados___verselecionados import CurtirFotosEscolhaBancoDeDadosVerSelecionados
 from curtir_fotos_escolha__bancodedados___removerselecionados import CurtirFotosEscolhaBancoDeDadosRemoverSelecionados
-from curtir_fotos_escolha__bancodedados___metodocurtidas import CurtirFotosEscolhaBancoDeDadosMetodoCurtidas
 from curtir_fotos_escolha__bancodedados___acessarinstagram import *
 
 class CurtirFotosEscolhaBancoDeDados:
 
-    def curtir_fotos(self, janela, conteudo, quant_curtidas_usuarios, valor, email_curto, status, n_usuarios):
-        
+    # THIS METHOD SHOW A MESSAGE IF THE USER CHOICE
+    def escolha(self, valor):
+
         valor = int(valor)
 
         if valor == 1:
 
             messagebox.showinfo('Sucesso', 'Você selecionou a opção Curtidas em Sequência.')
+
+        else:
+
+            messagebox.showinfo('Sucesso', 'Você selecionou a opção Curtidas Aleatórias.')
+
+
+    # THIS METHOD START THE LIKE PROCESS
+    def curtir_fotos(self, janela, conteudo, quant_curtidas_usuarios, valor, email_curto, status, n_usuarios):
+        
+        valor = int(valor)
+
+        if valor == 1:
 
             if quant_curtidas_usuarios.isnumeric() == False:
 
@@ -25,24 +37,10 @@ class CurtirFotosEscolhaBancoDeDados:
 
             else:
 
-                quant_curtidas_usuarios = int(quant_curtidas_usuarios)
-
-                a = CurtirFotosEscolhaBancoDeDadosMetodoCurtidas(conteudo, quant_curtidas_usuarios)
-                resp = int(a.retorno())
-
-                if resp == 1:
-
-                    file = open('curtir_fotos_usuarios_aleatorio.txt', 'r')
-                    conteudo_file = file.read()
-                    file.close()
-
-                else:
-
-                    file = open('curtir_fotos_usuarios.txt', 'r')
-                    conteudo_file = file.read()
-                    file.close()
+                file = open('curtir_fotos_usuarios.txt', 'r')
+                conteudo_file = file.read()
+                file.close()
                     
-
                 conteudo = conteudo_file.split('-')
 
                 janela.destroy()
@@ -51,11 +49,16 @@ class CurtirFotosEscolhaBancoDeDados:
                 a = CurtirFotosEscolhaBancoDeDados(email_curto, 2, n_usuarios)
 
         else:
-            
-            messagebox.showinfo('Sucesso', 'Você selecionou a opção Curtidas Aleatórias.')
 
-            a = CapturarInformacoes()
-            a.abrir_navegador(janela, conteudo, quant_curtidas_usuarios)
+            if quant_curtidas_usuarios.isnumeric() == False:
+
+                messagebox.showinfo('Digite apenas números', 'Por favor informe um valor válido')
+
+            else:
+
+                a = CapturarInformacoes()
+                a.abrir_navegador(janela, conteudo, quant_curtidas_usuarios)
+
 
 
     # THIS FUNCTION CAN REMOVE ANY USER YOU HAVE
@@ -248,12 +251,14 @@ class CurtirFotosEscolhaBancoDeDados:
 
         rb_curtidas_sequencia = Radiobutton(f_metodo_curtir, text='Curtidas em Sequência',
         font=('arial', 12, 'bold'), bg='floral white',
-        variable=valor_cb, value=1)
+        variable=valor_cb, value=1,
+        command=lambda: self.escolha(valor_cb.get()))
         rb_curtidas_sequencia.place(x=50, y=50)
 
         rb_curtidas_aleatorias = Radiobutton(f_metodo_curtir, text='Curtidas Aleatórias',
         font=('arial', 12, 'bold'), bg='floral white',
-        variable=valor_cb, value=2)
+        variable=valor_cb, value=2,
+        command=lambda: self.escolha(valor_cb.get()))
         rb_curtidas_aleatorias.place(x=270, y=50)
 
         # SEPARATOR ====================
