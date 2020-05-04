@@ -55,11 +55,11 @@ class Start():
                     #a = CurtirFotosMsgDirect()
                     #a = Start()
 
-                if opcao == 0:
+                if opcao == 1:
 
                     curtir_fotos_hashtag()
 
-                elif opcao == 1:
+                elif opcao == 2:
 
                     curtir_fotos_escolha()
 
@@ -169,19 +169,19 @@ class Start():
         r_curtir_fotos_hashtag = Radiobutton(f_opcoes,
         text='Curtir Fotos usando uma Hashtag', font=('arial', 15,'bold'), bg='dark salmon',
         activebackground='salmon', activeforeground='white',
-        variable=opcao, value=0)
+        variable=opcao, value=1)
         r_curtir_fotos_hashtag.place(x=80, y=80)
 
         r_curtir_fotos_escolha = Radiobutton(f_opcoes,
         text='Curtir Fotos de um perfil Específico', font=('arial', 15,'bold'), bg='dark salmon',
         activebackground='salmon', activeforeground='white',
-        variable=opcao, value=1)
+        variable=opcao, value=2)
         r_curtir_fotos_escolha.place(x=70, y=130)
 
         r_curtir_fotos_msg_direct = Radiobutton(f_opcoes,
         text='Curtir Fotos e Enviar Mensagem no Direct', font=('arial', 15,'bold'), bg='dark salmon',
         activebackground='salmon', activeforeground='white',
-        variable=opcao, value=2)
+        variable=opcao, value=3)
         r_curtir_fotos_msg_direct.place(x=40, y=180)
 
         # BUTTON OPTIONS

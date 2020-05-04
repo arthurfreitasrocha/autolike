@@ -7,43 +7,55 @@ from curtir_fotos_escolha__bancodedados___abrirminibd import CurtirFotosEscolhaB
 from curtir_fotos_escolha__bancodedados___verselecionados import CurtirFotosEscolhaBancoDeDadosVerSelecionados
 from curtir_fotos_escolha__bancodedados___removerselecionados import CurtirFotosEscolhaBancoDeDadosRemoverSelecionados
 from curtir_fotos_escolha__bancodedados___metodocurtidas import CurtirFotosEscolhaBancoDeDadosMetodoCurtidas
-from curtir_fotos_escolha__bancodedados___acessarinstagram import CurtirFotosEscolhaBancoDeDadosAcessarInstagram
-
+from curtir_fotos_escolha__bancodedados___acessarinstagram import *
 
 class CurtirFotosEscolhaBancoDeDados:
 
-    def curtir_fotos(self, janela, conteudo, quant_curtidas_usuarios, email_curto, status, n_usuarios):
+    def curtir_fotos(self, janela, conteudo, quant_curtidas_usuarios, valor, email_curto, status, n_usuarios):
+        
+        valor = int(valor)
 
-        if quant_curtidas_usuarios.isnumeric() == False:
+        if valor == 1:
 
-            messagebox.showinfo('Digite apenas números', 'Por favor informe um valor válido')
+            messagebox.showinfo('Sucesso', 'Você selecionou a opção Curtidas em Sequência.')
 
-        else:
+            if quant_curtidas_usuarios.isnumeric() == False:
 
-            quant_curtidas_usuarios = int(quant_curtidas_usuarios)
-
-            a = CurtirFotosEscolhaBancoDeDadosMetodoCurtidas(conteudo, quant_curtidas_usuarios)
-            resp = int(a.retorno())
-
-            if resp == 1:
-
-                file = open('curtir_fotos_usuarios_aleatorio.txt', 'r')
-                conteudo_file = file.read()
-                file.close()
+                messagebox.showinfo('Digite apenas números', 'Por favor informe um valor válido')
 
             else:
 
-                file = open('curtir_fotos_usuarios.txt', 'r')
-                conteudo_file = file.read()
-                file.close()
-                
+                quant_curtidas_usuarios = int(quant_curtidas_usuarios)
 
-            conteudo = conteudo_file.split('-')
+                a = CurtirFotosEscolhaBancoDeDadosMetodoCurtidas(conteudo, quant_curtidas_usuarios)
+                resp = int(a.retorno())
 
-            janela.destroy()
-            a = CurtirFotosEscolhaBancoDeDadosAcessarInstagram()
+                if resp == 1:
+
+                    file = open('curtir_fotos_usuarios_aleatorio.txt', 'r')
+                    conteudo_file = file.read()
+                    file.close()
+
+                else:
+
+                    file = open('curtir_fotos_usuarios.txt', 'r')
+                    conteudo_file = file.read()
+                    file.close()
+                    
+
+                conteudo = conteudo_file.split('-')
+
+                janela.destroy()
+                a = CurtirFotosEscolhaBancoDeDadosAcessarInstagram()
+                a.abrir_navegador(janela, conteudo, quant_curtidas_usuarios)
+                a = CurtirFotosEscolhaBancoDeDados(email_curto, 2, n_usuarios)
+
+        else:
+            
+            messagebox.showinfo('Sucesso', 'Você selecionou a opção Curtidas Aleatórias.')
+
+            a = CapturarInformacoes()
             a.abrir_navegador(janela, conteudo, quant_curtidas_usuarios)
-            a = CurtirFotosEscolhaBancoDeDados(email_curto, 2, n_usuarios)
 
 
     # THIS FUNCTION CAN REMOVE ANY USER YOU HAVE
@@ -153,8 +165,8 @@ class CurtirFotosEscolhaBancoDeDados:
         lado = janela.winfo_screenwidth()
         cima = janela.winfo_screenheight()
         l = int(lado/3)
-        c = int(cima/5)
-        g = '{}x{}+{}+{}'.format(500, 400, l, c)
+        c = int(cima/7)
+        g = '{}x{}+{}+{}'.format(500, 500, l, c)
 
         # ADDITIONAL CONFIGURATION
         file = open('app_version.txt', 'r')
@@ -164,6 +176,7 @@ class CurtirFotosEscolhaBancoDeDados:
         # VARIABLES
         n_usuarios = n_usuarios
         status = status
+        valor_cb = IntVar()
         
 
         # ROOT ====================
@@ -224,6 +237,30 @@ class CurtirFotosEscolhaBancoDeDados:
         f_separador = Frame(f_raiz, width=500, height=10, bg='dark salmon')
         f_separador.pack(side=TOP)
 
+        # LIKE METHOD ====================
+        # FRAME LIKE METHOD
+        f_metodo_curtir = Frame(f_raiz, width=500, height=90, bg='floral white')
+        f_metodo_curtir.pack(side=TOP)
+
+        l_metodo_curtir = Label(f_metodo_curtir, text='Método de Curtidas',
+        font=('arial', 15, 'bold'), bg='floral white')
+        l_metodo_curtir.place(x=150, y=10)
+
+        rb_curtidas_sequencia = Radiobutton(f_metodo_curtir, text='Curtidas em Sequência',
+        font=('arial', 12, 'bold'), bg='floral white',
+        variable=valor_cb, value=1)
+        rb_curtidas_sequencia.place(x=50, y=50)
+
+        rb_curtidas_aleatorias = Radiobutton(f_metodo_curtir, text='Curtidas Aleatórias',
+        font=('arial', 12, 'bold'), bg='floral white',
+        variable=valor_cb, value=2)
+        rb_curtidas_aleatorias.place(x=270, y=50)
+
+        # SEPARATOR ====================
+        # FRAME SEPARATOR
+        f_separador = Frame(f_raiz, width=500, height=10, bg='dark salmon')
+        f_separador.pack(side=TOP)
+
         # AMOUNT OF LIKES ====================
         # FRAME AMOUNT OF LIKES
         f_quant_curtidas = Frame(f_raiz, width=500, height=150, bg='floral white')
@@ -242,7 +279,7 @@ class CurtirFotosEscolhaBancoDeDados:
         b_quant_curtidas = Button(f_quant_curtidas, text='ENVIAR', font=('arial', 15, 'bold'),
         bg='dark salmon',
         activebackground='salmon', activeforeground='white',
-        command=lambda: self.curtir_fotos(janela, conteudo, e_quant_curtidas.get(), email_curto, status, n_usuarios))
+        command=lambda: self.curtir_fotos(janela, conteudo, e_quant_curtidas.get(), valor_cb.get(), email_curto, status, n_usuarios))
         b_quant_curtidas.place(x=280, y=90)
         
 
