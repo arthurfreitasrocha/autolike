@@ -40,4 +40,13 @@ How to Install?
 
 How to Use?
 
-AutoLike is very simple to use. First open the "main.py" file and then change your Instagram email in "Change Instagram". Then write the "Hashtags" that will be searched on Instagram. Finally, write down the number of likes you want the robot to like.
+AutoLike is very simple to use. First open the "main.py" file and select an option.
+
+Options:
+- 01 'Curtir Fotos usando uma Hashtag'
+- 02 'Curtir Fotos de um perfil Específico'
+- 03 'Curtir Fotos e Enviar Mensagens no Direct'
+
+01 - This function search the profiles based in the hashtag informed by the user. After, AutoLike enter in random publications based in the hashtag and likes 'x' number of photos. The name of the profiles was liked, will be saved in the DB (DataBase).
+02 - This function work based on the DB acquired with option 01. The user selects 'n' users from the DB and informs what number of photos will be liked in each profile.
+03 - This function will be implemented.
