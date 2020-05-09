@@ -6,7 +6,7 @@
  - More options to use
  
  
- - New button at 'Mudar Email' button
+ - New button at 'Mudar Email' function
  - - 01º Now AutoLike can show and hide the written password in the entry camp
  
  
