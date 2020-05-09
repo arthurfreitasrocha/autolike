@@ -1,15 +1,18 @@
 # autolike
 
-====== NEW UPDATE v3.0.7 ======
+====== NEW UPDATE v3.1.0 ======
 
  - What's new?
-  -> New interface
   -> More options to use
-    - 01º Like publications using a Hashtag
-    - 02º Like publications using the DB created with the previous option
+      -> New button at 'Mudar Email' button
+          - Now AutoLike can show and hide the written password in the entry camp
+      -> 'Curtir em Sequência' and 'Curtir Aleatórias'
+          - 01º Now AutoLike have two options, 'Curtir em Sequência' and 'Curtir Aleatórias'
+          - 02º The 'Curtir em Sequência' option, can like the publications one after another
+          - 03º The 'Curtir Aleatórias' option, can like random publications of each profile
   -> Bug Fix
     
-====== NEW UPDATE v3.0.7 =====
+====== NEW UPDATE v3.1.0 =====
 
 
 
