@@ -3,8 +3,8 @@
 ====== NEW UPDATE v3.1.0 ======
 
  - What's new?
-  -> More options to use
-      -> New button at 'Mudar Email' button
+ - More options to use
+ - - New button at 'Mudar Email' button
           - Now AutoLike can show and hide the written password in the entry camp
       -> 'Curtir em Sequência' and 'Curtir Aleatórias'
           - 01º Now AutoLike have two options, 'Curtir em Sequência' and 'Curtir Aleatórias'
