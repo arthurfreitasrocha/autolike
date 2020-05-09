@@ -44,7 +44,7 @@ class CurtirFotosEscolhaBancoDeDados:
                 conteudo = conteudo_file.split('-')
 
                 janela.destroy()
-                a = CurtirFotosEscolhaBancoDeDadosAcessarInstagram()
+                a = CurtirFotosPerfilSequencia()
                 a.abrir_navegador(janela, conteudo, quant_curtidas_usuarios)
                 a = CurtirFotosEscolhaBancoDeDados(email_curto, 2, n_usuarios)
 
@@ -56,8 +56,10 @@ class CurtirFotosEscolhaBancoDeDados:
 
             else:
 
-                a = CapturarInformacoes()
+                janela.destroy()
+                a = CurtirFotosPerfilAleatorias()
                 a.abrir_navegador(janela, conteudo, quant_curtidas_usuarios)
+                a = CurtirFotosEscolhaBancoDeDados(email_curto, 2, n_usuarios)
 
 
 
@@ -117,7 +119,8 @@ class CurtirFotosEscolhaBancoDeDados:
     def abrir_mini_bd(self, janela, email_curto):
         
         janela.destroy()
-        a = CurtirFotosEscolhaBancoDeDadosAbrirMiniBD(email_curto)
+        a = CurtirFotosEscolhaBancoDeDadosAbrirMiniBD()
+        a.interface(email_curto)
 
         try:
             
@@ -311,7 +314,7 @@ class CurtirFotosEscolhaBancoDeDados:
                 
                 else:
 
-                    messagebox.showinfo('Sucesso', 'Total de {} perfi(s) acessados e {} foto(s) curtidas com sucesso!'.format(resp[1], resp[2]))
+                    messagebox.showinfo('Sucesso', 'Total de {} perfi(s) acessado(s) e {} foto(s) curtidas com sucesso!'.format(resp[1], resp[2]))
 
             else:
 
@@ -322,4 +325,4 @@ class CurtirFotosEscolhaBancoDeDados:
         janela.mainloop()
  
 
-#a = CurtirFotosEscolhaBancoDeDados('arthur.freitas2000', 0, 0)
+#a = CurtirFotosEscolhaBancoDeDados('arthur.freitas2000', 0, 0, 0, 0)

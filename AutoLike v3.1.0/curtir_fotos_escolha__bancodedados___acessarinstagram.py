@@ -13,55 +13,21 @@ from random import *
 import time
 import os
 
-class CapturarInformacoes:
+class CurtirFotosPerfilAleatorias:
 
     # THIS METHOD WRITE IN A .TXT DOCUMENT THE RESULT OF THE PROCESS
-    def escrever_resultado(self, conteudo, valores, i, erro):
-
-        nome_usuario = conteudo
-        v = valores
-        string_conteudo = ''
+    def escrever_resultado(self, perfis, fotos, erro):
 
         if erro < 1:
 
-            m = 0
-            while(m < 3):
-
-                temp = str(v[m])
-
-                if m == 0:
-
-                    string_conteudo += nome_usuario
-                    string_conteudo += '-' + temp
-
-                else:
-
-                    string_conteudo += '-' + temp
-
-                m += 1
-
-
-            if i == 0:
-
-                file = open('curtir_fotos_usuarios_aleatorio.txt', 'w')
-                file.write(string_conteudo)
-                file.close()
-
-            else:
-
-                file = open('curtir_fotos_usuarios_aleatorio.txt', 'a')
-                file.write('\n{}'.format(string_conteudo))
-                file.close()
-
-            
             file = open('informacoes.txt', 'w')
-            file.write('1-{}'.format(erro))
+            file.write('1-{}-{}-{}'.format(perfis, fotos, erro))
             file.close()
-        
+
         else:
 
             file = open('informacoes.txt', 'w')
-            file.write('0-{}'.format(erro))
+            file.write('0-{}-{}-{}'.format(perfis, fotos, erro))
             file.close()
 
     
@@ -194,95 +160,81 @@ class CapturarInformacoes:
 
 
     # THIS METHOD LIKE THE PHOTOS OF THE USER 'x'
-    def curtir_fotos(self, driver, conteudo, quant_curtidas, perfis, fotos, cont, v):
+    def curtir_fotos(self, driver, conteudo, quant_curtidas, perfis, fotos, cont, valores):
 
         quant_curtidas = int(quant_curtidas)
         perfis = int(perfis)
         fotos = int(fotos)
         cont = int(cont)
-        print(quant_curtidas)
+
         print('PERFIL SENDO ACESSADO: {}'.format(conteudo[cont]))
         m = 0
-        n = 0
-        anterior = 0
-        atual = -1
-        distancia = []
+        posicao_verificada = 0
         sentido = 0
+        # LOOP QUE CURTI AS 'n' FOTOS
         while(m < quant_curtidas):
+
+            if valores[m] > 0 or m == 0:
+
+                sentido = 1
+
+            elif valores[m] < 0:
+
+                sentido = -1
+
+            else:
+
+                sentido = 0
+
             
-            print(n, quant_curtidas)
-            while(n < quant_curtidas):
-
-                if n == 0:
-
-                    atual = v[m]
-                    distancia.append(atual)
-                    sentido = 1
-
-                else:
-                    
-                    anterior = v[m-1]
-                    atual = v[m]
-
-                    print(atual > anterior)
-                    print(anterior > atual)
-
-                    # MOVE TO RIGHT
-                    if atual > anterior:
-                        
-                        temp = atual-anterior
-                        distancia.append(temp)
-                        sentido = 1
-
-                    # MOVE TO LEFT
-                    elif anterior > atual:
-                        
-                        temp = anterior-atual
-                        distancia.append(temp)
-                        sentido = -1
-
-                n += 1
-
-            print(atual, anterior, distancia, sentido)       
-
-            # PAUSE OF 2 SECONDS
-            self.tempo(driver)
-
-            n = 0
-            while(n < distancia[m]):
+            if sentido == 1:
                 
-                if sentido == 1:
+                # LOOP QUE MOVE PARA A DIREITA
+                n = 0
+                valor_atual = valores[m]
+                while(n < valor_atual):
 
                     seta_direita = driver.find_elements(By.CLASS_NAME, '_65Bje.coreSpriteRightPaginationArrow')
                     seta_direita[0].click()
 
-                elif sentido == -1:
+                    p = posicao_verificada
+                    while(p < len(valores)):
+
+                        valores[p] -= 1
+
+                        p += 1
+
+                    n += 1
+
+            elif sentido == -1:
+
+                # LOOP QUE MOVE PARA A ESQUERDA
+                n = 0
+                valor_atual = valores[m]
+                while(n > valores[m]):
 
                     seta_esquerda = driver.find_elements(By.CLASS_NAME, 'ITLxV.coreSpriteLeftPaginationArrow')
                     seta_esquerda[0].click()
 
-                n += 1
+                    p = posicao_verificada
+                    while(p < len(valores)):
 
-                print('n == {} --- v[{}] == {}'.format(n, m, v[m]))
+                        valores[p] += 1
+
+                        p += 1
+
+                    n -= 1
 
 
-            try:
-
-                coracao = driver.find_element_by_xpath('/html/body/div[4]/div[2]/div/article/div[2]/section[1]/span[1]/button')
-                coracao.click()
-
-            except:
-
-                messagebox.showerror('Algo deu errado', 'Falha ao tentar curtir')
-
+            coracao = driver.find_element_by_xpath('/html/body/div[4]/div[2]/div/article/div[2]/section[1]/span[1]/button')
+            coracao.click()
 
             # PAUSE OF 2 SECONDS
             self.tempo(driver)
 
-            os.system('pause')
-
             m += 1
             fotos += 1
+            posicao_verificada += 1
 
             print('{} FOTO(S) CURTIDA(S) DE {}'.format(m, conteudo[cont]))
 
@@ -311,7 +263,8 @@ class CapturarInformacoes:
 
     # THIS METHOD CHECKS IF THE USER 'x' HAS THE PREREQUISITES TO LIKE HIM PUBLICATIONS
     def verificacao_interna_usuario(self, driver, quant_curtidas):
-
+        
+        quant_curtidas = int(quant_curtidas)
         lista = ['', '', 0]
 
         # CHECKS IF THE USER ACCOUNT IS PRIVATE
@@ -335,11 +288,13 @@ class CapturarInformacoes:
         i = 0
         for letra in quant_publicacoes_usuario:
 
-            if quant_publicacoes_usuario[i] == '.':
+            if quant_publicacoes_usuario[i] != '.':
 
                 temp += quant_publicacoes_usuario[i]
 
             i += 1
+
+        quant_publicacoes_usuario = int(temp)
 
   
         if quant_curtidas <= quant_publicacoes_usuario:
@@ -495,7 +450,7 @@ class CapturarInformacoes:
                 
                 # RANDOMIZES THE VALUES WILL BE LIKED
                 valores = self.aleatorizar(conteudo2[1], quant_curtidas)
-                print(valores)
+
                 # PAUSE OF 2 SECONDS
                 self.tempo(driver)
 
@@ -525,7 +480,7 @@ class CapturarInformacoes:
                 self.tempo(driver)
 
                 erro = 0
-                self.escrever_resultado(conteudo2[0], valores, i, erro)
+                self.escrever_resultado(perfis, fotos, erro)
 
 
             # IF IS THE LAST VALUE, THE LIST IS CLEARED
@@ -546,7 +501,7 @@ class CapturarInformacoes:
 
 
 
-class CurtirFotosEscolhaBancoDeDadosAcessarInstagram:
+class CurtirFotosPerfilSequencia:
 
     # THIS METHOD WRITE IN A .TXT DOCUMENT THE RESULT OF THE PROCESS
     def escrever_resultado(self, perfis, fotos, erro):
@@ -712,7 +667,8 @@ class CurtirFotosEscolhaBancoDeDadosAcessarInstagram:
     
     # THIS METHOD CHECKS IF THE USER 'x' HAS THE PREREQUISITES TO LIKE HIM PUBLICATIONS
     def verificacao_interna_usuario(self, driver, quant_curtidas):
-
+        
+        quant_curtidas = int(quant_curtidas)
         lista = ['', '']
 
         # CHECKS IF THE USER ACCOUNT IS PRIVATE
@@ -736,7 +692,7 @@ class CurtirFotosEscolhaBancoDeDadosAcessarInstagram:
         i = 0
         for letra in quant_publicacoes_usuario:
 
-            if quant_publicacoes_usuario[i] == '.':
+            if quant_publicacoes_usuario[i] != '.':
 
                 temp += quant_publicacoes_usuario[i]
 
