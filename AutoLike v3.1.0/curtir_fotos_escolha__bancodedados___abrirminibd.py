@@ -78,9 +78,16 @@ class CurtirFotosEscolhaBancoDeDadosAbrirMiniBD():
                 inter_inicial = int(inter_inicial)
                 inter_final = int(inter_final)
 
-                if (inter_inicial < 0 or inter_final < 0) or (inter_final > len(conteudo)):
+
+                if (inter_inicial < 1 or inter_final < 1) or (inter_final > len(conteudo)-1):
 
                     messagebox.showwarning('Um ou mais valores inválidos', 'Os valores informados são inválidos.')
+
+                    top.destroy()
+
+                elif inter_inicial > inter_final:
+
+                    messagebox.showwarning('Valor inválido', 'O valor final deve ser maior que o inicial')
 
                     top.destroy()
 
@@ -197,8 +204,8 @@ class CurtirFotosEscolhaBancoDeDadosAbrirMiniBD():
         lado = janela.winfo_screenwidth()
         cima = janela.winfo_screenheight()
         l = int(lado/3)
-        c = int(cima/7)
-        g = '{}x{}+{}+{}'.format(500, 610, l, c)
+        c = int(cima/20)
+        g = '{}x{}+{}+{}'.format(500, 600, l, c)
 
         # VARIABLES
         checkvar = IntVar()
@@ -284,6 +291,11 @@ class CurtirFotosEscolhaBancoDeDadosAbrirMiniBD():
         lbox_selecionar_usuarios.pack(side=LEFT)
         sb_selecionar_usuarios.config(command=lbox_selecionar_usuarios.yview)
 
+        # DIVIDER ====================
+        # FRAME DIVIDER
+        f_divider = Frame(f_raiz, width=500, height=10, bg='dark salmon')
+        f_divider.pack(side=TOP)
+
         # FRAME SELECT USERS 03
         f_selecionar_intervalo_usuarios = Frame(f_raiz, width=500, height=60, bg='floral white')
         f_selecionar_intervalo_usuarios.pack(side=TOP)
@@ -292,15 +304,18 @@ class CurtirFotosEscolhaBancoDeDadosAbrirMiniBD():
             
             l_selecionar_intervalo_usuarios = Label(f_selecionar_intervalo_usuarios, text='Intervalo Selecionado: N/A',
             font=('arial', 15, 'bold'), bg='floral white')
-            l_selecionar_intervalo_usuarios.place(x=110, y=20)
+            l_selecionar_intervalo_usuarios.place(x=110, y=15)
 
         elif intervalo[1] != '0':
 
             l_selecionar_intervalo_usuarios = Label(f_selecionar_intervalo_usuarios, text='Intervalo Selecionado:     {} --- {}'.format(intervalo[0], intervalo[1]),
             font=('arial', 15, 'bold'), bg='floral white')
-            l_selecionar_intervalo_usuarios.place(x=80, y=20)
+            l_selecionar_intervalo_usuarios.place(x=80, y=15)
 
-        #
+        # DIVIDER ====================
+        # FRAME DIVIDER
+        f_divider = Frame(f_raiz, width=500, height=10, bg='dark salmon')
+        f_divider.pack(side=TOP)
 
         # FRAME SELECT USERS 04
         f_selecionar_usuarios_button = Frame(f_raiz, width=500, height=110, bg='floral white')
@@ -340,5 +355,5 @@ class CurtirFotosEscolhaBancoDeDadosAbrirMiniBD():
         pass
 
 
-a = CurtirFotosEscolhaBancoDeDadosAbrirMiniBD()
-a.interface('neisserfreitasadvocacia')
+#a = CurtirFotosEscolhaBancoDeDadosAbrirMiniBD()
+#a.interface('neisserfreitasadvocacia')

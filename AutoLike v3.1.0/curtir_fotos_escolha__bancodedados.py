@@ -28,6 +28,21 @@ class CurtirFotosEscolhaBancoDeDados:
     def curtir_fotos(self, janela, conteudo, quant_curtidas_usuarios, valor, email_curto, status, n_usuarios):
         
         valor = int(valor)
+        var_controle = 0
+
+        file = open('informacoes.txt', 'r')
+        content_file = file.read()
+        file.close()
+
+        intervalo = content_file.split('-')
+
+        if intervalo[0].isnumeric() == True or intervalo[1] == True:
+            
+            intervalo[0] = int(intervalo[0])
+            intervalo[1] = int(intervalo[1])
+
+            var_controle = 1
+
 
         if valor == 1:
 
@@ -37,16 +52,33 @@ class CurtirFotosEscolhaBancoDeDados:
 
             else:
 
-                file = open('curtir_fotos_usuarios.txt', 'r')
-                conteudo_file = file.read()
-                file.close()
-                    
-                conteudo = conteudo_file.split('-')
+                if var_controle == 1:
 
-                janela.destroy()
-                a = CurtirFotosPerfilSequencia()
-                a.abrir_navegador(janela, conteudo, quant_curtidas_usuarios)
-                a = CurtirFotosEscolhaBancoDeDados(email_curto, 2, n_usuarios)
+                    i = 0
+                    cont = intervalo[0]
+                    novo_conteudo = []
+                    while(i < len(conteudo)):
+
+                        if cont == i:
+
+                            novo_conteudo.append(cont)
+
+                            cont += 1
+
+                        i += 1
+
+
+                    janela.destroy()
+                    a = CurtirFotosPerfilSequencia()
+                    a.abrir_navegador(janela, novo_conteudo, quant_curtidas_usuarios)
+                    a = CurtirFotosEscolhaBancoDeDados(email_curto, 2, n_usuarios)
+
+                else:
+
+                    janela.destroy()
+                    a = CurtirFotosPerfilSequencia()
+                    a.abrir_navegador(janela, conteudo, quant_curtidas_usuarios)
+                    a = CurtirFotosEscolhaBancoDeDados(email_curto, 2, n_usuarios)
 
         else:
 
@@ -56,10 +88,33 @@ class CurtirFotosEscolhaBancoDeDados:
 
             else:
 
-                janela.destroy()
-                a = CurtirFotosPerfilAleatorias()
-                a.abrir_navegador(janela, conteudo, quant_curtidas_usuarios)
-                a = CurtirFotosEscolhaBancoDeDados(email_curto, 2, n_usuarios)
+                if var_controle == 1:
+
+                    i = 0
+                    cont = intervalo[0]
+                    novo_conteudo = []
+                    while(i <= len(conteudo)):
+
+                        if cont == i:
+
+                            novo_conteudo.append(cont)
+
+                            cont += 1
+
+                        i += 1
+
+
+                    janela.destroy()
+                    a = CurtirFotosPerfilSequencia()
+                    a.abrir_navegador(janela, novo_conteudo, quant_curtidas_usuarios)
+                    a = CurtirFotosEscolhaBancoDeDados(email_curto, 2, n_usuarios)
+
+                else:
+
+                    janela.destroy()
+                    a = CurtirFotosPerfilSequencia()
+                    a.abrir_navegador(janela, conteudo, quant_curtidas_usuarios)
+                    a = CurtirFotosEscolhaBancoDeDados(email_curto, 2, n_usuarios)
 
 
 
