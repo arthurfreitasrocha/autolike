@@ -114,77 +114,70 @@ class CurtirFotosEscolhaBancoDeDadosAbrirMiniBD():
 
     
     def intervalo_func(self, janela, checkvar, conteudo, email_curto, lbox_selecionar_usuarios, app_version):
-        
-        var = 0
-        if var == 0:
 
-            messagebox.showinfo('Ainda em manutenção', 'Opção ainda não programada')
+        top = Toplevel()
 
-        else:
+        # WINDOW GEOMETRY
+        lado = top.winfo_screenwidth()
+        cima = top.winfo_screenheight()
+        l = int(lado/3)
+        c = int(cima/4)
+        g = '{}x{}+{}+{}'.format(500, 340, l, c)
 
-            top = Toplevel()
+        # ROOT ====================
+        # FRAME ROOT PROGRAM
+        f_raiz = Frame(top, width=500, height=260)
+        f_raiz.pack(side=TOP)
 
-            # WINDOW GEOMETRY
-            lado = top.winfo_screenwidth()
-            cima = top.winfo_screenheight()
-            l = int(lado/3)
-            c = int(cima/4)
-            g = '{}x{}+{}+{}'.format(500, 340, l, c)
+        # FRAME LOGO PROGRAM
+        f_logo = Frame(f_raiz, width=500, height=100)
+        f_logo.pack(side=TOP)
 
-            # ROOT ====================
-            # FRAME ROOT PROGRAM
-            f_raiz = Frame(top, width=500, height=260)
-            f_raiz.pack(side=TOP)
+        logo_programa = PhotoImage(file='logo.png')
 
-            # FRAME LOGO PROGRAM
-            f_logo = Frame(f_raiz, width=500, height=100)
-            f_logo.pack(side=TOP)
+        # LABEL LOGO PROGRAM
+        l_logo = Label(f_raiz, image=logo_programa)
+        l_logo.place(x=0, y=0)
 
-            logo_programa = PhotoImage(file='logo.png')
+        # SELECT USERS
+        # FRAME SELECT USERS INTERVAL 01
+        f_selecionar_intervalo_usuarios_label = Frame(f_raiz, width=500, height=80, bg='floral white')
+        f_selecionar_intervalo_usuarios_label.pack(side=TOP)
 
-            # LABEL LOGO PROGRAM
-            l_logo = Label(f_raiz, image=logo_programa)
-            l_logo.place(x=0, y=0)
+        # LABEL SELECT USERS INTERVAL 01
+        l_selecionar_intervalo_usuarios = Label(f_selecionar_intervalo_usuarios_label, text='Selecione o intervalo que o programa\nirá usar para curtir as fotos',
+        font=('arial', 15, 'bold'), bg='floral white')
+        l_selecionar_intervalo_usuarios.place(x=60, y=15)
 
-            # SELECT USERS
-            # FRAME SELECT USERS INTERVAL 01
-            f_selecionar_intervalo_usuarios_label = Frame(f_raiz, width=500, height=80, bg='floral white')
-            f_selecionar_intervalo_usuarios_label.pack(side=TOP)
+        # FRAME SELECT USERS 02
+        f_selecionar_intervalo_usuarios = Frame(f_raiz, width=500, height=80, bg='floral white')
+        f_selecionar_intervalo_usuarios.pack(side=TOP)
 
-            # LABEL SELECT USERS INTERVAL 01
-            l_selecionar_intervalo_usuarios = Label(f_selecionar_intervalo_usuarios_label, text='Selecione o intervalo que o programa\nirá usar para curtir as fotos',
-            font=('arial', 15, 'bold'), bg='floral white')
-            l_selecionar_intervalo_usuarios.place(x=60, y=15)
+        e_intervalo_inicial = Entry(f_selecionar_intervalo_usuarios, font=('arial', 13), width=10)
+        e_intervalo_inicial.place(x=100, y=30)
 
-            # FRAME SELECT USERS 02
-            f_selecionar_intervalo_usuarios = Frame(f_raiz, width=500, height=80, bg='floral white')
-            f_selecionar_intervalo_usuarios.pack(side=TOP)
+        l_intervalos = Label(f_selecionar_intervalo_usuarios, text='-----',
+        font=('arial', 15, 'bold'), bg='floral white')
+        l_intervalos.place(x=225, y=25)
 
-            e_intervalo_inicial = Entry(f_selecionar_intervalo_usuarios, font=('arial', 13), width=10)
-            e_intervalo_inicial.place(x=100, y=30)
+        e_intervalo_final = Entry(f_selecionar_intervalo_usuarios, font=('arial', 13), width=10)
+        e_intervalo_final.place(x=300, y=30)
 
-            l_intervalos = Label(f_selecionar_intervalo_usuarios, text='-----',
-            font=('arial', 15, 'bold'), bg='floral white')
-            l_intervalos.place(x=225, y=25)
+        # FRAME SELECT USERS 03
+        f_selecionar_usuarios_button = Frame(f_raiz, width=500, height=80, bg='floral white')
+        f_selecionar_usuarios_button.pack(side=TOP)
 
-            e_intervalo_final = Entry(f_selecionar_intervalo_usuarios, font=('arial', 13), width=10)
-            e_intervalo_final.place(x=300, y=30)
+        b_selecionar_usuarios = Button(f_selecionar_usuarios_button, text='ENVIAR', font=('arial', 15, 'bold'),
+        bg='dark salmon',
+        activebackground='salmon', activeforeground='white',
+        command=lambda: self.confirmacao(janela, top, checkvar, conteudo, email_curto, lbox_selecionar_usuarios, e_intervalo_inicial.get(), e_intervalo_final.get(), 1))
+        b_selecionar_usuarios.place(x=200, y=20)
 
-            # FRAME SELECT USERS 03
-            f_selecionar_usuarios_button = Frame(f_raiz, width=500, height=80, bg='floral white')
-            f_selecionar_usuarios_button.pack(side=TOP)
-
-            b_selecionar_usuarios = Button(f_selecionar_usuarios_button, text='ENVIAR', font=('arial', 15, 'bold'),
-            bg='dark salmon',
-            activebackground='salmon', activeforeground='white',
-            command=lambda: self.confirmacao(janela, top, checkvar, conteudo, email_curto, lbox_selecionar_usuarios, e_intervalo_inicial.get(), e_intervalo_final.get(), 1))
-            b_selecionar_usuarios.place(x=200, y=20)
-
-            # WINDOW CONFIGURATION
-            top.resizable(width=False, height=False)
-            top.title('AutoLike {} - Curtir Fotos De Perfil Específico - Banco de Dados'.format(app_version))
-            top.geometry(g)
-            top.mainloop()
+        # WINDOW CONFIGURATION
+        top.resizable(width=False, height=False)
+        top.title('AutoLike {} - Curtir Fotos De Perfil Específico - Banco de Dados'.format(app_version))
+        top.geometry(g)
+        top.mainloop()
 
 
 
@@ -204,8 +197,8 @@ class CurtirFotosEscolhaBancoDeDadosAbrirMiniBD():
         lado = janela.winfo_screenwidth()
         cima = janela.winfo_screenheight()
         l = int(lado/3)
-        c = int(cima/8)
-        g = '{}x{}+{}+{}'.format(500, 510, l, c)
+        c = int(cima/7)
+        g = '{}x{}+{}+{}'.format(500, 610, l, c)
 
         # VARIABLES
         checkvar = IntVar()
@@ -292,16 +285,28 @@ class CurtirFotosEscolhaBancoDeDadosAbrirMiniBD():
         sb_selecionar_usuarios.config(command=lbox_selecionar_usuarios.yview)
 
         # FRAME SELECT USERS 03
+        f_selecionar_intervalo_usuarios = Frame(f_raiz, width=500, height=60, bg='floral white')
+        f_selecionar_intervalo_usuarios.pack(side=TOP)
+
+        if intervalo[1] == '0':
+            
+            l_selecionar_intervalo_usuarios = Label(f_selecionar_intervalo_usuarios, text='Intervalo Selecionado: N/A',
+            font=('arial', 15, 'bold'), bg='floral white')
+            l_selecionar_intervalo_usuarios.place(x=110, y=20)
+
+        elif intervalo[1] != '0':
+
+            l_selecionar_intervalo_usuarios = Label(f_selecionar_intervalo_usuarios, text='Intervalo Selecionado:     {} --- {}'.format(intervalo[0], intervalo[1]),
+            font=('arial', 15, 'bold'), bg='floral white')
+            l_selecionar_intervalo_usuarios.place(x=80, y=20)
+
+        #
+
+        # FRAME SELECT USERS 04
         f_selecionar_usuarios_button = Frame(f_raiz, width=500, height=110, bg='floral white')
         f_selecionar_usuarios_button.pack(side=TOP)
 
-        if intervalo[1] != '0':
-            
-            l_selecionar_usuarios = Label(f_selecionar_usuarios_label, text='Usuários selecionados',
-            font=('arial', 15, 'bold'), bg='floral white')
-            l_selecionar_usuarios.place(x=110, y=15)
-
-        # CHECKBUTTON SELECT USERS 03
+        # CHECKBUTTON SELECT USERS 04
         cbutton = Checkbutton(f_selecionar_usuarios_button, text='Selecionar todos', font=('arial', 12, 'bold'),
         bg='dark salmon',
         activebackground='salmon', activeforeground='white',
@@ -309,7 +314,7 @@ class CurtirFotosEscolhaBancoDeDadosAbrirMiniBD():
         command=lambda: aviso(janela, checkvar.get()))
         cbutton.place(x=20, y=25)
 
-        # BUTTON SELECT USERS 03
+        # BUTTON SELECT USERS 04
         b_intervalo_usuarios = Button(f_selecionar_usuarios_button, text='SELECIONAR\nINTERVALO', font=('arial', 13, 'bold'),
         bg='dark salmon',
         activebackground='salmon', activeforeground='white',
@@ -335,5 +340,5 @@ class CurtirFotosEscolhaBancoDeDadosAbrirMiniBD():
         pass
 
 
-#a = CurtirFotosEscolhaBancoDeDadosAbrirMiniBD()
-#a.interface('neisserfreitasadvocacia')
+a = CurtirFotosEscolhaBancoDeDadosAbrirMiniBD()
+a.interface('neisserfreitasadvocacia')
