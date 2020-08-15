@@ -5,9 +5,9 @@ from view.option_one import OptionOne
 from view.option_two import OptionTwo
 from view.option_three import OptionThree
 
-from view.user_manipulation.select_users import SelectUsers
-from view.user_manipulation.view_users import ViewUsers
-from view.user_manipulation.delete_users import DeleteUsers
+from view.option_two_folder.select_users import SelectUsers
+from view.option_two_folder.view_users import ViewUsers
+from view.option_two_folder.delete_users import DeleteUsers
 
 # CONTROLLER
 from controller.start_database import StartDatabase

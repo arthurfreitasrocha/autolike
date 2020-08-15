@@ -6,7 +6,7 @@ from PIL import ImageTk, Image
 
 # VIEW
 from view.LogoFragment import LogoFragment
-from view.user_manipulation.ManipulateUsersDatabaseFragments import ManipulateUsersDatabaseFragments
+from view.option_two_folder.ManipulateUsersDatabaseFragments import ManipulateUsersDatabaseFragments
 from view.WindowConfiguration import WindowConfiguration
 from view.Message import Message
 
@@ -14,7 +14,7 @@ from view.Message import Message
 from controller.file_reader import FileReader
 from controller.file_writer import FileWriter
 
-class SelectUsers:
+class ViewUsers:
 
     def __init__(self, app_version):
 
@@ -103,16 +103,13 @@ class SelectUsers:
         logo_fragment.startLogoAppFragment(logo_image)
 
         " CREATES A LABEL WITH A MESSAGE "
-        fragments.startMessageLabel('Select the users')
+        fragments.startMessageLabel('View the users')
 
         " CREATES A LIST WITHE THE INSTAGRAM USERS "
-        fragments.startListBox(type_catch='select_users')
-
-        " CREATES A CHECKBUTTON WHICH CAN SELECT ALL THE USERS "
-        fragments.startCheckButton()
+        fragments.startListBox(type_catch='view_users')
 
         " CREATES A BUTTON "
-        fragments.startButton(type_button='select_users')
+        fragments.startButton('back')
         """
         FRAGMENTS - END
         """

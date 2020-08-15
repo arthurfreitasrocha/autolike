@@ -6,7 +6,6 @@ from PIL import ImageTk, Image
 
 # VIEW
 from view.LogoFragment import LogoFragment
-from view.user_manipulation.start_user_manipulation import UserManipulation
 from view.OptionThreeFragments import OptionThreeFragments
 from view.WindowConfiguration import WindowConfiguration
 from view.Message import Message
@@ -98,7 +97,22 @@ class OptionThree:
         " this method starts the 'OptionTwo' interface "
 
         flag = kws.get('flag')
+        n_profiles = kws.get('n_profiles')
+        n_likes = kws.get('n_likes')
+        error = kws.get('error')
 
+        file_directory = 'controller/system_files/option_two/n_selected_users.txt'
+
+        file_reader = FileReader(file_directory=file_directory)
+        file_content = file_reader.startFileReader()
+
+        type_message = ''
+        if file_content == 'Here will appear\nthe number of selected users':
+            type_message = 'database_options-no_user'
+
+        else:
+            type_message = 'database_options'
+        
         " INSTANCES THE VARIABLES "
         app_version = self.__app_version
 
@@ -108,35 +122,40 @@ class OptionThree:
 
         " INSTANCES THE FRAGMENTS OF THE WINDOW "
         logo_fragment = LogoFragment(window)
-        user_manipulation = UserManipulation(window)
-        user_manipulation.startUserManipulation()
-
-        fragments = OptionThreeFragments(window)
+        fragments = OptionTwoFragments(window)
 
         """
         FRAGMENTS - START
         """
-
-
-        " CREATES THE MESSAGE LABEL "
-        fragments.startMessageLabel()
-
-        " CREATES THE TEXT CAMP "
-        fragments.startText()
-
-        " CREATES THE BUTTON "
-        fragments.startButton()
-
-        """
-        FRAGMENTS - END
-        """
-
         " CREATES THE LOGO IN THE WINDOW "
         logo_image = ImageTk.PhotoImage(Image.open('view/images/logo.png')) # LOGO APP
         logo_fragment.startLogoAppFragment(logo_image)
 
+        " CREATES THE INTERFACE WHICH WILL CONTROLL THE INSTAGRAM DATABASE "
+        fragments.startMessageLabel(type_message=type_message)
+        fragments.startButtons(type_button='database_options')
+
+        " CREATES THE SEPARATOR "
+        fragments.startSeparator()
+
+        #" CREATES THE KIND OF LIKES "
+        #fragments.startMessageLabel(type_message='user_options')
+        #fragments.startRadioButtons()
+
+        #" CREATES THE SEPARATOR "
+        #fragments.startSeparator()
+
+        " CREATES THE ENTRY AND BUTTON SEND "
+        fragments.startMessageLabel(type_message='send')
+        fragments.startEntry()
+        fragments.startButtons(type_button='send')
+        """
+        FRAGMENTS - END
+        """
+
+
         " CONFIGURES THE WINDOW "
-        window_configuration = WindowConfiguration(window, width=500, height=550, width_distance=3, height_distance=5)
+        window_configuration = WindowConfiguration(window, width=500, height=400, width_distance=3, height_distance=5)
         window_configuration = window_configuration.fullWindowConfiguration()
 
         " CATCH THE WINDOW GEOMETRY AND THE APP TITLE WITH THE 'window_configuration' RETURNS - lines 32, 33 "

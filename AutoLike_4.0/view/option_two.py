@@ -7,7 +7,6 @@ from PIL import ImageTk, Image
 # VIEW
 from view.LogoFragment import LogoFragment
 from view.OptionTwoFragments import OptionTwoFragments
-from view.user_manipulation.start_user_manipulation import UserManipulation
 from view.WindowConfiguration import WindowConfiguration
 from view.Message import Message
 
@@ -102,7 +101,6 @@ class OptionTwo:
         n_likes = kws.get('n_likes')
         error = kws.get('error')
 
-        """
         file_directory = 'controller/system_files/option_two/n_selected_users.txt'
 
         file_reader = FileReader(file_directory=file_directory)
@@ -114,7 +112,6 @@ class OptionTwo:
 
         else:
             type_message = 'database_options'
-        """
         
         " INSTANCES THE VARIABLES "
         app_version = self.__app_version
@@ -125,24 +122,33 @@ class OptionTwo:
 
         " INSTANCES THE FRAGMENTS OF THE WINDOW "
         logo_fragment = LogoFragment(window)
-        user_manipulation = UserManipulation(window)
-        user_manipulation.startUserManipulation()
-
         fragments = OptionTwoFragments(window)
 
         """
         FRAGMENTS - START
         """
-
         " CREATES THE LOGO IN THE WINDOW "
         logo_image = ImageTk.PhotoImage(Image.open('view/images/logo.png')) # LOGO APP
         logo_fragment.startLogoAppFragment(logo_image)
 
+        " CREATES THE INTERFACE WHICH WILL CONTROLL THE INSTAGRAM DATABASE "
+        fragments.startMessageLabel(type_message=type_message)
+        fragments.startButtons(type_button='database_options')
+
+        " CREATES THE SEPARATOR "
+        fragments.startSeparator()
+
+        #" CREATES THE KIND OF LIKES "
+        #fragments.startMessageLabel(type_message='user_options')
+        #fragments.startRadioButtons()
+
+        #" CREATES THE SEPARATOR "
+        #fragments.startSeparator()
+
         " CREATES THE ENTRY AND BUTTON SEND "
         fragments.startMessageLabel(type_message='send')
         fragments.startEntry()
-        fragments.startButton()
-
+        fragments.startButtons(type_button='send')
         """
         FRAGMENTS - END
         """

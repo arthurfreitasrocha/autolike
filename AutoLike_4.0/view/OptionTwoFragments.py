@@ -22,10 +22,6 @@ class OptionTwoFragments:
         " INSTANCES THE WINDOW "
         self.__window = window
 
-        " INSTANCES THE FRAME "
-        self.__message_frame = Frame(window, width=500, height=150, bg='floral white')
-        self.__message_frame.pack(side=TOP)
-
 
     def __returnOption(self, type_return, **kws):
         
@@ -203,7 +199,22 @@ class OptionTwoFragments:
                 message.startMessage()
 
 
+    def startSeparator(self):
+
+        " this method creates a widget which can separate others widgets "
+
+        " INSTANCES THE WINDOW "
+        window = self.__window
+
+        " CREATE THE FRAME SEPARATOR "
+        separator_frame = Frame(window, width=500, height=10, bg='dark salmon')
+        separator_frame.pack(side=TOP)
+
+
     def startEntry(self):
+
+        " INSTANCES THE WINDOW "
+        window = self.__window
 
         " INSTANCES THE FRAME "
         entry_frame = self.__message_frame
@@ -212,23 +223,79 @@ class OptionTwoFragments:
         self.__send_entry.place(x=150, y=98)
 
 
-    def startButton(self, ):
+    def startRadioButtons(self):
 
-        " this method creates the buttons which will manipulate the user database "
+        " this method creates the user options with radio buttons "
 
         " INSTANCES THE WINDOW "
         window = self.__window
 
-        " INSTANCES THE FRAME "
-        button_send_frame = self.__message_frame
+        " CATCH THE USER OPTION "
+        self.__n_option = IntVar()
+
+        " INSTANCES THE FRAME AND THE LABEL OF THE USER OPTIONS "
+        user_options_frame = self.__message_frame
 
         " TEXT ABOUT ANY OPTION "
-        text_button = 'Send'
+        text_option_01 = 'Likes photos in sequence'
+        text_option_02 = 'Likes random photos'
 
-        button_send = Button(button_send_frame, text=text_button, font=('arial', 15, 'bold'), 
-        bg='dark salmon', activebackground='salmon', activeforeground='white',
-        command=lambda:self.__startErrorHandling(send_entry=self.__send_entry.get()))
-        button_send.place(x=280, y=90)
+        " INSTANCES THE RADIO BUTTONS "
+        radiobutton_option_01 = Radiobutton(user_options_frame, text=text_option_01, font=('arial', 12, 'bold'),
+        bg='floral white',variable=self.__n_option, value=1)
+        radiobutton_option_01.place(x=30, y=50)
+
+        radiobutton_option_02 = Radiobutton(user_options_frame, text=text_option_02, font=('arial', 12, 'bold'),
+        bg='floral white',variable=self.__n_option, value=2)
+        radiobutton_option_02.place(x=270, y=50)
+
+
+    def startButtons(self, type_button):
+
+        " this method creates the buttons which will manipulate the user database "
+
+        type_button = type_button
+
+        if type_button == 'database_options':
+
+            " INSTANCES THE WINDOW "
+            message_frame = self.__message_frame
+
+            " TEXT ABOUT ANY OPTION "
+            text_button_01 = 'Delete\nSelected Users'
+            text_button_02 = 'View\nSelected Users'
+            text_button_03 = 'Select\nNew Users'
+
+            button_01 = Button(message_frame, text=text_button_01, font=('arial', 15, 'bold'),
+            bg='dark salmon', activebackground='salmon', activeforeground='white',
+            command=lambda:self.__returnOption(type_return='manipulate_database', button='delete_users'))
+            button_01.place(x=20, y=65)
+
+            button_02 = Button(message_frame, text=text_button_02, font=('arial', 15, 'bold'),
+            bg='dark salmon', activebackground='salmon', activeforeground='white',
+            command=lambda:self.__returnOption(type_return='manipulate_database', button='view_users'))
+            button_02.place(x=185, y=65)
+
+            button_03 = Button(message_frame, text=text_button_03, font=('arial', 15, 'bold'),
+            bg='dark salmon', activebackground='salmon', activeforeground='white',
+            command=lambda:self.__returnOption(type_return='manipulate_database', button='select_users'))
+            button_03.place(x=350, y=65)
+
+        elif type_button == 'send':
+
+            " INSTANCES THE WINDOW "
+            window = self.__window
+
+            " INSTANCES THE FRAME "
+            button_send_frame = self.__message_frame
+
+            " TEXT ABOUT ANY OPTION "
+            text_button = 'Send'
+
+            button_send = Button(button_send_frame, text=text_button, font=('arial', 15, 'bold'), 
+            bg='dark salmon', activebackground='salmon', activeforeground='white',
+            command=lambda:self.__startErrorHandling(send_entry=self.__send_entry.get()))
+            button_send.place(x=280, y=90)
 
 
     def startMessageLabel(self, type_message):
@@ -237,12 +304,75 @@ class OptionTwoFragments:
 
         " INSTANCES THE WINDOW "
         window = self.__window
+        
+        if type_message == 'database_options-no_user':
 
-        " INSTANCES THE MESSAGE "
-        message_text = 'Inform the amount of photos\nwill be liked of each user'
+            file_directory = 'controller/system_files/option_two/n_selected_users.txt'
 
+            file_reader = FileReader(file_directory=file_directory)
+            file_content = file_reader.startFileReader()
+
+            " INSTANCES THE MESSAGE "
+            message_text = file_content
+
+            " INSTANCES THE FRAME PROPORTIONS "
+            width = 500
+            height = 140
+
+            " INSTANCES THE LOCATION OF THE MESSAGE "
+            x = 110
+            y = 5
+
+        elif type_message == 'database_options':
+
+            file_directory = 'controller/system_files/option_two/n_selected_users.txt'
+
+            file_reader = FileReader(file_directory=file_directory)
+            file_content = file_reader.startFileReader()
+
+            " INSTANCES THE MESSAGE "
+            message_text = file_content
+
+            " INSTANCES THE FRAME PROPORTIONS "
+            width = 500
+            height = 140
+
+            " INSTANCES THE LOCATION OF THE MESSAGE "
+            x = 170
+            y = 17
+
+        elif type_message == 'user_options':
+
+            " INSTANCES THE MESSAGE "
+            message_text = 'Kind of likes'
+
+            " INSTANCES THE FRAME PROPORTIONS "
+            width = 500
+            height = 90
+
+            " INSTANCES THE LOCATION OF THE MESSAGE "
+            x = 200
+            y = 10
+
+        elif type_message == 'send':
+
+            " INSTANCES THE MESSAGE "
+            message_text = 'Inform the amount of photos\nwill be liked of each user'
+
+            " INSTANCES THE FRAME PROPORTIONS "
+            width = 500
+            height = 150
+
+            " INSTANCES THE LOCATION OF THE MESSAGE "
+            x = 110
+            y = 15
+
+
+        " INSTANCES THE FRAME "
+        self.__message_frame = Frame(window, width=width, height=height, bg='floral white')
+        self.__message_frame.pack(side=TOP)
         message_frame = self.__message_frame
 
         self.__message_label = Label(message_frame, text=message_text, font=('arial', 15, 'bold'), bg='floral white')
-        self.__message_label.place(x=110, y=15)
+        self.__message_label.place(x=x, y=y)
 
