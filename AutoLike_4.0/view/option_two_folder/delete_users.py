@@ -6,7 +6,7 @@ from PIL import ImageTk, Image
 
 # VIEW
 from view.LogoFragment import LogoFragment
-from view.user_manipulation.ManipulateUsersDatabaseFragments import ManipulateUsersDatabaseFragments
+from view.option_two_folder.ManipulateUsersDatabaseFragments import ManipulateUsersDatabaseFragments
 from view.WindowConfiguration import WindowConfiguration
 from view.Message import Message
 

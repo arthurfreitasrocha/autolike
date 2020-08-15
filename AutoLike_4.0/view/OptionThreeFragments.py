@@ -8,7 +8,6 @@ from model.start_error_handling import ErrorHandling
 from view.Message import Message
 
 # CONTROLLER
-from controller.file_reader import FileReader
 from controller.file_writer import FileWriter
 
 class OptionThreeFragments:
@@ -25,6 +24,61 @@ class OptionThreeFragments:
         " INSTANCES THE FRAME "
         self.__message_frame = Frame(window, width=500, height=300, bg='floral white')
         self.__message_frame.pack(side=TOP)
+
+
+
+    def startButton(self):
+
+        " this method show the button which will return the information writted in the entries "
+
+        " INSTANCES THE MESSAGE "
+        start_message = 'Start'
+
+        " INSTANCES THE WIDGETS "
+        start_frame = self.__message_frame
+
+        start_button = Button(start_frame, text=start_message, font=('arial', 15, 'bold'), 
+        bg='dark salmon', activebackground='salmon', activeforeground='white',
+        command=self.__startErrorHandling)
+        start_button.place(x=240, y=140)
+
+
+    def startSeparator(self):
+
+        " this method creates a widget which can separate others widgets "
+
+        " INSTANCES THE FRAME "
+        message_frame = self.__message_frame
+
+        " CREATE THE FRAME SEPARATOR "
+        separator_frame = Frame(message_frame, width=500, height=10, bg='dark salmon')
+        separator_frame.pack(side=TOP)
+
+
+    def startText(self):
+
+        " this method shows the text widget "
+
+        " INSTANCES THE FRAME "
+        message_frame = self.__message_frame
+
+        self.__message_text = Text(message_frame, font=('arial', 15, 'bold'), width=41, height=5)
+        self.__message_text.place(x=20, y=60)
+
+
+    def startLabels(self):
+
+        " this method shows the labels "
+
+        " INSTANCES THE FRAME "
+        message_frame = self.__message_frame
+
+        " INSTANCES THE TEXT VARIABLE "
+        text = 'Write the message which will be sended'
+
+        " INSTANCES THE WIDGET "
+        message_label = Label(message_frame, text=text, font=('arial', 15, 'bold'), bg='floral white')
+        message_label.place(x=40, y=20)
 
 
     def __returnOption(self, type_return, **kws):
@@ -123,12 +177,13 @@ class OptionThreeFragments:
                 window.destroy()
 
 
-    def __startErrorHandling(self, writted_text):
+    def __startErrorHandling(self, send_entry):
 
         " this method verify if the typed information is valid "
 
-        " INSTANCES THE VARIABLE WHICH WILL STORE THE MESSAGE WRITTED BY THE USER "
-        writted_text = writted_text
+        " INSTANCES THE VARIABLES WHICH WILL GET THE LOGIN AND PASSWORD OF THE USER "
+        kind_likes = 2
+        send_entry = send_entry
 
         " CATCH THE CURRENT USER "
         file_directory = 'controller/system_files/user_instagram.txt'
@@ -202,43 +257,140 @@ class OptionThreeFragments:
                 message.startMessage()
 
 
-    def startButton(self):
+    def startSeparator(self):
 
-        " this method show the button which will return the information writted in the entries "
+        " this method creates a widget which can separate others widgets "
 
-        " INSTANCES THE MESSAGE "
-        start_message = 'Start'
+        " INSTANCES THE WINDOW "
+        window = self.__window
 
-        " INSTANCES THE WIDGETS "
-        start_frame = self.__message_frame
-
-        start_button = Button(start_frame, text=start_message, font=('arial', 15, 'bold'), 
-        bg='dark salmon', activebackground='salmon', activeforeground='white',
-        command=lambda:self.__startErrorHandling(self.__message_text.get(0, END)))
-        start_button.place(x=220, y=245)
+        " CREATE THE FRAME SEPARATOR "
+        separator_frame = Frame(window, width=500, height=10, bg='dark salmon')
+        separator_frame.pack(side=TOP)
 
 
-    def startText(self):
+    def startButtons(self, type_button):
 
-        " this method shows the text widget "
+        " this method creates the buttons which will manipulate the user database "
+
+        type_button = type_button
+
+        if type_button == 'database_options':
+
+            " INSTANCES THE WINDOW "
+            message_frame = self.__message_frame
+
+            " TEXT ABOUT ANY OPTION "
+            text_button_01 = 'Delete\nSelected Users'
+            text_button_02 = 'View\nSelected Users'
+            text_button_03 = 'Select\nNew Users'
+
+            button_01 = Button(message_frame, text=text_button_01, font=('arial', 15, 'bold'),
+            bg='dark salmon', activebackground='salmon', activeforeground='white',
+            command=lambda:self.__returnOption(type_return='manipulate_database', button='delete_users'))
+            button_01.place(x=20, y=65)
+
+            button_02 = Button(message_frame, text=text_button_02, font=('arial', 15, 'bold'),
+            bg='dark salmon', activebackground='salmon', activeforeground='white',
+            command=lambda:self.__returnOption(type_return='manipulate_database', button='view_users'))
+            button_02.place(x=185, y=65)
+
+            button_03 = Button(message_frame, text=text_button_03, font=('arial', 15, 'bold'),
+            bg='dark salmon', activebackground='salmon', activeforeground='white',
+            command=lambda:self.__returnOption(type_return='manipulate_database', button='select_users'))
+            button_03.place(x=350, y=65)
+
+        elif type_button == 'send':
+
+            " INSTANCES THE WINDOW "
+            window = self.__window
+
+            " INSTANCES THE FRAME "
+            button_send_frame = self.__message_frame
+
+            " TEXT ABOUT ANY OPTION "
+            text_button = 'Send'
+
+            button_send = Button(button_send_frame, text=text_button, font=('arial', 15, 'bold'), 
+            bg='dark salmon', activebackground='salmon', activeforeground='white',
+            command=lambda:self.__startErrorHandling(send_entry=self.__send_entry.get()))
+            button_send.place(x=280, y=90)
+
+
+    def startMessageLabel(self, type_message):
+
+        " this method write a message in the window "
+
+        " INSTANCES THE WINDOW "
+        window = self.__window
+        
+        if type_message == 'database_options-no_user':
+
+            file_directory = 'controller/system_files/option_two/n_selected_users.txt'
+
+            file_reader = FileReader(file_directory=file_directory)
+            file_content = file_reader.startFileReader()
+
+            " INSTANCES THE MESSAGE "
+            message_text = file_content
+
+            " INSTANCES THE FRAME PROPORTIONS "
+            width = 500
+            height = 140
+
+            " INSTANCES THE LOCATION OF THE MESSAGE "
+            x = 110
+            y = 5
+
+        elif type_message == 'database_options':
+
+            file_directory = 'controller/system_files/option_two/n_selected_users.txt'
+
+            file_reader = FileReader(file_directory=file_directory)
+            file_content = file_reader.startFileReader()
+
+            " INSTANCES THE MESSAGE "
+            message_text = file_content
+
+            " INSTANCES THE FRAME PROPORTIONS "
+            width = 500
+            height = 140
+
+            " INSTANCES THE LOCATION OF THE MESSAGE "
+            x = 170
+            y = 17
+
+        elif type_message == 'user_options':
+
+            " INSTANCES THE MESSAGE "
+            message_text = 'Kind of likes'
+
+            " INSTANCES THE FRAME PROPORTIONS "
+            width = 500
+            height = 90
+
+            " INSTANCES THE LOCATION OF THE MESSAGE "
+            x = 200
+            y = 10
+
+        elif type_message == 'send':
+
+            " INSTANCES THE MESSAGE "
+            message_text = 'Inform the amount of photos\nwill be liked of each user'
+
+            " INSTANCES THE FRAME PROPORTIONS "
+            width = 500
+            height = 150
+
+            " INSTANCES THE LOCATION OF THE MESSAGE "
+            x = 110
+            y = 15
+
 
         " INSTANCES THE FRAME "
+        self.__message_frame = Frame(window, width=width, height=height, bg='floral white')
+        self.__message_frame.pack(side=TOP)
         message_frame = self.__message_frame
 
-        self.__message_text = Text(message_frame, font=('arial', 15, 'bold'), width=41, height=7)
-        self.__message_text.place(x=20, y=60)
-
-
-    def startMessageLabel(self):
-
-        " this method shows the labels "
-
-        " INSTANCES THE FRAME "
-        message_frame = self.__message_frame
-
-        " INSTANCES THE TEXT VARIABLE "
-        text = 'Write the message which will be sended'
-
-        " INSTANCES THE WIDGET "
-        message_label = Label(message_frame, text=text, font=('arial', 15, 'bold'), bg='floral white')
-        message_label.place(x=50, y=15)
+        self.__message_label = Label(message_frame, text=message_text, font=('arial', 15, 'bold'), bg='floral white')
+        self.__message_label.place(x=x, y=y)
