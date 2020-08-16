@@ -1,9 +1,9 @@
 # VIEW
 from view.main_menu import MainMenu
 from view.email import Email
-from view.option_one import OptionOne
-from view.option_two import OptionTwo
-from view.option_three import OptionThree
+from view.options import OptionOne
+from view.options import OptionTwo
+from view.options import OptionThree
 
 from view.user_manipulation.select_users import SelectUsers
 from view.user_manipulation.view_users import ViewUsers
@@ -12,14 +12,14 @@ from view.user_manipulation.delete_users import DeleteUsers
 # CONTROLLER
 from controller.start_database import StartDatabase
 from controller.clear_return import ClearReturn
-from controller.file_writer import FileWriter
-from controller.file_reader import FileReader
+from controller.file_manipulator import FileWriter
+from controller.file_manipulator import FileReader
 from controller.user_information import *
 
 # BOT
-from model.bot_verify_instagram_user import VerifyInstagramUser
-from model.bot_likes_photos_by_hashtag import LikePhotosByHashtag
-from model.bot_likes_photos_by_users import LikePhotosByUsers
+from model.bots import VerifyInstagramUser
+from model.bots import LikePhotosByHashtag
+from model.bots import LikePhotosByUsers
 
 
 class UserOption:
@@ -55,6 +55,8 @@ class UserOption:
 
         return_option = return_option_one[0]
 
+        print(f'return option one: {return_option}')
+
         if return_option == 'window_closed':
 
             start_main_menu = StartMainMenu(app_version)
@@ -62,20 +64,16 @@ class UserOption:
 
         else:
 
-            hashtag = return_option_one[0]
-            n_likes = return_option_one[1]
+            if return_option_one[0] == 'True':
 
-            like_photos_by_hashtag = LikePhotosByHashtag(hashtag=hashtag, n_likes=n_likes)
-            return_like_photos_by_hashtag = like_photos_by_hashtag.startLikePhotosByHashtag()
-
-            if return_like_photos_by_hashtag == True:
+                n_likes = return_option_one[1]
 
                 start_option_one = OptionOne(app_version)
                 start_option_one.startInterface(flag='success', n_likes=n_likes)
 
             else:
 
-                error = return_like_photos_by_hashtag[1]
+                error = return_option_one[1]
 
                 start_option_one = OptionOne(app_version)
                 start_option_one.startInterface(flag='failed', error=error)

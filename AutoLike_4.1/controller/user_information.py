@@ -1,7 +1,7 @@
 # CONTROLLER
-from controller.verify_user import VerifyUser
-from controller.file_reader import FileReader
-from controller.file_writer import FileWriter
+from controller.verifications import VerifyUser
+from controller.file_manipulator import FileReader
+from controller.file_manipulator import FileWriter
 
 # OPERATIONAL SYSTEM LIBRARY
 import os

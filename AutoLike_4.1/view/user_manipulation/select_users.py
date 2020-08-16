@@ -11,8 +11,8 @@ from view.WindowConfiguration import WindowConfiguration
 from view.Message import Message
 
 # CONTROLLER
-from controller.file_reader import FileReader
-from controller.file_writer import FileWriter
+from controller.file_manipulator import FileReader
+from controller.file_manipulator import FileWriter
 
 class SelectUsers:
 

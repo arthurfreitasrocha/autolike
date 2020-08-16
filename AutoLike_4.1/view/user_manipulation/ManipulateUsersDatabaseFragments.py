@@ -2,14 +2,14 @@
 from tkinter import *
 
 # MODEL
-from model.start_error_handling import ErrorHandling
+from model.ErrorHandling import ErrorHandlingEmail
 
 # VIEW
 from view.Message import Message
 
 # CONTROLLER
-from controller.file_reader import FileReader
-from controller.file_writer import FileWriter
+from controller.file_manipulator import FileReader
+from controller.file_manipulator import FileWriter
 
 # EXTRA LIBRARY
 from random import shuffle

@@ -1,62 +1,14 @@
 
 
-class ErrorHandling:
+class ErrorHandlingOptionOne:
 
-    def __init__(self, **kws):
-
-
-        """
-        this class verify if the information writted by the user is valid
-        """
-
-        " EMAIL "
-        self.__login_entry = kws.get('login_entry')
-        self.__password_entry = kws.get('password_entry')
-
-        " OPTION ONE "
-        self.__hashtag_entry = kws.get('hashtag_entry')
-        self.__n_likes_entry = kws.get('n_likes_entry')
-
-        "OPTION TWO "
-        self.__users_selected = kws.get('users_selected')
-        self.__kind_likes = kws.get('kind_likes')
-        self.__send_entry = kws.get('send_entry')
+    def __init__(self, hashtag_entry, n_likes_entry):
+        
+        self.__hashtag_entry = hashtag_entry
+        self.__n_likes_entry = n_likes_entry
 
 
-    def startOptionTwoErrorHandling(self):
-
-        " this method verify if the information what the user writted (in Option Two window) is valid "
-
-        " INSTANCES THE VARIABLES WHICH WILL BE USED TO "
-        users_selected = self.__users_selected
-        kind_likes = self.__kind_likes
-        send_entry = self.__send_entry
-        validation = [False, False, False] #users_selected, kind_likes, send_entry
-
-        " VALIDATES THE ENTRY AND THE KIND OF LIKES OPTION "
-        if users_selected == '' or send_entry == '':
-            
-            if users_selected != '':
-                validation[0] = True
-
-            if kind_likes > 0 and kind_likes < 3:
-                validation[1] = True
-
-        else:
-
-            if users_selected != '':
-                validation[0] = True
-
-            if kind_likes > 0 and kind_likes < 3:
-                validation[1] = True
-
-            if send_entry.isnumeric() == True:
-                validation[2] = True
-
-        return validation
-
-
-    def startOptionOneErrorHandling(self):
+    def startErrorHandling(self):
 
         " this method verify if the information what the user writted (in Option One window) is valid "
 
@@ -64,6 +16,8 @@ class ErrorHandling:
         hashtag_entry = self.__hashtag_entry
         n_likes_entry = self.__n_likes_entry
         validation = [False, False]
+
+        print(hashtag_entry, n_likes_entry)
 
         " VERIFY IF THE INSTAGRAM HASHTAG AND THE NUMBER OF PHOTOS ARE VALID "
         if hashtag_entry == '' or n_likes_entry == '':
@@ -109,8 +63,57 @@ class ErrorHandling:
                 return False
 
 
+class ErrorHandlingOptionTwo:
 
-    def startEmailErrorHandling(self):
+    def __init__(self, users_selected, kind_likes, send_entry):
+        
+        self.__users_selected = users_selected
+        self.__kind_likes = kind_likes
+        self.__send_entry = send_entry
+
+
+    def startErrorHandling(self):
+
+        " this method verify if the information what the user writted (in Option Two window) is valid "
+
+        " INSTANCES THE VARIABLES WHICH WILL BE USED TO "
+        users_selected = self.__users_selected
+        kind_likes = self.__kind_likes
+        send_entry = self.__send_entry
+        validation = [False, False, False] #users_selected, kind_likes, send_entry
+
+        " VALIDATES THE ENTRY AND THE KIND OF LIKES OPTION "
+        if users_selected == '' or send_entry == '':
+            
+            if users_selected != '':
+                validation[0] = True
+
+            if kind_likes > 0 and kind_likes < 3:
+                validation[1] = True
+
+        else:
+
+            if users_selected != '':
+                validation[0] = True
+
+            if kind_likes > 0 and kind_likes < 3:
+                validation[1] = True
+
+            if send_entry.isnumeric() == True:
+                validation[2] = True
+
+        return validation
+
+
+class ErrorHandlingEmail:
+
+    def __init__(self, login_entry, password_entry):
+        
+        self.__login_entry = login_entry
+        self.__password_entry = password_entry
+
+
+    def startErrorHandling(self):
 
         " this method verify if the information what the user writted (in Email window) is valid "
 

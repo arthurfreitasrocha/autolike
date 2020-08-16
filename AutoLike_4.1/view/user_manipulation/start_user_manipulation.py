@@ -8,8 +8,8 @@ from view.user_manipulation.delete_users import DeleteUsers
 from view.user_manipulation.ManipulateUsersDatabaseFragments import ManipulateUsersDatabaseFragments
 
 # CONTROLLER
-from controller.file_reader import FileReader
-from controller.file_writer import FileWriter
+from controller.file_manipulator import FileReader
+from controller.file_manipulator import FileWriter
 
 class UserManipulation:
 
