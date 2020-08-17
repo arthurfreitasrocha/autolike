@@ -42,9 +42,21 @@ class Widgets:
         return frame
 
 
-    def startLabel(self):
+    def startLabel(self, frame, text, font, background, x, y):
 
-        pass
+        " INSTANCES THE VARIABLES "
+        frame = frame
+        text = text
+        font = font.split('-')
+        background = background
+        x = x
+        y = y
+
+        " INSTANCES THE LABEL "
+        label = Label(frame, text=text, font=(font[0], font[1], font[2]), bg=background)
+        label.place(x=x, y=y)
+
+        return label
 
 
     def startButton(self, frame, hashtag_entry, n_likes_entry, text, font, background, activebackground, activeforeground, command, x, y):
@@ -80,12 +92,20 @@ class Widgets:
         return button
 
 
-    def startEntry(self, frame, font, width):
+    def startEntry(self, frame, font, width, x, y):
 
         " INSTANCES THE VARIABLES "
         frame = frame
         font = font.split('-')
         width = width
+        x = x
+        y = y
+
+        " INSTANCES THE FRAME "
+        entry = Entry(frame, font=(font[0], font[1], font[2]), width=width)
+        entry.place(x=x, y=y)
+
+        return entry
 
 
 class ButtonCommands:

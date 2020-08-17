@@ -155,11 +155,11 @@ class OptionOne:
 
 class OptionOneFragments:
 
-    """
-    this class returns the one option window fragments
-    """
-
     def __init__(self, window):
+
+        """
+        this class creates and returns the option one window fragments
+        """
         
         " INSTANCES THE WINDOW "
         self.__window = window
@@ -174,7 +174,7 @@ class OptionOneFragments:
 
     def startButton(self):
 
-        " this method show the button which will return the information writted in the entries "
+        " this method creates the button "
 
         " INSTANCES THE MESSAGE "
         start_message = 'Start'
@@ -188,11 +188,6 @@ class OptionOneFragments:
         " INSTANCES THE BUTTON "
         widget.startButton(start_frame, self.__hashtag_entry, self.__n_likes_entry, start_message, 'arial-15-bold', 'dark salmon', 'salmon', 'white', 'error-handling-option-one', 240, 140)
 
-        #start_button = Button(start_frame, text=start_message, font=('arial', 15, 'bold'), 
-        #bg='dark salmon', activebackground='salmon', activeforeground='white',
-        #command=self.__startErrorHandling)
-        #start_button.place(x=240, y=140)
-
 
     def startEntries(self):
 
@@ -203,19 +198,23 @@ class OptionOneFragments:
         n_likes_text = 'Nº Likes'
 
         " INSTANCES THE WIDGETS "
+        widget = self.__widget
+
+        " INSTANCES THE WIDGETS "
         hashtag_frame = self.__hashtag_frame
 
-        hashtag_label = Label(hashtag_frame, text=hashtag_text, font=('arial', 20, 'bold'), bg='floral white')
-        hashtag_label.place(x=20, y=30)
+        " LABEL "
+        widget.startLabel(hashtag_frame, hashtag_text, 'arial-18-bold', 'floral white', 20, 30)
+        
+        " ENTRY "
+        self.__hashtag_entry = widget.startEntry(hashtag_frame, 'arial-18-bold', 25, 150, 33)
 
-        self.__hashtag_entry = Entry(hashtag_frame, font=('arial', 18, 'bold'), width=25)
-        self.__hashtag_entry.place(x=150, y=33)
 
-        n_likes_label = Label(hashtag_frame, text=n_likes_text, font=('arial', 20, 'bold'), bg='floral white')
-        n_likes_label.place(x=20, y=80)
+        " LABEL"
+        widget.startLabel(hashtag_frame, n_likes_text, 'arial-18-bold', 'floral white', 20, 80)
 
-        self.__n_likes_entry = Entry(hashtag_frame, font=('arial', 18, 'bold'), width=25)
-        self.__n_likes_entry.place(x=150, y=83)
+        " ENTRY "
+        self.__n_likes_entry = widget.startEntry(hashtag_frame, 'arial-18-bold', 25, 150, 83)
 
 
 class OptionTwo:
