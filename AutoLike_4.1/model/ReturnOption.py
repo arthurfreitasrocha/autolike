@@ -10,6 +10,18 @@ from view.Message import Message
 # CONTROLLER
 from controller.file_manipulator import FileWriter
 
+
+class ReturnEmailOption:
+
+    def __init__(self):
+        
+        pass
+
+    
+    def startReturnOption(self):
+
+        pass
+
 class ReturnOptionOne:
 
     def __init__(self, window, hashtag_entry, n_likes_entry):
@@ -60,7 +72,6 @@ class ReturnOptionOne:
                 
                 file_directory = 'controller/communication_file/return_option_one.txt'
                 file_content = f'True-{n_likes_entry}'
-                print(file_content)
 
                 file_writer = FileWriter(file_content, file_directory)
                 file_writer.startFileWriter()
@@ -84,3 +95,25 @@ class ReturnOptionOne:
 
             message = Message(type_message=type_message, title_message=title_message, text_message=text_message)
             message.startMessage()
+
+class ReturnOptionTwo:
+
+    def __init__(self):
+        
+        pass
+
+
+    def startReturnOption(self):
+
+        pass
+
+class ReturnOptionThree:
+
+    def __init__(self):
+        
+        pass
+
+
+    def startReturnOption(self):
+
+        pass
