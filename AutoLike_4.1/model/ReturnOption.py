@@ -8,7 +8,11 @@ from model.bots import LikePhotosByHashtag
 from view.Message import Message
 
 # CONTROLLER
+from controller.file_manipulator import FileReader
 from controller.file_manipulator import FileWriter
+
+# EXTRA LIBRARY
+from random import shuffle
 
 
 class ReturnEmailOption:
@@ -117,3 +121,204 @@ class ReturnOptionThree:
     def startReturnOption(self):
 
         pass
+
+class ReturnUserManipulationOption:
+
+    def __init__(self, window):
+        
+        " this class is responsible to return the users manipulated, how to accrescent or delete users "
+
+        " INSTANCES THE WINDOW "
+        self.__window = window
+
+
+    def startReturnOption(self, type_button, **kws):
+
+        " this method verify the return and work based in each return "
+
+        " INSTANCES THE WINDOW "
+        window = self.__window
+
+        " CATCH THE CURRENT USER "
+        file_directory = 'controller/system_files/user_instagram.txt'
+
+        file_reader = FileReader(file_directory=file_directory)
+        file_content = file_reader.startFileReader()
+
+        user = file_content
+
+
+        if type_button == 'button-back':
+            window.destroy()
+
+        elif type_button == 'select-all-users':
+
+            checkbutton_value = kws.get('checkbutton_value')
+
+            if checkbutton_value == 1:
+
+                " SHOWS A MESSAGE "
+                type_message = 'info'
+                title_message = 'All users selecteds'
+                text_message = 'Success! All users selecteds'
+
+                message = Message(type_message=type_message, title_message=title_message, text_message=text_message)
+                message.startMessage()
+
+        elif type_button == 'select-users':
+
+            " CATCH THE USERS OF THE MAIN DATABASE "
+            file_directory = f'controller/users/{user}/database.txt'
+
+            file_reader = FileReader(file_directory=file_directory)
+            file_content = file_reader.startFileReader()
+
+            second_database = file_content.split('-')
+
+
+            " INSTAGRAM USERS SELECTED BY THE USER "
+            users_selected = kws.get('users_selected')
+            shuffle(users_selected)
+
+            checkbutton_value = self.__checkbutton_value.get()
+
+            if checkbutton_value == 1:
+
+                users_selected = []
+
+                i = 0
+                for user_second_database in second_database:
+                    users_selected.append(i)
+
+                    i += 1
+
+                shuffle(users_selected)
+
+
+            " CATCH THE NAME OF THE SELECTED USERS "
+            users_selected_text = ''
+            i = 0
+            while(i < len(users_selected)):
+
+                current_user = users_selected[i]
+
+                if i == 0:
+                    users_selected_text += second_database[current_user]
+
+                else:
+                    users_selected_text += f'-{second_database[current_user]}'
+
+                i += 1
+
+
+            " WRITE THE USERS SELECTEDS IN THE SECOND DATABASE, WHICH WILL USED LATER "
+            file_directory = f'controller/users/{user}/second_database.txt'
+            file_content = users_selected_text
+
+            file_writer = FileWriter(file_content=file_content, file_directory=file_directory)
+            file_writer.startFileWriter()
+
+            " UPDATE THE NUMBER OF USERS IN THE SECOND DATABASE "
+            file_directory = f'controller/system_files/option_two/n_selected_users.txt'
+            file_content = f'{len(users_selected)} users selected'
+
+            file_writer = FileWriter(file_content=file_content, file_directory=file_directory)
+            file_writer.startFileWriter()
+
+            " SHOWS A MESSAGE "
+            type_message = 'info'
+            title_message = 'Success'
+            text_message = f'Success! {len(users_selected)} users added to the database'
+
+            message = Message(type_message=type_message, title_message=title_message, text_message=text_message)
+            message.startMessage()
+
+            file_directory = 'controller/communication_file/return_option_two.txt'
+            file_content = 'window_closed'
+
+            file_writer = FileWriter(file_content=file_content, file_directory=file_directory)
+            file_writer.startFileWriter()
+
+            window.destroy()
+
+        elif type_button == 'delete-users':
+
+            " CATCH THE USERS OF THE SECOND DATABASE "
+            file_directory = f'controller/users/{user}/second_database.txt'
+
+            file_reader = FileReader(file_directory=file_directory)
+            file_content = file_reader.startFileReader()
+
+            second_database = file_content.split('-')
+
+
+            " INSTAGRAM USERS SELECTED BY THE USER "
+            users_selected = kws.get('users_selected')
+
+            checkbutton_value = self.__checkbutton_value.get()
+
+            if checkbutton_value == 1:
+
+                users_selected = []
+
+                i = 0
+                for user_second_database in second_database:
+                    users_selected.append(i)
+
+                    i += 1
+
+
+            " CATCH THE NAME OF THE USERS WILL BE REMOVED "
+            users_will_removed = []
+            for user_second_database in second_database:
+                user_second_database_index = second_database.index(user_second_database)
+
+                for user_selected in users_selected:
+
+                    if user_second_database_index == user_selected:
+                        users_will_removed.append(user_second_database)
+
+            " REMOVE FROM THE SECOND DATABASE THE SELECTED USERS "
+            for user_removed in users_will_removed:
+                second_database.remove(user_removed)
+
+            " CATCH THE NAME OF THE SELECTED USERS "
+            users_selected_text = ''
+            users_count = 0
+            for user_second_database in second_database:
+                if users_count == 0:
+                    users_selected_text += user_second_database
+
+                else:
+                    users_selected_text += f'-{user_second_database}'
+
+                users_count += 1
+
+
+            " UPDATE THE SECOND USER DATABASE "
+            file_directory = f'controller/users/{user}/second_database.txt'
+            file_content = users_selected_text
+
+            file_writer = FileWriter(file_content=file_content, file_directory=file_directory)
+            file_writer.startFileWriter()
+
+            " UPDATE THE NUMBER OF USERS IN THE SECOND DATABASE "
+            file_directory = f'controller/system_files/option_two/n_selected_users.txt'
+            if len(second_database) != 0:
+                file_content = f'{len(second_database)} users selected'
+            
+            else:
+                file_content = 'Here will appear\nthe number of selected users'
+
+            file_writer = FileWriter(file_content=file_content, file_directory=file_directory)
+            file_writer.startFileWriter()
+
+            " SHOWS A MESSAGE "
+            type_message = 'info'
+            title_message = 'Success'
+            text_message = f'Success! {len(users_selected)} users removed from the database'
+
+            message = Message(type_message=type_message, title_message=title_message, text_message=text_message)
+            message.startMessage()
+
+            window.destroy()

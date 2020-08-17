@@ -7,9 +7,13 @@ from model.ErrorHandling import ErrorHandlingOptionOne
 from model.ErrorHandling import ErrorHandlingOptionTwo
 
 from model.ReturnOption import ReturnOptionOne
+from model.ReturnOption import ReturnUserManipulationOption
 
 # VIEW
 from view.Message import Message
+
+# CONTROLLER
+from controller.file_manipulator import FileWriter
 
 class Widgets:
 
@@ -59,22 +63,42 @@ class Widgets:
         return label
 
 
-    def startButton(self, frame, hashtag_entry, n_likes_entry, text, font, background, activebackground, activeforeground, command, x, y):
+    def startEntry(self, frame, font, width, x, y):
+
+        " INSTANCES THE VARIABLES "
+        frame = frame
+        font = font.split('-')
+        width = width
+        x = x
+        y = y
+
+        " INSTANCES THE FRAME "
+        entry = Entry(frame, font=(font[0], font[1], font[2]), width=width)
+        entry.place(x=x, y=y)
+
+        return entry
+
+
+    def startButton(self, frame, text, font, background, activebackground, activeforeground, command, x, y, **kws):
 
         def startCommand(command):
 
-            " INSTANCES MORE VARIABLES "
+            " INSTANCES THE WINDOW "
             window = self.__window
 
             command = command
+            
+            if command == 'button-back' or command == 'button-select-users' or command == 'button-view-users' or command == 'button-delete-users':
+                ButtonCommands(command, window=window)
 
-            ButtonCommands(command, window=window, hashtag_entry=self.__hashtag_entry, n_likes_entry=self.__n_likes_entry)
+            elif command == 'error-handling-option-one':
+                ButtonCommands(command, window=window, hashtag_entry=self.__hashtag_entry, n_likes_entry=self.__n_likes_entry)
 
 
         " INSTANCES THE VARIABLES "
         frame = frame
-        self.__hashtag_entry = hashtag_entry
-        self.__n_likes_entry = n_likes_entry
+        self.__hashtag_entry = kws.get('hashtag_entry')
+        self.__n_likes_entry = kws.get('n_likes_entry')
         text = text
         font = font.split('-')
         background = background
@@ -92,20 +116,31 @@ class Widgets:
         return button
 
 
-    def startEntry(self, frame, font, width, x, y):
+    def startCheckButton(self, frame, text, font, background, activebackground, activeforeground, variable, command, x, y):
+
+        def startCommand(command):
+
+            command = command
+            
+            if command == 'select-all-users':
+                CheckButtonCommands(command, checkbutton=variable)
 
         " INSTANCES THE VARIABLES "
         frame = frame
+        text = text
         font = font.split('-')
-        width = width
+        background = background
+        activebackground = activebackground
+        activeforeground = activeforeground
+        variable = variable
+        command = command
         x = x
         y = y
 
-        " INSTANCES THE FRAME "
-        entry = Entry(frame, font=(font[0], font[1], font[2]), width=width)
-        entry.place(x=x, y=y)
-
-        return entry
+        " INSTANCES THE CHECK BUTTON "
+        checkbutton = Checkbutton(frame, text=text, font=(font[0], font[1], font[2]), bg=background, activebackground=activebackground, activeforeground=activeforeground,
+        variable=variable, onvalue=1, offvalue=0, command=lambda:startCommand(command))
+        checkbutton.place(x=x, y=y)
 
 
 class ButtonCommands:
@@ -124,7 +159,18 @@ class ButtonCommands:
 
 
         " VERIFY WHAT COMMAND IT'S TO EXECUTE "
-        if command == 'error-handling-option-one':
+        if command == 'button-back' or command == 'button-select-users' or command == 'button-view-users' or command == 'button-delete-users':
+            
+            " INSTANCES THE WINDOW "
+            window = kws.get('window')
+            self.__window = window
+
+            " INSTANCES THE TYPE BUTTON "
+            type_button = command
+
+            self.startTypeButton(type_button)
+
+        elif command == 'error-handling-option-one':
             
             window = kws.get('window')
             hashtag_entry = kws.get('hashtag_entry')
@@ -134,6 +180,50 @@ class ButtonCommands:
             n_likes_entry = n_likes_entry.get()
 
             self.startErrorHandlingOptionOne(window, hashtag_entry, n_likes_entry)
+
+
+    def startTypeButton(self, type_button):
+
+        " this method execute the Back button or the Send button "
+
+        " INSTANCES THE TYPE BUTTON "
+        type_button = type_button
+
+        " INSTANCES THE WINDOW "
+        window = self.__window
+
+        if type_button == 'button-back':
+
+            return_back_option = ReturnUserManipulationOption(window)
+            return_back_option.startReturnOption(type_button)
+
+        else:
+
+            if type_button == 'button-select-users':
+                
+                file_directory = 'controller/communication_file/return_user_manipulation/return_selected_window.txt'
+                file_content = 'window-select-users'
+
+                file_writer = FileWriter(file_content, file_directory)
+                file_writer.startFileWriter()
+
+            elif type_button == 'button-view-users':
+
+                file_directory = 'controller/communication_file/return_user_manipulation/return_selected_window.txt'
+                file_content = 'window-view-users'
+
+                file_writer = FileWriter(file_content, file_directory)
+                file_writer.startFileWriter()
+
+            elif type_button == 'button-delete-users':
+
+                file_directory = 'controller/communication_file/return_user_manipulation/return_selected_window.txt'
+                file_content = 'window-delete-users'
+
+                file_writer = FileWriter(file_content, file_directory)
+                file_writer.startFileWriter()
+
+            window.destroy()
 
 
     def startErrorHandlingOptionOne(self, window, hashtag_entry, n_likes_entry):
@@ -159,3 +249,46 @@ class ButtonCommands:
             
             return_option_one = ReturnOptionOne(window, hashtag_entry, n_likes_entry)
             return_option_one.startReturnOption(False)
+
+
+class CheckButtonCommands:
+
+    def __init__(self, command, **kws):
+
+        """
+        this class is responsible to execute the command passed by parameter when the button is pressed
+
+        the **kws avaliable is:
+        window - hashtag_entry - n_likes_entry
+        """
+        
+        " INSTANCES THE COMMAND "
+        command = command
+
+
+        " VERIFY WHAT COMMAND IT'S TO EXECUTE "
+        if command == 'select-all-users':
+            
+            " INSTANCES THE WINDOW "
+            window = kws.get('window')
+            
+            " INSTANCES THE CHECK BUTTON "
+            checkbutton = kws.get('checkbutton')
+            checkbutton_value = checkbutton.get()
+
+            self.startSelectAllUsers(window, checkbutton_value)
+
+
+    def startSelectAllUsers(self, window, checkbutton_value):
+
+        " INSTANCES THE WINDOW "
+        window = window
+
+        " INSTANCES THE CHECK BUTTON "
+        checkbutton_value = checkbutton_value
+
+        " INSTANCES THE TYPE BUTTON"
+        type_button = 'select-all-users'
+
+        select_all_users = ReturnUserManipulationOption(window)
+        select_all_users.startReturnOption(type_button, checkbutton_value=checkbutton_value)

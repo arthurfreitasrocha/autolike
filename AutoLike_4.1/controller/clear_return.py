@@ -1,4 +1,5 @@
-
+# CONTROLLER
+from controller.file_manipulator import FileWriter
 
 class ClearReturn:
 
@@ -8,13 +9,13 @@ class ClearReturn:
 
     def __init__(self, name_file):
         
-        self.name_file = name_file
+        self.__name_file = name_file
 
 
     def startClearReturn(self):
 
-        name_file = self.name_file
+        file_directory = self.__name_file
+        file_content = ''
 
-        file = open(name_file, 'w')
-        file.write('')
-        file.close()
+        file_writer = FileWriter(file_content, file_directory)
+        file_writer.startFileWriter()

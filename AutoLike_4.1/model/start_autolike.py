@@ -5,9 +5,11 @@ from view.options import OptionOne
 from view.options import OptionTwo
 from view.options import OptionThree
 
-from view.user_manipulation.select_users import SelectUsers
-from view.user_manipulation.view_users import ViewUsers
-from view.user_manipulation.delete_users import DeleteUsers
+from view.user_manipulation.start_user_manipulation import UserManipulation
+
+from view.user_manipulation.ManipulateUsersInterface import SelectUsers
+from view.user_manipulation.ManipulateUsersInterface import ViewUsers
+from view.user_manipulation.ManipulateUsersInterface import DeleteUsers
 
 # CONTROLLER
 from controller.start_database import StartDatabase
@@ -92,44 +94,42 @@ class UserOption:
             start_option_two = OptionTwo(app_version=app_version)
             start_option_two.startInterface()
 
-            return_option_two = start_option_two.readReturn()
+            user_manipulation = UserManipulation(window='')
+            return_user_manipulation = user_manipulation.readReturn()
 
-            if return_option_two == 'window_closed':
-                break
+            if return_user_manipulation == 'window-select-users':
+
+                select_users = SelectUsers(app_version=app_version)
+                select_users.startInterface()
+
+            elif return_user_manipulation == 'window-view-users':
+
+                select_users = ViewUsers(app_version=app_version)
+                select_users.startInterface()
+
+            elif return_user_manipulation == 'window-delete-users':
+
+                select_users = DeleteUsers(app_version=app_version)
+                select_users.startInterface()
 
             else:
 
-                return_option_two_splitted = return_option_two.split('-')
+                return_option_two = start_option_two.readReturn()
 
-                if return_option_two_splitted[0] == 'send':
+                if return_option_two == 'window_closed':
                     break
 
                 else:
-                
-                    if return_option_two == 'select_users':
-                        
-                        while(True):
 
-                            start_select_users = SelectUsers(app_version=app_version)
-                            start_select_users.startInterface()
+                    return_option_two_splitted = return_option_two.split('-')
 
-                            return_select_users = start_select_users.readReturn()
+                    if return_option_two_splitted[0] == 'send':
+                        break
+            
+            name_file = 'controller/communication_file/return_user_manipulation/return_selected_window.txt'
 
-                            if return_select_users == 'window_closed':
-                                break
-
-                            else:
-                                flag = return_select_users
-
-                    elif return_option_two == 'view_users':
-
-                        start_view_users = ViewUsers(app_version=app_version)
-                        start_view_users.startInterface()
-
-                    elif return_option_two == 'delete_users':
-
-                        start_delete_users = DeleteUsers(app_version=app_version)
-                        start_delete_users.startInterface()
+            clear_return = ClearReturn(name_file)
+            clear_return.startClearReturn()
 
 
         if return_option_two == 'window_closed':

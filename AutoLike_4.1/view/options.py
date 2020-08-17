@@ -186,7 +186,7 @@ class OptionOneFragments:
         start_frame = self.__hashtag_frame
 
         " INSTANCES THE BUTTON "
-        widget.startButton(start_frame, self.__hashtag_entry, self.__n_likes_entry, start_message, 'arial-15-bold', 'dark salmon', 'salmon', 'white', 'error-handling-option-one', 240, 140)
+        widget.startButton(start_frame, start_message, 'arial-15-bold', 'dark salmon', 'salmon', 'white', 'error-handling-option-one', 240, 140, hashtag_entry=self.__hashtag_entry, n_likes_entry=self.__n_likes_entry)
 
 
     def startEntries(self):
@@ -303,20 +303,6 @@ class OptionTwo:
         n_profiles = kws.get('n_profiles')
         n_likes = kws.get('n_likes')
         error = kws.get('error')
-
-        """
-        file_directory = 'controller/system_files/option_two/n_selected_users.txt'
-
-        file_reader = FileReader(file_directory=file_directory)
-        file_content = file_reader.startFileReader()
-
-        type_message = ''
-        if file_content == 'Here will appear\nthe number of selected users':
-            type_message = 'database_options-no_user'
-
-        else:
-            type_message = 'database_options'
-        """
         
         " INSTANCES THE VARIABLES "
         app_version = self.__app_version

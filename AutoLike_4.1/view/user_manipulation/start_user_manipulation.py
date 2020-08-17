@@ -2,10 +2,7 @@
 from tkinter import *
 
 # VIEW
-from view.user_manipulation.select_users import SelectUsers
-from view.user_manipulation.view_users import ViewUsers
-from view.user_manipulation.delete_users import DeleteUsers
-from view.user_manipulation.ManipulateUsersDatabaseFragments import ManipulateUsersDatabaseFragments
+from view.user_manipulation.ManipulateUsersFragments import MasterWidgets
 
 # CONTROLLER
 from controller.file_manipulator import FileReader
@@ -15,7 +12,9 @@ class UserManipulation:
 
     def __init__(self, window):
 
-        " this class instances the 3 (three) buttons which manipulate the users "
+        """
+        the objective of this class is to facilitate the instances of the windows which will manipulate the user database
+        """
 
         " INSTANCES THE WINDOW "
         self.__window = window
@@ -26,7 +25,7 @@ class UserManipulation:
 
         " this method just read the return of 'OptionTwoFragments.py' "
 
-        file_directory = 'controller/communication_file/return_option_two.txt'
+        file_directory = 'controller/communication_file/return_user_manipulation/return_selected_window.txt'
 
         file_reader = FileReader(file_directory=file_directory)
         file_content = file_reader.startFileReader()
@@ -38,15 +37,8 @@ class UserManipulation:
 
         " this method starts the class "
 
-        n_profiles = kws.get('n_profiles')
-        n_likes = kws.get('n_likes')
-        error = kws.get('error')
-
         " INSTANCES THE WINDOW "
         window = self.__window
-
-        " INSTANCES THE FRAGMENTS OF THE WINDOW "
-        fragments = ManipulateUsersDatabaseFragments(window)
 
         file_directory = 'controller/system_files/option_two/n_selected_users.txt'
 
@@ -60,6 +52,9 @@ class UserManipulation:
         else:
             type_message = 'database_options'
 
+
+        " INSTANCES THE FRAGMENTS OF THE WINDOW "
+        fragments = MasterWidgets(window)
 
         " CREATES THE INTERFACE WHICH WILL CONTROLL THE INSTAGRAM DATABASE "
         fragments.startMessage(type_message=type_message)
