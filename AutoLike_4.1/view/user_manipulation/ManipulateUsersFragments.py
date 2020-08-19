@@ -163,7 +163,6 @@ class MinimumWidgets:
 
         " INSTANCES THE WIDGETS "
         self.__widget = Widgets(window)
-        widget = self.__widget
 
 
     def __catchUsers(self, type_catch):
@@ -296,7 +295,7 @@ class MinimumWidgets:
             " INSTANCES THE BUTTON "
             widget.startButton(button_frame, text_button, 'arial-15-bold', 'dark salmon', 'salmon', 'white', 'button-back', 225, 20)
 
-        elif type_button == 'select_users':
+        elif type_button == 'select_users' or type_button == 'delete_users':
 
             " TEXT ABOUT ANY OPTION "
             text_button = 'Send'
@@ -304,23 +303,13 @@ class MinimumWidgets:
             " INSTANCES THE FRAME "
             button_frame = self.__check_frame
 
-            button_send = Button(button_frame, text=text_button, font=('arial', 15, 'bold'), 
-            bg='dark salmon', activebackground='salmon', activeforeground='white',
-            command=lambda:self.__returnOption(type_return='select_users', users_selected=self.__listbox_users.curselection()))
-            button_send.place(x=350, y=20)
+            if type_button == 'select_users':
+                command = 'select-users'
 
-        elif type_button == 'delete_users':
+            else:
+                command = 'delete-users'
 
-            " TEXT ABOUT ANY OPTION "
-            text_button = 'Send'
-
-            " INSTANCES THE FRAME "
-            button_frame = self.__check_frame
-
-            button_send = Button(button_frame, text=text_button, font=('arial', 15, 'bold'), 
-            bg='dark salmon', activebackground='salmon', activeforeground='white',
-            command=lambda:self.__returnOption(type_return='delete_users', users_selected=self.__listbox_users.curselection()))
-            button_send.place(x=350, y=20)
+            widget.startButton(button_frame, text_button, 'arial-15-bold', 'dark salmon', 'salmon', 'white', command, 350, 20, listbox_users=self.__listbox_users, checkbutton_value=self.__checkbutton_value)
 
 
     def startCheckButton(self):

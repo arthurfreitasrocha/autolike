@@ -13,6 +13,7 @@ from model.ReturnOption import ReturnUserManipulationOption
 from view.Message import Message
 
 # CONTROLLER
+from controller.file_manipulator import FileReader
 from controller.file_manipulator import FileWriter
 
 class Widgets:
@@ -88,17 +89,53 @@ class Widgets:
 
             command = command
             
-            if command == 'button-back' or command == 'button-select-users' or command == 'button-view-users' or command == 'button-delete-users':
+            if command == 'button-back' or command == 'button-select-users':
                 ButtonCommands(command, window=window)
 
-            elif command == 'error-handling-option-one':
-                ButtonCommands(command, window=window, hashtag_entry=self.__hashtag_entry, n_likes_entry=self.__n_likes_entry)
+            elif command == 'button-view-users' or command == 'button-delete-users':
 
+                " CATCH THE CURRENT USER "
+                file_directory = 'controller/system_files/user_instagram.txt'
+
+                file_reader = FileReader(file_directory)
+                file_content = file_reader.startFileReader()
+
+                user = file_content
+
+                " CATCH ALL THE USERS "
+                file_directory = f'controller/users/{user}/second_database.txt'
+
+                file_reader = FileReader(file_directory)
+                file_content = file_reader.startFileReader()
+
+                all_users = file_content
+
+
+                if all_users == '':
+                    flag = 'no-user-selected'
+                    
+                else:
+                    flag = ''
+
+                ButtonCommands(command, window=window, flag=flag)
+
+            elif command == 'select-users' or command == 'delete-users':
+
+                self.__listbox_users = kws.get('listbox_users')
+                self.__checkbutton_value = kws.get('checkbutton_value')
+                users_selected = self.__listbox_users.curselection()
+                checkbutton_value = self.__checkbutton_value.get()
+
+                ButtonCommands(command, window=window, users_selected=users_selected, checkbutton_value=checkbutton_value)
+
+            elif command == 'error-handling-option-one':
+
+                self.__hashtag_entry = kws.get('hashtag_entry')
+                self.__n_likes_entry = kws.get('n_likes_entry')
+                ButtonCommands(command, window=window, hashtag_entry=self.__hashtag_entry, n_likes_entry=self.__n_likes_entry)
 
         " INSTANCES THE VARIABLES "
         frame = frame
-        self.__hashtag_entry = kws.get('hashtag_entry')
-        self.__n_likes_entry = kws.get('n_likes_entry')
         text = text
         font = font.split('-')
         background = background
@@ -107,6 +144,7 @@ class Widgets:
         command = command
         x = x
         y = y
+
 
         " INSTANCES THE BUTTON "
         button = Button(frame, text=text, font=(font[0], font[1], font[2]), bg=background, activebackground=activebackground, activeforeground=activeforeground,
@@ -151,8 +189,11 @@ class ButtonCommands:
         this class is responsible to execute the command passed by parameter when the button is pressed
 
         the **kws avaliable is:
-        window - hashtag_entry - n_likes_entry
+        window - hashtag_entry - n_likes_entry - users_selected - checkbutton_value - flag
         """
+
+        " INSTANCES THE WINDOW "
+        self.__window = kws.get('window')
         
         " INSTANCES THE COMMAND "
         command = command
@@ -160,19 +201,31 @@ class ButtonCommands:
 
         " VERIFY WHAT COMMAND IT'S TO EXECUTE "
         if command == 'button-back' or command == 'button-select-users' or command == 'button-view-users' or command == 'button-delete-users':
-            
+
             " INSTANCES THE WINDOW "
-            window = kws.get('window')
-            self.__window = window
+            window = self.__window
 
             " INSTANCES THE TYPE BUTTON "
             type_button = command
 
-            self.startTypeButton(type_button)
+            " INSTANCES THE FLAG "
+            flag = kws.get('flag')
+
+            self.startTypeButton(type_button, flag=flag)
+
+        elif command == 'select-users' or command == 'delete-users':
+
+            users_selected = kws.get('users_selected')
+            checkbutton_value = kws.get('checkbutton_value')
+
+            if command == 'select-users':
+                self.startSelectDeleteUsers('select-users', users_selected, checkbutton_value)
+
+            elif command == 'delete-users':
+                self.startSelectDeleteUsers('delete-users', users_selected, checkbutton_value)
 
         elif command == 'error-handling-option-one':
             
-            window = kws.get('window')
             hashtag_entry = kws.get('hashtag_entry')
             n_likes_entry = kws.get('n_likes_entry')
 
@@ -182,7 +235,7 @@ class ButtonCommands:
             self.startErrorHandlingOptionOne(window, hashtag_entry, n_likes_entry)
 
 
-    def startTypeButton(self, type_button):
+    def startTypeButton(self, type_button, **kws):
 
         " this method execute the Back button or the Send button "
 
@@ -199,6 +252,8 @@ class ButtonCommands:
 
         else:
 
+            flag = kws.get('flag')
+
             if type_button == 'button-select-users':
                 
                 file_directory = 'controller/communication_file/return_user_manipulation/return_selected_window.txt'
@@ -209,21 +264,153 @@ class ButtonCommands:
 
             elif type_button == 'button-view-users':
 
-                file_directory = 'controller/communication_file/return_user_manipulation/return_selected_window.txt'
-                file_content = 'window-view-users'
+                if flag == 'no-user-selected':
+                    " SHOWS A ERROR MESSAGE "
+                    type_message = 'error'
+                    title_message = 'Error'
+                    text_message = 'Please, select at least one Instagram profile in\nSelect New Users option'
 
-                file_writer = FileWriter(file_content, file_directory)
-                file_writer.startFileWriter()
+                    message = Message(type_message=type_message, title_message=title_message, text_message=text_message)
+                    message.startMessage()
+
+                else:
+
+                    file_directory = 'controller/communication_file/return_user_manipulation/return_selected_window.txt'
+                    file_content = 'window-view-users'
+
+                    file_writer = FileWriter(file_content, file_directory)
+                    file_writer.startFileWriter()
 
             elif type_button == 'button-delete-users':
 
-                file_directory = 'controller/communication_file/return_user_manipulation/return_selected_window.txt'
-                file_content = 'window-delete-users'
+                if flag == 'no-user-selected':
+                    " SHOWS A ERROR MESSAGE "
+                    type_message = 'error'
+                    title_message = 'Error'
+                    text_message = 'Please, select at least one Instagram profile in\nSelect New Users option'
 
-                file_writer = FileWriter(file_content, file_directory)
-                file_writer.startFileWriter()
+                    message = Message(type_message=type_message, title_message=title_message, text_message=text_message)
+                    message.startMessage()
 
-            window.destroy()
+                else:
+
+                    file_directory = 'controller/communication_file/return_user_manipulation/return_selected_window.txt'
+                    file_content = 'window-delete-users'
+
+                    file_writer = FileWriter(file_content, file_directory)
+                    file_writer.startFileWriter()
+
+            if flag != 'no-user-selected':
+                window.destroy()
+
+
+    def startSelectDeleteUsers(self, type_manipulation, users_selected, checkbutton_value):
+
+        type_manipulation = type_manipulation
+
+        " INSTANCES THE WINDOW "
+        window = self.__window
+
+        " INSTANCES THE VARIABLES "
+        users_selected = users_selected
+        checkbutton_value = checkbutton_value
+
+        " CATCH THE CURRENT USER "
+        file_directory = 'controller/system_files/user_instagram.txt'
+
+        file_reader = FileReader(file_directory)
+        file_content = file_reader.startFileReader()
+
+        user = file_content
+
+
+        if type_manipulation == 'select-users':
+
+
+            " CATCH ALL THE USERS "
+            file_directory = f'controller/users/{user}/database.txt'
+
+            file_reader = FileReader(file_directory)
+            file_content = file_reader.startFileReader()
+
+            all_users = file_content.split('-')
+
+            if checkbutton_value == 1:
+                users_selected = all_users
+
+            else:
+                
+                """
+                AS THE VALUES CHOSEN BY THE USER ARE RETURNED IN A NUMERIC TUPLE,
+                HERE I HAD TO OBTAIN THE INDEX OF EACH INSTAGRAM ACCOUNT STORED IN THE DATABASE
+                TO VERIFY WHICH ACCOUNT THE USER CHOSE TO ACCESS AND LIKES.
+                """
+                temp_list = []
+                for user in all_users:
+                    user_index = all_users.index(user)
+
+                    for user_selected in users_selected:
+                        user_selected_index = users_selected.index(user_selected)
+
+                        if user_index == user_selected_index:
+                            temp_list.append(user)
+                            break
+
+                users_selected = temp_list
+
+
+            if checkbutton_value == 0 and users_selected == ():
+                flag = 'no-user-selected'
+
+            else:
+                flag = ''
+
+            return_back_option = ReturnUserManipulationOption(window)
+            return_back_option.startReturnOption(type_manipulation, users_selected=users_selected, flag=flag)
+
+        elif type_manipulation == 'delete-users':
+
+
+            " CATCH ALL THE USERS "
+            file_directory = f'controller/users/{user}/second_database.txt'
+
+            file_reader = FileReader(file_directory)
+            file_content = file_reader.startFileReader()
+
+            all_users = file_content.split('-')
+
+            if checkbutton_value == 1:
+                users_selected = all_users
+
+            else:
+                
+                """
+                AS THE VALUES CHOSEN BY THE USER ARE RETURNED IN A NUMERIC TUPLE,
+                HERE I HAD TO OBTAIN THE INDEX OF EACH INSTAGRAM ACCOUNT STORED IN THE DATABASE
+                TO VERIFY WHICH ACCOUNT THE USER CHOSE TO ACCESS AND LIKES.
+                """
+                temp_list = []
+                for user in all_users:
+                    user_index = all_users.index(user)
+
+                    for user_selected in users_selected:
+                        user_selected_index = users_selected.index(user_selected)
+
+                        if user_index == user_selected_index:
+                            temp_list.append(user)
+                            break
+
+                users_selected = temp_list
+
+
+            if checkbutton_value == 0 and users_selected == ():
+                flag = 'no-user-selected'
+
+            else:
+                flag = ''
+
+            return_back_option = ReturnUserManipulationOption(window)
+            return_back_option.startReturnOption(type_manipulation, users_selected=users_selected, flag=flag)
 
 
     def startErrorHandlingOptionOne(self, window, hashtag_entry, n_likes_entry):
@@ -259,7 +446,7 @@ class CheckButtonCommands:
         this class is responsible to execute the command passed by parameter when the button is pressed
 
         the **kws avaliable is:
-        window - hashtag_entry - n_likes_entry
+        window
         """
         
         " INSTANCES THE COMMAND "

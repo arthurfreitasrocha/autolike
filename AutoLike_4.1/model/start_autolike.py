@@ -57,7 +57,6 @@ class UserOption:
 
         return_option = return_option_one[0]
 
-        print(f'return option one: {return_option}')
 
         if return_option == 'window_closed':
 
@@ -153,7 +152,7 @@ class UserOption:
             file_writer = FileWriter(file_content=file_content, file_directory=file_directory)
             file_writer.startFileWriter()
 
-            file_directory = f'controller/users/{user}/temp_database.txt'
+            file_directory = f'controller/users/{user}/users_accessed.txt'
             file_content = ''
             file_writer = FileWriter(file_content=file_content, file_directory=file_directory)
             file_writer.startFileWriter()

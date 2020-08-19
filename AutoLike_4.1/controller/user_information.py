@@ -84,6 +84,12 @@ class UserRegister:
             file_writer = FileWriter(file_directory=file_directory, file_content=file_content)
             file_writer.startFileWriter()
 
+            file_directory = f'{dir_directory}/users_accessed.txt'
+            file_content = ''
+
+            file_writer = FileWriter(file_directory=file_directory, file_content=file_content)
+            file_writer.startFileWriter()
+
             return True
 
         else:
