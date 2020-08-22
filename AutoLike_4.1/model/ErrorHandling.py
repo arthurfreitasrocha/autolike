@@ -17,29 +17,24 @@ class ErrorHandlingOptionOne:
         n_likes_entry = self.__n_likes_entry
         validation = [False, False]
 
-        print(hashtag_entry, n_likes_entry)
 
         " VERIFY IF THE INSTAGRAM HASHTAG AND THE NUMBER OF PHOTOS ARE VALID "
         if hashtag_entry == '' or n_likes_entry == '':
-
             return False
 
         else:
             
             " VALIDATES THE HASHTAG "
             if len(hashtag_entry) < 4:
-
                 validation[0] = False
 
             else:
 
                 if hashtag_entry[0] == '#':
-
                     validation[0] = True
 
             " VALIDATES THE Nº OF LIKES "
             if n_likes_entry.isnumeric() == False:
-
                 validation[1] = False
 
             else:
@@ -47,11 +42,9 @@ class ErrorHandlingOptionOne:
                 n_likes_entry = int(n_likes_entry)
 
                 if n_likes_entry < 1:
-
                     validation[1] = False
 
                 else:
-
                     validation[1] = True
 
 
@@ -103,6 +96,27 @@ class ErrorHandlingOptionTwo:
                 validation[2] = True
 
         return validation
+
+
+class ErrorHandlingOptionThree:
+
+    def __init__(self, writted_text):
+        
+        self.__writted_text = writted_text
+
+
+    def startErrorHandling(self):
+
+        " this method verify if the typed information is valid "
+
+        " INSTANCES THE VARIABLE WHICH WILL STORE THE MESSAGE WRITTED BY THE USER "
+        writted_text = self.__writted_text
+
+        if writted_text == '' or writted_text == '\n':
+            return False
+
+        else:
+            return True
 
 
 class ErrorHandlingEmail:

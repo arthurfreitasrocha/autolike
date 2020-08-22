@@ -33,7 +33,7 @@ class UserManipulation:
         return file_content
 
 
-    def startUserManipulation(self, **kws):
+    def startUserManipulation(self):
 
         " this method starts the class "
 

@@ -113,14 +113,43 @@ class ReturnOptionTwo:
 
 class ReturnOptionThree:
 
-    def __init__(self):
+    def __init__(self, window, writted_text):
         
-        pass
+        self.__window = window
+        self.__writted_text = writted_text
 
 
-    def startReturnOption(self):
+    def startReturnOption(self, type_return):
 
-        pass
+        " this method returns the input of the user "
+
+        " INSTANCES THE VARIABLES "
+        window = self.__window
+        writted_text = self.__writted_text
+        type_return = type_return
+
+
+        if type_return == True:
+
+            " SHOWS A MESSAGE "
+            type_message = 'info'
+            title_message = 'Logging into Instagram'
+            text_message = 'We are logging into Instagram\nYou can close this window'
+
+            message = Message(type_message=type_message, title_message=title_message, text_message=text_message)
+            message.startMessage()
+
+            window.destroy()
+
+        elif type_return == False:
+
+            " SHOWS A MESSAGE "
+            type_message = 'warning'
+            title_message = 'Warning'
+            text_message = 'Please, write a message.'
+
+            message = Message(type_message=type_message, title_message=title_message, text_message=text_message)
+            message.startMessage()
 
 class ReturnUserManipulationOption:
 

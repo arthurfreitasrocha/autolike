@@ -114,7 +114,7 @@ class MainMenu:
         """
 
         " CONFIGURES THE WINDOW "
-        window_configuration = WindowConfiguration(window, width=500, height=570, width_distance=3, height_distance=13)
+        window_configuration = WindowConfiguration(window, width=500, height=570, width_distance=3, height_distance=6)
         window_configuration = window_configuration.fullWindowConfiguration()
 
         " CATCH THE WINDOW GEOMETRY AND THE APP TITLE WITH THE 'window_configuration' RETURNS "

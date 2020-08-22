@@ -5,8 +5,11 @@ from tkinter import *
 from model.ErrorHandling import ErrorHandlingEmail
 from model.ErrorHandling import ErrorHandlingOptionOne
 from model.ErrorHandling import ErrorHandlingOptionTwo
+from model.ErrorHandling import ErrorHandlingOptionThree
 
 from model.ReturnOption import ReturnOptionOne
+from model.ReturnOption import ReturnOptionTwo
+from model.ReturnOption import ReturnOptionThree
 from model.ReturnOption import ReturnUserManipulationOption
 
 # VIEW
@@ -80,6 +83,22 @@ class Widgets:
         return entry
 
 
+    def startText(self, frame, font, width, height, x, y):
+
+        " INSTANCES THE VARIABLES "
+        frame = frame
+        font = font.split('-')
+        width = width
+        height = height
+        x = x
+        y = y
+
+        text = Text(frame, font=(font[0], font[1], font[2]), width=width, height=height)
+        text.place(x=x, y=y)
+
+        return text
+
+
     def startButton(self, frame, text, font, background, activebackground, activeforeground, command, x, y, **kws):
 
         def startCommand(command):
@@ -133,6 +152,11 @@ class Widgets:
                 self.__hashtag_entry = kws.get('hashtag_entry')
                 self.__n_likes_entry = kws.get('n_likes_entry')
                 ButtonCommands(command, window=window, hashtag_entry=self.__hashtag_entry, n_likes_entry=self.__n_likes_entry)
+
+            elif command == 'error-handling-option-three':
+
+                self.__writted_text = kws.get('writted_text')
+                ButtonCommands(command, window=window, writted_text=self.__writted_text)
 
         " INSTANCES THE VARIABLES "
         frame = frame
@@ -189,11 +213,12 @@ class ButtonCommands:
         this class is responsible to execute the command passed by parameter when the button is pressed
 
         the **kws avaliable is:
-        window - hashtag_entry - n_likes_entry - users_selected - checkbutton_value - flag
+        window - hashtag_entry - n_likes_entry - users_selected - checkbutton_value - writted_text - flag
         """
 
         " INSTANCES THE WINDOW "
         self.__window = kws.get('window')
+        window = self.__window
         
         " INSTANCES THE COMMAND "
         command = command
@@ -233,6 +258,13 @@ class ButtonCommands:
             n_likes_entry = n_likes_entry.get()
 
             self.startErrorHandlingOptionOne(window, hashtag_entry, n_likes_entry)
+
+        elif command == 'error-handling-option-three':
+
+            writted_text = kws.get('writted_text')
+            writted_text = writted_text.get("1.0", END)
+
+            self.startErrorHandlingOptionThree(window, writted_text)
 
 
     def startTypeButton(self, type_button, **kws):
@@ -436,6 +468,30 @@ class ButtonCommands:
             
             return_option_one = ReturnOptionOne(window, hashtag_entry, n_likes_entry)
             return_option_one.startReturnOption(False)
+
+
+    def startErrorHandlingOptionThree(self, window, writted_text):
+
+        " this method execute the Error Hanling of the Option Three "
+
+        " INSTANCES THE VARIABLES "
+        window = window
+        writted_text = writted_text
+
+        " INSTANCES THE ERROR HANDLING CLASS "
+        error_handling = ErrorHandlingOptionThree(writted_text)
+        return_error_handling = error_handling.startErrorHandling()
+
+        " EXECUTE THE RETURN OPTION WITH THE RETURN OF THE ERROR HANDLING CLASS "
+        if return_error_handling == True:
+
+            return_option_three = ReturnOptionThree(window, writted_text)
+            return_option_three.startReturnOption(True)
+
+        elif return_error_handling == False:
+
+            return_option_three = ReturnOptionThree(window, writted_text)
+            return_option_three.startReturnOption(False)
 
 
 class CheckButtonCommands:
