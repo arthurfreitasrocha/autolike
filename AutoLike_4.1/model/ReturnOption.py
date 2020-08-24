@@ -26,6 +26,7 @@ class ReturnEmailOption:
 
         pass
 
+
 class ReturnOptionOne:
 
     def __init__(self, window, hashtag_entry, n_likes_entry):
@@ -100,16 +101,52 @@ class ReturnOptionOne:
             message = Message(type_message=type_message, title_message=title_message, text_message=text_message)
             message.startMessage()
 
+
 class ReturnOptionTwo:
 
-    def __init__(self):
+    def __init__(self, window, n_photos, users_selected):
         
-        pass
+        self.__window = window
+        self.__n_photos = n_photos
+
+        " CATCH THE USERS SELECTED "
+        file_directory = 'controller/communication_file/return_user_manipulation/return_users_selected.txt'
+        file_content = ''
+
+        file_reader = FileReader(file_directory=file_directory)
+        file_content = file_reader.startFileReader()
+
+        self.__users_selected = file_content
 
 
     def startReturnOption(self):
 
-        pass
+        " INSTANCE THE VARIABLES "
+        n_photos = self.__n_photos
+        users_selected = self.__users_selected
+
+        " WRITE THE OPTION TWO RETURN " 
+        file_directory = 'controller/communication_file/return_option_two.txt'
+        file_content = f'send-random-{n_photos}'
+
+        file_writer = FileWriter(file_content=file_content, file_directory=file_directory)
+        file_writer.startFileWriter()
+
+        " WRITE THE SELECTED USERS "
+        file_directory = 'controller/communication_file/return_option_two/return_users_selected.txt'
+        file_content = users_selected
+
+        file_writer = FileWriter(file_content=file_content, file_directory=file_directory)
+        file_writer.startFileWriter()
+
+        " SHOWS A MESSAGE "
+        type_message = 'info'
+        title_message = 'Logging into Instagram'
+        text_message = 'We are logging into Instagram\nYou can close this window'
+
+        message = Message(type_message=type_message, title_message=title_message, text_message=text_message)
+        message.startMessage()
+
 
 class ReturnOptionThree:
 
@@ -131,6 +168,13 @@ class ReturnOptionThree:
 
         if type_return == True:
 
+            " WRITE THE OPTION THREE RETURN " 
+            file_directory = 'controller/communication_file/return_option_three.txt'
+            file_content = f'send-{writted_text}'
+
+            file_writer = FileWriter(file_content=file_content, file_directory=file_directory)
+            file_writer.startFileWriter()
+
             " SHOWS A MESSAGE "
             type_message = 'info'
             title_message = 'Logging into Instagram'
@@ -150,6 +194,7 @@ class ReturnOptionThree:
 
             message = Message(type_message=type_message, title_message=title_message, text_message=text_message)
             message.startMessage()
+
 
 class ReturnUserManipulationOption:
 
@@ -240,6 +285,13 @@ class ReturnUserManipulationOption:
 
                 " WRITE THE USERS SELECTEDS IN THE SECOND DATABASE, WHICH WILL USED LATER "
                 file_directory = f'controller/users/{user}/second_database.txt'
+                file_content = users_selected_text
+
+                file_writer = FileWriter(file_content=file_content, file_directory=file_directory)
+                file_writer.startFileWriter()
+
+                " WRITE THE USERS SELECTEDS IN THE COMMUNICATION FILE "
+                file_directory = f'controller/communication_file/return_user_manipulation/return_users_selected.txt'
                 file_content = users_selected_text
 
                 file_writer = FileWriter(file_content=file_content, file_directory=file_directory)

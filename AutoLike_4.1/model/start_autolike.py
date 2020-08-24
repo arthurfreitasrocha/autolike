@@ -124,42 +124,40 @@ class UserOption:
 
                     if return_option_two_splitted[0] == 'send':
                         break
-            
-            name_file = 'controller/communication_file/return_user_manipulation/return_selected_window.txt'
-
-            clear_return = ClearReturn(name_file)
-            clear_return.startClearReturn()
 
 
         if return_option_two == 'window_closed':
             
-            " CLEAR THE PROGRAM MEMORY "
+            " CLEAR THE PROGRAM MEMORY - START "
+
+            " RESTART THE STANDARD PHRASE "
             file_directory = 'controller/system_files/option_two/n_selected_users.txt'
             file_content = 'Here will appear\nthe number of selected users'
             file_writer = FileWriter(file_content=file_content, file_directory=file_directory)
             file_writer.startFileWriter()
 
-
+            " CATCH THE CURRENT USER "
             file_directory = 'controller/system_files/user_instagram.txt'
             file_reader = FileReader(file_directory=file_directory)
             file_content = file_reader.startFileReader()
 
             user = file_content
 
+            " CLEAR THE FILES "
+            names_file = [
+                'controller/communication_file/return_user_manipulation/return_users_selected.txt',
+                'controller/communication_file/return_user_manipulation/return_window_selected.txt'
+                f'controller/users/{user}/second_database.txt'
+                f'controller/users/{user}/temp_database.txt'
+                f'controller/users/{user}/users_accessed.txt'
+            ]
 
-            file_directory = f'controller/users/{user}/second_database.txt'
-            file_content = ''
-            file_writer = FileWriter(file_content=file_content, file_directory=file_directory)
-            file_writer.startFileWriter()
+            for name_file in names_file:
+                print(name_file)
+                clear_return = ClearReturn(name_file)
+                clear_return.startClearReturn()
 
-            file_directory = f'controller/users/{user}/users_accessed.txt'
-            file_content = ''
-            file_writer = FileWriter(file_content=file_content, file_directory=file_directory)
-            file_writer.startFileWriter()
-
-
-            start_main_menu = StartMainMenu(app_version)
-            start_main_menu.startMainMenu()
+            " CLEAR THE PROGRAM MEMORY - END "
 
         else:
 
@@ -168,7 +166,7 @@ class UserOption:
             if return_option_two_splitted[0] == 'send':
 
                 " CATCH THE USERS SELECTED "
-                file_directory = 'controller/communication_file/return_option_two/return_selected_users.txt'
+                file_directory = 'controller/communication_file/return_user_manipulation/return_users_selected.txt'
 
                 file_reader = FileReader(file_directory=file_directory)
                 file_content = file_reader.startFileReader()
@@ -176,8 +174,6 @@ class UserOption:
                 users_selected = file_content.split('-')
 
                 " CATCH THE RETURN OF OPTION TWO "
-                return_option_two = return_option_two.split('-')
-
                 kind_likes = return_option_two[1]
                 n_photos = return_option_two[2]
 
@@ -197,46 +193,116 @@ class UserOption:
                     start_option_two.startInterface(flag='failed', error=error)
 
 
-                start_main_menu = StartMainMenu(app_version)
-                start_main_menu.startMainMenu()
+        start_main_menu = StartMainMenu(app_version)
+        start_main_menu.startMainMenu()
 
 
     def startOptionThree(self):
 
-        app_version = self.__app_version
+        while(True):
 
-        start_option_one = OptionThree(app_version=app_version)
-        start_option_one.startInterface()
+            app_version = self.__app_version
 
-        return_option_one = start_option_one.readReturn()
-        return_option_one = return_option_one.split('-')
+            start_option_three = OptionThree(app_version=app_version)
+            start_option_three.startInterface()
 
-        return_option = return_option_one[0]
+            user_manipulation = UserManipulation(window='')
+            return_user_manipulation = user_manipulation.readReturn()
 
-        if return_option == 'window_closed':
+            if return_user_manipulation == 'window-select-users':
 
-            start_main_menu = StartMainMenu(app_version)
-            start_main_menu.startMainMenu()
+                select_users = SelectUsers(app_version=app_version)
+                select_users.startInterface()
 
-        else:
+            elif return_user_manipulation == 'window-view-users':
 
-            hashtag = return_option_one[0]
-            n_likes = return_option_one[1]
+                select_users = ViewUsers(app_version=app_version)
+                select_users.startInterface()
 
-            like_photos_by_hashtag = LikePhotosByHashtag(hashtag=hashtag, n_likes=n_likes)
-            return_like_photos_by_hashtag = like_photos_by_hashtag.startLikePhotosByHashtag()
+            elif return_user_manipulation == 'window-delete-users':
 
-            if return_like_photos_by_hashtag == True:
-
-                start_option_one = OptionOne(app_version)
-                start_option_one.startInterface(flag='success', n_likes=n_likes)
+                select_users = DeleteUsers(app_version=app_version)
+                select_users.startInterface()
 
             else:
 
-                error = return_like_photos_by_hashtag[1]
+                return_option_three = start_option_three.readReturn()
 
-                start_option_one = OptionOne(app_version)
-                start_option_one.startInterface(flag='failed', error=error)
+                if return_option_three == 'window_closed':
+                    break
+
+                else:
+
+                    return_option_three_splitted = return_option_three.split('-')
+
+                    if return_option_three_splitted[0] == 'send':
+                        break
+
+
+        if return_option_three == 'window_closed':
+        
+            " CLEAR THE PROGRAM MEMORY - START "
+
+            " RESTART THE STANDARD PHRASE "
+            file_directory = 'controller/system_files/option_two/n_selected_users.txt'
+            file_content = 'Here will appear\nthe number of selected users'
+            file_writer = FileWriter(file_content=file_content, file_directory=file_directory)
+            file_writer.startFileWriter()
+
+            " CATCH THE CURRENT USER "
+            file_directory = 'controller/system_files/user_instagram.txt'
+            file_reader = FileReader(file_directory=file_directory)
+            file_content = file_reader.startFileReader()
+
+            user = file_content
+
+            " CLEAR THE FILES "
+            names_file = [
+                'controller/communication_file/return_user_manipulation/return_users_selected.txt',
+                'controller/communication_file/return_user_manipulation/return_window_selected.txt'
+                f'controller/users/{user}/second_database.txt'
+                f'controller/users/{user}/temp_database.txt'
+                f'controller/users/{user}/users_accessed.txt'
+            ]
+
+            for name_file in names_file:
+                clear_return = ClearReturn(name_file)
+                clear_return.startClearReturn()
+
+            " CLEAR THE PROGRAM MEMORY - END "
+
+        else:
+
+            return_option_two_splitted = return_option_three.split('-')
+
+            if return_option_two_splitted[0] == 'send':
+
+                " CATCH THE USERS SELECTED "
+                file_directory = 'controller/communication_file/return_user_manipulation/return_users_selected.txt'
+
+                file_reader = FileReader(file_directory=file_directory)
+                file_content = file_reader.startFileReader()
+
+                users_selected = file_content.split('-')
+
+                " CATCH THE RETURN OF OPTION TWO "
+                writted_text = return_option_three[1]
+
+                #like_photos_by_users = LikePhotosByUsers(users_selected=users_selected, writted_text=writted_text, n_photos=n_photos)
+                #return_like_photos_by_users = like_photos_by_users.startLikesPhotosByUsers()
+
+                #if return_like_photos_by_users == True:
+
+                    #start_option_two = OptionTwo(app_version)
+                    #start_option_two.startInterface(flag='success', n_profiles=len(users_selected), n_likes=n_photos)
+
+                #else:
+
+                    #error = return_like_photos_by_users[1]
+
+                    #start_option_two = OptionTwo(app_version)
+                    #start_option_two.startInterface(flag='failed', error=error)
+
 
 
             start_main_menu = StartMainMenu(app_version)

@@ -1,35 +1,38 @@
 # TKINTER LIBRARY
 from tkinter import *
 
+# VIEW
+from view.Widgets import Widgets
+
 class LogoFragment:
 
-    """
-    this class returns a window with the logo of the app
-    """
     def __init__(self, window):
 
-        " constructor "
+        """
+        this class returns a window with the logo of the app
+        """
 
         " INSTANCES THE WINDOW "
-        self.window = window
+        window = window
+
+        " INSTANCES THE WIDGETS"
+        self.__widget = Widgets(window)
+        widget = self.__widget
 
         " INSTANCES THE FRAME "
-        self.logo_frame = Frame(window, width=504, height=100, bg='dark salmon')
-        self.logo_frame.pack(side=TOP)
+        self.__logo_frame = widget.startFrame(504, 100, 'dark salmon', TOP)
 
 
     def startLogoAppFragment(self, logo):
 
         " this method creates the logo app fragment "
 
-        " INSTANCES THE WINDOW "
-        window = self.window
+        " INSTANCES THE FRAME "
+        logo_frame = self.__logo_frame
 
         " INSTANCES THE LOGO OF 'AutoLike' WHICH WILL BE USED IN THE WIDGETS "
         logo = logo
 
-        " INSTANCES THE WIDGETS "
-        logo_frame = self.logo_frame
-
+        " INSTANCES THE LABEL "
         logo_label = Label(logo_frame, image=logo)
         logo_label.place(x=0, y=0)

@@ -153,6 +153,11 @@ class Widgets:
                 self.__n_likes_entry = kws.get('n_likes_entry')
                 ButtonCommands(command, window=window, hashtag_entry=self.__hashtag_entry, n_likes_entry=self.__n_likes_entry)
 
+            elif command == 'error-handling-option-two':
+
+                self.__n_photos = kws.get('n_photos')
+                ButtonCommands(command, window=window, n_photos=self.__n_photos)
+
             elif command == 'error-handling-option-three':
 
                 self.__writted_text = kws.get('writted_text')
@@ -213,7 +218,7 @@ class ButtonCommands:
         this class is responsible to execute the command passed by parameter when the button is pressed
 
         the **kws avaliable is:
-        window - hashtag_entry - n_likes_entry - users_selected - checkbutton_value - writted_text - flag
+        window - hashtag_entry - n_likes_entry - users_selected - checkbutton_value - writted_text - n_photos - flag
         """
 
         " INSTANCES THE WINDOW "
@@ -259,6 +264,12 @@ class ButtonCommands:
 
             self.startErrorHandlingOptionOne(window, hashtag_entry, n_likes_entry)
 
+        elif command == 'error-handling-option-two':
+
+            n_photos = kws.get('n_photos')
+
+            self.startErrorHandlingOptionTwo(window, n_photos)
+
         elif command == 'error-handling-option-three':
 
             writted_text = kws.get('writted_text')
@@ -288,7 +299,7 @@ class ButtonCommands:
 
             if type_button == 'button-select-users':
                 
-                file_directory = 'controller/communication_file/return_user_manipulation/return_selected_window.txt'
+                file_directory = 'controller/communication_file/return_user_manipulation/return_window_selected.txt'
                 file_content = 'window-select-users'
 
                 file_writer = FileWriter(file_content, file_directory)
@@ -307,7 +318,7 @@ class ButtonCommands:
 
                 else:
 
-                    file_directory = 'controller/communication_file/return_user_manipulation/return_selected_window.txt'
+                    file_directory = 'controller/communication_file/return_user_manipulation/return_window_selected.txt'
                     file_content = 'window-view-users'
 
                     file_writer = FileWriter(file_content, file_directory)
@@ -326,7 +337,7 @@ class ButtonCommands:
 
                 else:
 
-                    file_directory = 'controller/communication_file/return_user_manipulation/return_selected_window.txt'
+                    file_directory = 'controller/communication_file/return_user_manipulation/return_window_selected.txt'
                     file_content = 'window-delete-users'
 
                     file_writer = FileWriter(file_content, file_directory)
@@ -468,6 +479,30 @@ class ButtonCommands:
             
             return_option_one = ReturnOptionOne(window, hashtag_entry, n_likes_entry)
             return_option_one.startReturnOption(False)
+
+
+    def startErrorHandlingOptionTwo(self, window, n_photos):
+
+        " this method execute the Error Hanling of the Option Two "
+
+        " INSTANCES THE VARIABLES "
+        window = window
+        n_photos = n_photos
+
+        " INSTANCES THE ERROR HANDLING CLASS "
+        error_handling = ErrorHandlingOptionTwo(n_photos)
+        return_error_handling = error_handling.startErrorHandling()
+
+        " EXECUTE THE RETURN OPTION WITH THE RETURN OF THE ERROR HANDLING CLASS "
+        if return_error_handling == True:
+
+            return_option_three = ReturnOptionTwo(window, n_photos)
+            return_option_three.startReturnOption(True)
+
+        elif return_error_handling == False:
+
+            return_option_three = ReturnOptionTwo(window, n_photos)
+            return_option_three.startReturnOption(False)
 
 
     def startErrorHandlingOptionThree(self, window, writted_text):

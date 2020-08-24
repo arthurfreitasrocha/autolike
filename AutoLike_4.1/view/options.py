@@ -28,10 +28,21 @@ class OptionOne:
 
     def __init__(self, app_version):
         
+        " INSTANCES THE APP VERSION "
         self.__app_version = app_version
+
+        " INSTANCES THE WINDOW "
+        self.__window = Tk()
+
+        " INSTANCES THE WIDGET CLASS "
+        self.__widget = Widgets(self.__window)
 
 
     def on_close(self):
+
+        """
+        this method overwrites the on_close native method
+        """
 
         window = self.__window
 
@@ -39,7 +50,7 @@ class OptionOne:
 
         self.readReturn(window_closed=True)
 
-    
+
     def readReturn(self, **kws):
 
         " this method just read the return of 'OptionOneFragments.py' "
@@ -94,7 +105,7 @@ class OptionOne:
 
             window.destroy()
 
-    
+
     def startInterface(self, **kws):
 
         " this method starts the 'OptionOne' interface "
@@ -105,27 +116,39 @@ class OptionOne:
         
         " INSTANCES THE VARIABLES "
         app_version = self.__app_version
-
-        " INSTANCES THE WINDOW "
-        self.__window = Tk()
         window = self.__window
+        widget = self.__widget
+
+        start_message = 'Start'
+        hashtag_text = 'Hashtag'
+        n_likes_text = 'Nº Likes'
+
 
         " INSTANCES THE FRAGMENTS OF THE WINDOW "
         logo_fragment = LogoFragment(window)
-        fragments = OptionOneFragments(window)
 
         """
         FRAGMENTS - START
         """
+
         " CREATES THE LOGO IN THE WINDOW "
         logo_image = ImageTk.PhotoImage(Image.open('view/images/logo.png')) # LOGO APP
         logo_fragment.startLogoAppFragment(logo_image)
 
-        " CREATES THE LOGIN AND PASSWORD ENTRIES "
-        fragments.startEntries()
 
-        " CREATES THE SEND BUTTON "
-        fragments.startButton()
+        " INSTANCES THE FRAME "
+        hashtag_frame = widget.startFrame(500, 300, 'floral white', TOP)
+
+        " INSTANCES THE LABELS "
+        widget.startLabel(hashtag_frame, hashtag_text, 'arial-18-bold', 'floral white', 20, 30)
+        widget.startLabel(hashtag_frame, n_likes_text, 'arial-18-bold', 'floral white', 20, 80)
+        
+        " INSTANCES THE ENTRIES "
+        self.__hashtag_entry = widget.startEntry(hashtag_frame, 'arial-18-bold', 25, 150, 33)
+        self.__n_likes_entry = widget.startEntry(hashtag_frame, 'arial-18-bold', 25, 150, 83)
+
+        " INSTANCES THE BUTTON "
+        widget.startButton(hashtag_frame, start_message, 'arial-15-bold', 'dark salmon', 'salmon', 'white', 'error-handling-option-one', 240, 140, hashtag_entry=self.__hashtag_entry, n_likes_entry=self.__n_likes_entry)
 
         """
         FRAGMENTS - END
@@ -154,69 +177,6 @@ class OptionOne:
 
         window.mainloop()
 
-class OptionOneFragments:
-
-    def __init__(self, window):
-
-        """
-        this class creates and returns the option one window fragments
-        """
-        
-        " INSTANCES THE WINDOW "
-        self.__window = window
-
-        " INSTANCES THE WIDGET CLASS "
-        self.__widget = Widgets(self.__window)
-        widget = self.__widget
-
-        " INSTANCES THE FRAME "
-        self.__hashtag_frame = widget.startFrame(500, 300, 'floral white', TOP)
-
-
-    def startButton(self):
-
-        " this method creates the button "
-
-        " INSTANCES THE MESSAGE "
-        start_message = 'Start'
-
-        " INSTANCES THE WIDGETS "
-        widget = self.__widget
-
-        " INSTANCES THE FRAME"
-        start_frame = self.__hashtag_frame
-
-        " INSTANCES THE BUTTON "
-        widget.startButton(start_frame, start_message, 'arial-15-bold', 'dark salmon', 'salmon', 'white', 'error-handling-option-one', 240, 140, hashtag_entry=self.__hashtag_entry, n_likes_entry=self.__n_likes_entry)
-
-
-    def startEntries(self):
-
-        " this method shows the hashtag and number of likes entries "
-
-        " INSTANCES THE VARIABLES WHICH WILL BE USED IN THE WIDGETS "
-        hashtag_text = 'Hashtag'
-        n_likes_text = 'Nº Likes'
-
-        " INSTANCES THE WIDGETS "
-        widget = self.__widget
-
-        " INSTANCES THE WIDGETS "
-        hashtag_frame = self.__hashtag_frame
-
-        " LABEL "
-        widget.startLabel(hashtag_frame, hashtag_text, 'arial-18-bold', 'floral white', 20, 30)
-        
-        " ENTRY "
-        self.__hashtag_entry = widget.startEntry(hashtag_frame, 'arial-18-bold', 25, 150, 33)
-
-
-        " LABEL"
-        widget.startLabel(hashtag_frame, n_likes_text, 'arial-18-bold', 'floral white', 20, 80)
-
-        " ENTRY "
-        self.__n_likes_entry = widget.startEntry(hashtag_frame, 'arial-18-bold', 25, 150, 83)
-
 
 class OptionTwo:
 
@@ -225,8 +185,15 @@ class OptionTwo:
     """
 
     def __init__(self, app_version):
-        
+
+        " INSTANCES THE APP VERSION "
         self.__app_version = app_version
+
+        " INSTANCES THE WINDOW "
+        self.__window = Tk()
+
+        " INSTANCES THE WIDGET CLASS "
+        self.__widget = Widgets(self.__window)
 
 
     def on_close(self):
@@ -307,17 +274,18 @@ class OptionTwo:
         
         " INSTANCES THE VARIABLES "
         app_version = self.__app_version
-
-        " INSTANCES THE WINDOW "
-        self.__window = Tk()
         window = self.__window
+        widget = self.__widget
+
+        message_text = 'Inform the amount of photos\nwill be liked of each user'
+        text_button = 'Send'
 
         " INSTANCES THE FRAGMENTS OF THE WINDOW "
         logo_fragment = LogoFragment(window)
+
+        " INSTANCES THE USER MANIPULATION CLASS "
         user_manipulation = UserManipulation(window)
         user_manipulation.startUserManipulation()
-
-        fragments = OptionTwoFragments(window)
 
         """
         FRAGMENTS - START
@@ -327,10 +295,18 @@ class OptionTwo:
         logo_image = ImageTk.PhotoImage(Image.open('view/images/logo.png')) # LOGO APP
         logo_fragment.startLogoAppFragment(logo_image)
 
-        " CREATES THE ENTRY AND BUTTON SEND "
-        fragments.startMessageLabel(type_message='send')
-        fragments.startEntry()
-        fragments.startButton()
+
+        " INSTANCES THE FRAME "
+        message_frame = widget.startFrame(500, 150, 'floral white', TOP)
+
+        " INSTANCES THE LABEL "
+        widget.startLabel(message_frame, message_text, 'arial-15-bold', 'floral white', 110, 15)
+
+        " INSTANCES THE ENTRY "
+        self.__send_entry = widget.startEntry(message_frame, 'arial-15-bold', 10, 150, 98)
+
+        " INSTANCES THE BUTTON "
+        widget.startButton(message_frame, text_button, 'arial-15-bold', 'dark salmon', 'salmon', 'white', 'error-handling-option-two', 280, 90, n_photos=self.__send_entry.get())
 
         """
         FRAGMENTS - END
@@ -359,254 +335,30 @@ class OptionTwo:
 
         window.mainloop()
 
-class OptionTwoFragments:
-
-    """
-    this class returns the one option window fragments
-    """
-
-    def __init__(self, window):
-        
-        " INSTANCES THE WINDOW "
-        self.__window = window
-
-        " INSTANCES THE FRAME "
-        self.__message_frame = Frame(window, width=500, height=150, bg='floral white')
-        self.__message_frame.pack(side=TOP)
-
-
-    def __returnOption(self, type_return, **kws):
-        
-        " this method returns the input of the user "
-
-        " INSTANCES THE WINDOW "
-        window = self.__window
-
-        if type_return == 'send':
-
-            " VARIABLES WHICH WILL USED "
-            users_selected = kws.get('users_selected') # STR
-            kind_likes = kws.get('kind_likes') # INT
-            n_photos = kws.get('n_photos') # INT
-
-            if kind_likes == 1:
-                kind_likes = 'sequence'
-
-            elif kind_likes == 2:
-                kind_likes = 'random'
-
-            n_photos = n_photos
-            
-            " WRITE THE OPTION TWO RETURN " 
-            file_directory = 'controller/communication_file/return_option_two.txt'
-            file_content = f'send-{kind_likes}-{n_photos}'
-
-            file_writer = FileWriter(file_content=file_content, file_directory=file_directory)
-            file_writer.startFileWriter()
-
-            " WRITE THE SELECTED USERS "
-            file_directory = 'controller/communication_file/return_option_two/return_selected_users.txt'
-            file_content = users_selected
-
-            file_writer = FileWriter(file_content=file_content, file_directory=file_directory)
-            file_writer.startFileWriter()
-
-            " SHOWS A MESSAGE "
-            type_message = 'info'
-            title_message = 'Logging into Instagram'
-            text_message = 'We are logging into Instagram\nYou can close this window'
-
-            message = Message(type_message=type_message, title_message=title_message, text_message=text_message)
-            message.startMessage()
-
-            window.destroy()
-
-
-        elif type_return == 'manipulate_database':
-
-            button = kws.get('button')
-
-            file_directory = f'controller/system_files/user_instagram.txt'
-
-            file_reader = FileReader(file_directory=file_directory)
-            file_content = file_reader.startFileReader()
-
-            user = file_content
-
-            file_directory = f'controller/users/{user}/second_database.txt'
-
-            file_reader = FileReader(file_directory=file_directory)
-            file_content = file_reader.startFileReader()
-
-            if file_content == '':
-
-                " INFORMS WHAT THE 'second_database.txt' IS EMPTY " 
-                file_directory = 'controller/communication_file/return_option_two.txt'
-
-                if button == 'select_users':
-                    file_content = button
-                    window.destroy()
-                
-                else:
-                    " SHOW A MESSAGE "
-                    type_message = 'error'
-                    title_message = 'No users selected'
-                    text_message = f'Please, select at least one user before viewing or deleting him'
-
-                    message = Message(type_message, title_message, text_message)
-                    message.startMessage()
-
-                file_writer = FileWriter(file_content=file_content, file_directory=file_directory)
-                file_writer.startFileWriter()
-
-            else:
-
-                " CATCH THE DIRECTORY WHICH HAS THE 'return_option_one.txt' FILE " 
-                file_directory = 'controller/communication_file/return_option_two.txt'
-                file_content = f'{button}'
-
-                file_writer = FileWriter(file_content=file_content, file_directory=file_directory)
-                file_writer.startFileWriter()
-
-                window.destroy()
-
-
-    def __startErrorHandling(self, send_entry):
-
-        " this method verify if the typed information is valid "
-
-        " INSTANCES THE VARIABLES WHICH WILL GET THE LOGIN AND PASSWORD OF THE USER "
-        kind_likes = 2
-        send_entry = send_entry
-
-        " CATCH THE CURRENT USER "
-        file_directory = 'controller/system_files/user_instagram.txt'
-
-        file_reader = FileReader(file_directory=file_directory)
-        file_content = file_reader.startFileReader()
-
-        user = file_content
-
-        " CATCH THE SELECTED INSTAGRAM USERS "
-        file_directory = f'controller/users/{user}/second_database.txt'
-        
-        file_reader = FileReader(file_directory=file_directory)
-        file_content = file_reader.startFileReader()
-
-        users_selected = file_content
-
-        " INSTANCES THE ERROR HANDLING "
-        error_handling = ErrorHandlingOptionTwo(users_selected=users_selected, send_entry=send_entry, kind_likes=kind_likes)
-        return_EH = error_handling.startErrorHandling() # ERROR HANLING = EH
-
-        users_selected_EH = return_EH[0]
-        kind_likes_EH = return_EH[1]
-        send_entry_EH = return_EH[2]
-
-        if users_selected_EH == True and send_entry_EH == True and kind_likes_EH == True:
-
-            " CALL THE METHOD WHICH WILL WRITE THE INFORMATION "
-            self.__returnOption(type_return='send', users_selected=users_selected, kind_likes=kind_likes, n_photos=send_entry)
-
-        else:
-
-            if users_selected_EH == False and send_entry_EH == False and kind_likes_EH == False:
-                
-                " SHOWS A MESSAGE "
-                type_message = 'warning'
-                title_message = 'Warning'
-                text_message = 'Please, selected at least one Instagram User to likes\nNumber of photos will be liked invalid\nPlease, selected at least one Kind of Likes'
-
-                message = Message(type_message=type_message, title_message=title_message, text_message=text_message)
-                message.startMessage()
-
-            elif users_selected_EH == False:
-
-                " SHOWS A MESSAGE "
-                type_message = 'warning'
-                title_message = 'Warning'
-                text_message = 'Please, selected at least one Instagram User to likes'
-
-                message = Message(type_message=type_message, title_message=title_message, text_message=text_message)
-                message.startMessage()
-
-            elif kind_likes_EH == False:
-
-                " SHOWS A MESSAGE "
-                type_message = 'warning'
-                title_message = 'Warning'
-                text_message = 'Please, selected at least one Kind of Likes'
-
-                message = Message(type_message=type_message, title_message=title_message, text_message=text_message)
-                message.startMessage()
-
-            elif send_entry_EH == False:
-
-                " SHOWS A MESSAGE "
-                type_message = 'warning'
-                title_message = 'Warning'
-                text_message = 'Number of photos will be liked invalid'
-
-                message = Message(type_message=type_message, title_message=title_message, text_message=text_message)
-                message.startMessage()
-
-
-    def startEntry(self):
-
-        " INSTANCES THE FRAME "
-        entry_frame = self.__message_frame
-
-        self.__send_entry = Entry(entry_frame, font=('arial', 15), width=10)
-        self.__send_entry.place(x=150, y=98)
-
-
-    def startButton(self, ):
-
-        " this method creates the buttons which will manipulate the user database "
-
-        " INSTANCES THE WINDOW "
-        window = self.__window
-
-        " INSTANCES THE FRAME "
-        button_send_frame = self.__message_frame
-
-        " TEXT ABOUT ANY OPTION "
-        text_button = 'Send'
-
-        button_send = Button(button_send_frame, text=text_button, font=('arial', 15, 'bold'), 
-        bg='dark salmon', activebackground='salmon', activeforeground='white',
-        command=lambda:self.__startErrorHandling(send_entry=self.__send_entry.get()))
-        button_send.place(x=280, y=90)
-
-
-    def startMessageLabel(self, type_message):
-
-        " this method write a message in the window "
-
-        " INSTANCES THE WINDOW "
-        window = self.__window
-
-        " INSTANCES THE MESSAGE "
-        message_text = 'Inform the amount of photos\nwill be liked of each user'
-
-        message_frame = self.__message_frame
-
-        self.__message_label = Label(message_frame, text=message_text, font=('arial', 15, 'bold'), bg='floral white')
-        self.__message_label.place(x=110, y=15)
-
 
 class OptionThree:
 
-    """
-    this class creates the Option Three window
-    """
-
     def __init__(self, app_version):
-        
+
+        """
+        this class creates the Option Three window
+        """
+
+        " INSTANCES THE APP VERSION "
         self.__app_version = app_version
+
+        " INSTANCES THE WINDOW "
+        self.__window = Tk()
+
+        " INSTANCES THE WIDGET "
+        self.__widget = Widgets(self.__window)
 
 
     def on_close(self):
+
+        """
+        this method overwrites the on_close native method
+        """
 
         window = self.__window
 
@@ -614,14 +366,14 @@ class OptionThree:
 
         self.readReturn(window_closed=True)
 
-    
+
     def readReturn(self, **kws):
 
-        " this method just read the return of 'OptionTwoFragments.py' "
+        " this method just read the return of 'OptionThreeFragments.py' "
 
         window_closed = kws.get('window_closed')
 
-        file_directory = 'controller/communication_file/return_option_two.txt'
+        file_directory = 'controller/communication_file/return_option_three.txt'
 
         if window_closed == True:
 
@@ -678,42 +430,45 @@ class OptionThree:
         " this method starts the 'OptionTwo' interface "
 
         flag = kws.get('flag')
+        error = kws.get('error')
 
         " INSTANCES THE VARIABLES "
         app_version = self.__app_version
-
-        " INSTANCES THE WINDOW "
-        self.__window = Tk()
         window = self.__window
+        widget = self.__widget
+
+        send_message = 'Send'
+        text = 'Write the message which will be sended'
 
         " INSTANCES THE FRAGMENTS OF THE WINDOW "
         logo_fragment = LogoFragment(window)
         user_manipulation = UserManipulation(window)
         user_manipulation.startUserManipulation()
 
-        fragments = OptionThreeFragments(window)
-
         """
         FRAGMENTS - START
-        """
-
-
-        " CREATES THE MESSAGE LABEL "
-        fragments.startMessageLabel()
-
-        " CREATES THE TEXT CAMP "
-        fragments.startText()
-
-        " CREATES THE BUTTON "
-        fragments.startButton()
-
-        """
-        FRAGMENTS - END
         """
 
         " CREATES THE LOGO IN THE WINDOW "
         logo_image = ImageTk.PhotoImage(Image.open('view/images/logo.png')) # LOGO APP
         logo_fragment.startLogoAppFragment(logo_image)
+
+
+        " INSTANCES THE FRAME "
+        message_frame = widget.startFrame(500, 300, 'floral white', TOP)
+
+        " INSTANCES THE LABEL "
+        widget.startLabel(message_frame, text, 'arial-15-bold', 'floral white', 50,15)
+
+        " INSTANCES THE TEXT "
+        self.__message_text = widget.startText(message_frame, 'arial-15-bold', 41, 7, 20, 60)
+
+        " INSTANCES THE BUTTON "
+        widget.startButton(message_frame, send_message, 'arial-15-bold', 'dark salmon', 'salmon', 'white', 'error-handling-option-three', 220, 245, writted_text=self.__message_text)
+
+        """
+        FRAGMENTS - END
+        """
 
         " CONFIGURES THE WINDOW "
         window_configuration = WindowConfiguration(window, width=500, height=550, width_distance=3, height_distance=5)
@@ -730,75 +485,9 @@ class OptionThree:
         window.geometry(window_geometry)
 
         if flag == 'success':
-            self.flag(flag=flag, n_profiles=n_profiles, n_likes=n_likes)
+            self.flag(flag=flag)
         
         elif flag == 'failed':
             self.flag(flag=flag, error=error)
 
         window.mainloop()
-
-class OptionThreeFragments:
-
-    """
-    this class returns the option three window fragments
-    """
-
-    def __init__(self, window):
-        
-        " INSTANCES THE WINDOW "
-        self.__window = window
-
-        " INSTANCES THE WIDGET "
-        self.__widget = Widgets(window)
-        widget = self.__widget
-
-        " INSTANCES THE FRAME "
-        self.__message_frame = widget.startFrame(500, 300, 'floral white', TOP)
-
-
-    def startButton(self):
-
-        " this method show the button which will return the information writted in the entries "
-
-        " INSTANCES THE WIDGET "
-        widget = self.__widget
-
-        " INSTANCES THE MESSAGE "
-        start_message = 'Start'
-
-        " INSTANCES THE WIDGETS "
-        start_frame = self.__message_frame
-
-        " INSTANCES THE BUTTON "
-        widget.startButton(start_frame, start_message, 'arial-15-bold', 'dark salmon', 'salmon', 'white', 'error-handling-option-three', 220, 245, writted_text=self.__message_text)
-
-
-    def startText(self):
-
-        " this method shows the text widget "
-
-        " INSTANCES THE WIDGET "
-        widget = self.__widget
-
-        " INSTANCES THE FRAME "
-        message_frame = self.__message_frame
-
-        " INSTANCES THE TEXT WIDGET "
-        self.__message_text = widget.startText(message_frame, 'arial-15-bold', 41, 7, 20, 60)
-
-
-    def startMessageLabel(self):
-
-        " this method shows the labels "
-
-        " INSTANCES THE WIDGET "
-        widget = self.__widget
-
-        " INSTANCES THE FRAME "
-        message_frame = self.__message_frame
-
-        " INSTANCES THE TEXT VARIABLE "
-        text = 'Write the message which will be sended'
-
-        " INSTANCES THE LABEL WIDGET "
-        widget.startLabel(message_frame, text, 'arial-15-bold', 'floral white', 50,15)

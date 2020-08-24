@@ -58,11 +58,9 @@ class ErrorHandlingOptionOne:
 
 class ErrorHandlingOptionTwo:
 
-    def __init__(self, users_selected, kind_likes, send_entry):
+    def __init__(self, n_photos):
         
-        self.__users_selected = users_selected
-        self.__kind_likes = kind_likes
-        self.__send_entry = send_entry
+        self.__n_photos = n_photos
 
 
     def startErrorHandling(self):
@@ -70,32 +68,14 @@ class ErrorHandlingOptionTwo:
         " this method verify if the information what the user writted (in Option Two window) is valid "
 
         " INSTANCES THE VARIABLES WHICH WILL BE USED TO "
-        users_selected = self.__users_selected
-        kind_likes = self.__kind_likes
-        send_entry = self.__send_entry
-        validation = [False, False, False] #users_selected, kind_likes, send_entry
+        n_photos = self.__n_photos
 
         " VALIDATES THE ENTRY AND THE KIND OF LIKES OPTION "
-        if users_selected == '' or send_entry == '':
-            
-            if users_selected != '':
-                validation[0] = True
-
-            if kind_likes > 0 and kind_likes < 3:
-                validation[1] = True
+        if n_photos != '' and n_photos.isnumeric() == False:
+            return True
 
         else:
-
-            if users_selected != '':
-                validation[0] = True
-
-            if kind_likes > 0 and kind_likes < 3:
-                validation[1] = True
-
-            if send_entry.isnumeric() == True:
-                validation[2] = True
-
-        return validation
+            return False
 
 
 class ErrorHandlingOptionThree:

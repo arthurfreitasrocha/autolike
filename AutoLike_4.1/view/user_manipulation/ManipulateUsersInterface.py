@@ -182,9 +182,6 @@ class ViewUsers:
 
         " INSTANCES THE WINDOW "
         window = self.__window
-            
-        n_profiles = kws.get('n_profiles')
-        n_likes = kws.get('n_likes')
 
         " SHOW A MESSAGE "
         type_message = 'info'
@@ -302,9 +299,6 @@ class DeleteUsers:
 
         " INSTANCES THE WINDOW "
         window = self.__window
-            
-        n_profiles = kws.get('n_profiles')
-        n_likes = kws.get('n_likes')
 
         " SHOW A MESSAGE "
         type_message = 'info'

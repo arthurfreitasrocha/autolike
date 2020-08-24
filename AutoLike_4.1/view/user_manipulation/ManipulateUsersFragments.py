@@ -104,19 +104,6 @@ class MasterWidgets:
             x = 170
             y = 17
 
-        elif type_message == 'user_options':
-
-            " INSTANCES THE MESSAGE "
-            message_text = 'Kind of likes'
-
-            " INSTANCES THE FRAME PROPORTIONS "
-            width = 500
-            height = 90
-
-            " INSTANCES THE LOCATION OF THE MESSAGE "
-            x = 200
-            y = 10
-
         elif type_message == 'send':
 
             " INSTANCES THE MESSAGE "

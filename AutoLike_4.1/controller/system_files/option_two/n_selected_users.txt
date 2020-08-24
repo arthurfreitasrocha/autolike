@@ -1,2 +1,1 @@
-Here will appear
-the number of selected users
+40 users selected

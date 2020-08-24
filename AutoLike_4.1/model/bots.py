@@ -74,6 +74,7 @@ class GeneralOptions:
 
         return driver
 
+
 class VerifyInstagramUser:
 
     """

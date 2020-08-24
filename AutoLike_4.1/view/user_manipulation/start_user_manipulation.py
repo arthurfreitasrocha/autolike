@@ -25,7 +25,7 @@ class UserManipulation:
 
         " this method just read the return of 'OptionTwoFragments.py' "
 
-        file_directory = 'controller/communication_file/return_user_manipulation/return_selected_window.txt'
+        file_directory = 'controller/communication_file/return_user_manipulation/return_window_selected.txt'
 
         file_reader = FileReader(file_directory=file_directory)
         file_content = file_reader.startFileReader()
