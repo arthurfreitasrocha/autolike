@@ -266,16 +266,35 @@ class ButtonCommands:
 
         elif command == 'error-handling-option-two':
 
-            n_photos = kws.get('n_photos')
+            " CATCH THE USERS SELECTED "
+            file_directory = 'controller/communication_file/return_user_manipulation/return_users_selected.txt'
 
-            self.startErrorHandlingOptionTwo(window, n_photos)
+            file_reader = FileReader(file_directory=file_directory)
+            file_content = file_reader.startFileReader()
+
+            users_selected = file_content
+
+            " INSTANCES THE N_PHOTOS "
+            n_photos = kws.get('n_photos')
+            n_photos = n_photos.get()
+
+            self.startErrorHandlingOptionTwo(window, users_selected, n_photos)
 
         elif command == 'error-handling-option-three':
 
+            " CATCH THE USERS SELECTED "
+            file_directory = 'controller/communication_file/return_user_manipulation/return_users_selected.txt'
+
+            file_reader = FileReader(file_directory=file_directory)
+            file_content = file_reader.startFileReader()
+
+            users_selected = file_content
+
+            " INSTANCES THE WRITTED_TEXT "
             writted_text = kws.get('writted_text')
             writted_text = writted_text.get("1.0", END)
 
-            self.startErrorHandlingOptionThree(window, writted_text)
+            self.startErrorHandlingOptionThree(window, users_selected, writted_text)
 
 
     def startTypeButton(self, type_button, **kws):
@@ -481,16 +500,17 @@ class ButtonCommands:
             return_option_one.startReturnOption(False)
 
 
-    def startErrorHandlingOptionTwo(self, window, n_photos):
+    def startErrorHandlingOptionTwo(self, window, users_selected, n_photos):
 
         " this method execute the Error Hanling of the Option Two "
 
         " INSTANCES THE VARIABLES "
         window = window
+        users_selected = users_selected
         n_photos = n_photos
 
         " INSTANCES THE ERROR HANDLING CLASS "
-        error_handling = ErrorHandlingOptionTwo(n_photos)
+        error_handling = ErrorHandlingOptionTwo(users_selected, n_photos)
         return_error_handling = error_handling.startErrorHandling()
 
         " EXECUTE THE RETURN OPTION WITH THE RETURN OF THE ERROR HANDLING CLASS "
@@ -505,16 +525,17 @@ class ButtonCommands:
             return_option_three.startReturnOption(False)
 
 
-    def startErrorHandlingOptionThree(self, window, writted_text):
+    def startErrorHandlingOptionThree(self, window, users_selected, writted_text):
 
         " this method execute the Error Hanling of the Option Three "
 
         " INSTANCES THE VARIABLES "
         window = window
+        users_selected = users_selected
         writted_text = writted_text
 
         " INSTANCES THE ERROR HANDLING CLASS "
-        error_handling = ErrorHandlingOptionThree(writted_text)
+        error_handling = ErrorHandlingOptionThree(users_selected, writted_text)
         return_error_handling = error_handling.startErrorHandling()
 
         " EXECUTE THE RETURN OPTION WITH THE RETURN OF THE ERROR HANDLING CLASS "

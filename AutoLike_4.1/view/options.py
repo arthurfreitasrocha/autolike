@@ -17,6 +17,8 @@ from view.WindowConfiguration import WindowConfiguration
 from view.Message import Message
 
 # CONTROLLER
+from controller.clear_return import ClearReturn
+
 from controller.file_manipulator import FileReader
 from controller.file_manipulator import FileWriter
 
@@ -180,11 +182,16 @@ class OptionOne:
 
 class OptionTwo:
 
-    """
-    this class creates the Option Two window
-    """
-
     def __init__(self, app_version):
+
+        """
+        this class creates the Option Two window
+        """
+
+        name_file = 'controller/communication_file/return_user_manipulation/return_window_selected.txt'
+
+        clear_return = ClearReturn(name_file)
+        clear_return.startClearReturn()
 
         " INSTANCES THE APP VERSION "
         self.__app_version = app_version
@@ -204,7 +211,7 @@ class OptionTwo:
 
         self.readReturn(window_closed=True)
 
-    
+
     def readReturn(self, **kws):
 
         " this method just read the return of 'OptionTwoFragments.py' "
@@ -306,7 +313,7 @@ class OptionTwo:
         self.__send_entry = widget.startEntry(message_frame, 'arial-15-bold', 10, 150, 98)
 
         " INSTANCES THE BUTTON "
-        widget.startButton(message_frame, text_button, 'arial-15-bold', 'dark salmon', 'salmon', 'white', 'error-handling-option-two', 280, 90, n_photos=self.__send_entry.get())
+        widget.startButton(message_frame, text_button, 'arial-15-bold', 'dark salmon', 'salmon', 'white', 'error-handling-option-two', 280, 90, n_photos=self.__send_entry)
 
         """
         FRAGMENTS - END
@@ -343,6 +350,11 @@ class OptionThree:
         """
         this class creates the Option Three window
         """
+
+        name_file = 'controller/communication_file/return_user_manipulation/return_window_selected.txt'
+
+        clear_return = ClearReturn(name_file)
+        clear_return.startClearReturn()
 
         " INSTANCES THE APP VERSION "
         self.__app_version = app_version
@@ -430,6 +442,8 @@ class OptionThree:
         " this method starts the 'OptionTwo' interface "
 
         flag = kws.get('flag')
+        n_profiles = kws.get('n_profiles')
+        n_likes = kws.get('n_likes')
         error = kws.get('error')
 
         " INSTANCES THE VARIABLES "
@@ -485,7 +499,7 @@ class OptionThree:
         window.geometry(window_geometry)
 
         if flag == 'success':
-            self.flag(flag=flag)
+            self.flag(flag=flag, n_profiles=n_profiles, n_likes=n_likes)
         
         elif flag == 'failed':
             self.flag(flag=flag, error=error)

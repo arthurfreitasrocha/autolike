@@ -30,18 +30,19 @@ class VerifyUser:
 
 class VerifyUserDatabase:
 
-    """
-    this class return a boll calling if the 'moment_user' informed is already liked
-    """
-
     def __init__(self, user_instagram, moment_user):
-        
+
+        """
+        this class returns a boll telling if the 'moment_user' informed is already liked
+        """
+
         self.__user_instagram = user_instagram
         self.__moment_user = moment_user
 
+
     def startVerifyUserDatabase(self):
 
-        " this method return a boll calling if the 'moment_user' informed is already liked "
+        " this method returns a boll if the 'moment_user' informed is already liked "
         
         " INSTANCES THE VARIABLES "
         user_instagram = self.__user_instagram
@@ -55,8 +56,9 @@ class VerifyUserDatabase:
 
         users_database = users_database.split('-')
         
-        " THIS VARIABLE IS RESPONSIBLE TO CALL IF THE MOMENT USER IS ALREADY LIKED "
+        " THIS VARIABLE IS RESPONSIBLE TO TELL IF THE MOMENT USER IS ALREADY LIKED "
         user_was_liked = False
+
 
         " VERIFY IF THE MOMENT USER IS ALREADY LIKED "
         for user_database in users_database:
@@ -64,9 +66,5 @@ class VerifyUserDatabase:
             if user_database == moment_user:
                 user_was_liked = True
 
-        " IF THE MOMENT USER IS ALREADY LIKED THE METHOD RETURNS TRUE "
-        if user_was_liked == True:
-            return True
 
-        else:
-            return False
+        return user_was_liked

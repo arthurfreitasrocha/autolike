@@ -58,8 +58,9 @@ class ErrorHandlingOptionOne:
 
 class ErrorHandlingOptionTwo:
 
-    def __init__(self, n_photos):
+    def __init__(self, users_selected, n_photos):
         
+        self.__users_selected = users_selected
         self.__n_photos = n_photos
 
 
@@ -67,21 +68,39 @@ class ErrorHandlingOptionTwo:
 
         " this method verify if the information what the user writted (in Option Two window) is valid "
 
-        " INSTANCES THE VARIABLES WHICH WILL BE USED TO "
+        " INSTANCES THE VARIABLES "
+        users_selected = self.__users_selected
         n_photos = self.__n_photos
+        validation = [False, False]
+
+
+        " VALIDATES IF THE USER SELECTED AT LEAST ONE INSTAGRAM PROFILE "
+        if users_selected != '':
+            validation[0] = True
+        
+        else:
+            validation[0] = False
 
         " VALIDATES THE ENTRY AND THE KIND OF LIKES OPTION "
-        if n_photos != '' and n_photos.isnumeric() == False:
-            return True
+        if n_photos != '' and n_photos.isnumeric() == True:
+            validation[1] = True
 
+        else:
+            validation[1] = False
+
+
+        if validation[0] == True and validation[1] == True:
+            return True
+        
         else:
             return False
 
 
 class ErrorHandlingOptionThree:
 
-    def __init__(self, writted_text):
+    def __init__(self, users_selected, writted_text):
         
+        self.__users_selected = users_selected
         self.__writted_text = writted_text
 
 
@@ -89,14 +108,31 @@ class ErrorHandlingOptionThree:
 
         " this method verify if the typed information is valid "
 
-        " INSTANCES THE VARIABLE WHICH WILL STORE THE MESSAGE WRITTED BY THE USER "
+        " INSTANCES THE VARIABLES "
+        users_selected = self.__users_selected
         writted_text = self.__writted_text
+        validation = [False, False]
+
+
+        " VALIDATES IF THE USER SELECTED AT LEAST ONE INSTAGRAM PROFILE "
+        if users_selected != '':
+            validation[0] = True
+        
+        else:
+            validation[0] = False
 
         if writted_text == '' or writted_text == '\n':
-            return False
+            validation[1] = False
 
         else:
+            validation[1] = True
+
+
+        if validation[0] == True and validation[1] == True:
             return True
+        
+        else:
+            return False
 
 
 class ErrorHandlingEmail:

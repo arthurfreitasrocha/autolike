@@ -104,48 +104,46 @@ class ReturnOptionOne:
 
 class ReturnOptionTwo:
 
-    def __init__(self, window, n_photos, users_selected):
+    def __init__(self, window, n_photos):
         
         self.__window = window
         self.__n_photos = n_photos
 
-        " CATCH THE USERS SELECTED "
-        file_directory = 'controller/communication_file/return_user_manipulation/return_users_selected.txt'
-        file_content = ''
 
-        file_reader = FileReader(file_directory=file_directory)
-        file_content = file_reader.startFileReader()
-
-        self.__users_selected = file_content
-
-
-    def startReturnOption(self):
+    def startReturnOption(self, type_return):
 
         " INSTANCE THE VARIABLES "
+        window = self.__window
         n_photos = self.__n_photos
-        users_selected = self.__users_selected
 
-        " WRITE THE OPTION TWO RETURN " 
-        file_directory = 'controller/communication_file/return_option_two.txt'
-        file_content = f'send-random-{n_photos}'
+        if type_return == True:
 
-        file_writer = FileWriter(file_content=file_content, file_directory=file_directory)
-        file_writer.startFileWriter()
+            " WRITE THE OPTION TWO RETURN " 
+            file_directory = 'controller/communication_file/return_option_two.txt'
+            file_content = f'send-random-{n_photos}'
 
-        " WRITE THE SELECTED USERS "
-        file_directory = 'controller/communication_file/return_option_two/return_users_selected.txt'
-        file_content = users_selected
+            file_writer = FileWriter(file_content=file_content, file_directory=file_directory)
+            file_writer.startFileWriter()
 
-        file_writer = FileWriter(file_content=file_content, file_directory=file_directory)
-        file_writer.startFileWriter()
+            " SHOWS A MESSAGE "
+            type_message = 'info'
+            title_message = 'Logging into Instagram'
+            text_message = 'We are logging into Instagram\nYou can close this window'
 
-        " SHOWS A MESSAGE "
-        type_message = 'info'
-        title_message = 'Logging into Instagram'
-        text_message = 'We are logging into Instagram\nYou can close this window'
+            message = Message(type_message=type_message, title_message=title_message, text_message=text_message)
+            message.startMessage()
 
-        message = Message(type_message=type_message, title_message=title_message, text_message=text_message)
-        message.startMessage()
+            window.destroy()
+
+        else:
+
+            " SHOWS A MESSAGE "
+            type_message = 'warning'
+            title_message = 'Warning'
+            text_message = 'One or more information invalid\n\nNOTE: Are you sure you have selected any Instagram profile?'
+
+            message = Message(type_message=type_message, title_message=title_message, text_message=text_message)
+            message.startMessage()
 
 
 class ReturnOptionThree:
@@ -164,7 +162,6 @@ class ReturnOptionThree:
         window = self.__window
         writted_text = self.__writted_text
         type_return = type_return
-
 
         if type_return == True:
 
@@ -190,7 +187,7 @@ class ReturnOptionThree:
             " SHOWS A MESSAGE "
             type_message = 'warning'
             title_message = 'Warning'
-            text_message = 'Please, write a message.'
+            text_message = 'Please, write a message.\n\nNOTE: Are you sure you have selected any Instagram profile?'
 
             message = Message(type_message=type_message, title_message=title_message, text_message=text_message)
             message.startMessage()
@@ -298,7 +295,7 @@ class ReturnUserManipulationOption:
                 file_writer.startFileWriter()
 
                 " UPDATE THE NUMBER OF USERS IN THE SECOND DATABASE "
-                file_directory = f'controller/system_files/option_two/n_selected_users.txt'
+                file_directory = f'controller/system_files/user_manipulation/n_selected_users.txt'
                 file_content = f'{len(users_selected)} users selected'
 
                 file_writer = FileWriter(file_content=file_content, file_directory=file_directory)
@@ -371,7 +368,7 @@ class ReturnUserManipulationOption:
             file_writer.startFileWriter()
 
             " UPDATE THE NUMBER OF USERS IN THE SECOND DATABASE "
-            file_directory = f'controller/system_files/option_two/n_selected_users.txt'
+            file_directory = f'controller/system_files/user_manipulation/n_selected_users.txt'
             if len(second_database) != 0:
                 file_content = f'{len(second_database)} users selected'
             

@@ -52,7 +52,7 @@ class WindowConfiguration:
         final_width_distance = int(screen_width/width_distance)
         final_height_distance = int(screen_height/height_distance)
 
-        " FINALY, THE 'window_geometry' VARIABLE IS CREATED "
+        " FINALLY, THE 'window_geometry' VARIABLE IS CREATED "
         " THE 'window_geometry' VARIABLE IS USED TO INFORM "
         " THE USER OF THE FINAL WINDOW GEOMETRY "
         window_geometry = f'{width}x{height}+{final_width_distance}+{final_height_distance}'

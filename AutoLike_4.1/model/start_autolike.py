@@ -24,9 +24,56 @@ from model.bots import LikePhotosByHashtag
 from model.bots import LikePhotosByUsers
 
 
+class InternalClearReturn:
+
+    def __init__(self):
+
+        " CATCH THE CURRENT USER "
+        file_directory = 'controller/system_files/user_instagram.txt'
+        file_reader = FileReader(file_directory=file_directory)
+        file_content = file_reader.startFileReader()
+
+        user = file_content
+        
+        " INSTANCES THE LIST WITH THE NAME FILES"
+        self.__names_file = [
+            'controller/communication_file/return_bot.txt',
+            'controller/communication_file/return_email.txt',
+            'controller/communication_file/return_main_menu.txt',
+            'controller/communication_file/return_option_one.txt',
+            'controller/communication_file/return_option_two.txt',
+            'controller/communication_file/return_option_three.txt',
+            'controller/communication_file/return_user_manipulation/return_users_selected.txt',
+            'controller/communication_file/return_user_manipulation/return_window_selected.txt',
+            f'controller/users/{user}/second_database.txt',
+            f'controller/users/{user}/temp_database.txt',
+            f'controller/users/{user}/users_accessed.txt'
+        ]
+
+
+    def startInternalClearReturn(self):
+
+        " RESTART THE STANDARD PHRASE "
+        file_directory = 'controller/system_files/user_manipulation/n_selected_users.txt'
+        file_content = 'Here will appear\nthe number of selected users'
+        file_writer = FileWriter(file_content=file_content, file_directory=file_directory)
+        file_writer.startFileWriter()
+
+
+        " CLEAR THE FILES "
+        names_file = self.__names_file
+
+        for name_file in names_file:
+            clear_return = ClearReturn(name_file)
+            clear_return.startClearReturn()
+
+
 class UserOption:
 
     def __init__(self, app_version, user_option):
+
+        clear_return = InternalClearReturn()
+        clear_return.startInternalClearReturn()
         
         self.__app_version = app_version
         user_option = user_option
@@ -59,6 +106,9 @@ class UserOption:
 
 
         if return_option == 'window_closed':
+
+            clear_return = InternalClearReturn()
+            clear_return.startInternalClearReturn()
 
             start_main_menu = StartMainMenu(app_version)
             start_main_menu.startMainMenu()
@@ -127,37 +177,9 @@ class UserOption:
 
 
         if return_option_two == 'window_closed':
-            
-            " CLEAR THE PROGRAM MEMORY - START "
 
-            " RESTART THE STANDARD PHRASE "
-            file_directory = 'controller/system_files/option_two/n_selected_users.txt'
-            file_content = 'Here will appear\nthe number of selected users'
-            file_writer = FileWriter(file_content=file_content, file_directory=file_directory)
-            file_writer.startFileWriter()
-
-            " CATCH THE CURRENT USER "
-            file_directory = 'controller/system_files/user_instagram.txt'
-            file_reader = FileReader(file_directory=file_directory)
-            file_content = file_reader.startFileReader()
-
-            user = file_content
-
-            " CLEAR THE FILES "
-            names_file = [
-                'controller/communication_file/return_user_manipulation/return_users_selected.txt',
-                'controller/communication_file/return_user_manipulation/return_window_selected.txt'
-                f'controller/users/{user}/second_database.txt'
-                f'controller/users/{user}/temp_database.txt'
-                f'controller/users/{user}/users_accessed.txt'
-            ]
-
-            for name_file in names_file:
-                print(name_file)
-                clear_return = ClearReturn(name_file)
-                clear_return.startClearReturn()
-
-            " CLEAR THE PROGRAM MEMORY - END "
+            clear_return = InternalClearReturn()
+            clear_return.startInternalClearReturn()
 
         else:
 
@@ -241,41 +263,14 @@ class UserOption:
 
         if return_option_three == 'window_closed':
         
-            " CLEAR THE PROGRAM MEMORY - START "
-
-            " RESTART THE STANDARD PHRASE "
-            file_directory = 'controller/system_files/option_two/n_selected_users.txt'
-            file_content = 'Here will appear\nthe number of selected users'
-            file_writer = FileWriter(file_content=file_content, file_directory=file_directory)
-            file_writer.startFileWriter()
-
-            " CATCH THE CURRENT USER "
-            file_directory = 'controller/system_files/user_instagram.txt'
-            file_reader = FileReader(file_directory=file_directory)
-            file_content = file_reader.startFileReader()
-
-            user = file_content
-
-            " CLEAR THE FILES "
-            names_file = [
-                'controller/communication_file/return_user_manipulation/return_users_selected.txt',
-                'controller/communication_file/return_user_manipulation/return_window_selected.txt'
-                f'controller/users/{user}/second_database.txt'
-                f'controller/users/{user}/temp_database.txt'
-                f'controller/users/{user}/users_accessed.txt'
-            ]
-
-            for name_file in names_file:
-                clear_return = ClearReturn(name_file)
-                clear_return.startClearReturn()
-
-            " CLEAR THE PROGRAM MEMORY - END "
+            clear_return = InternalClearReturn()
+            clear_return.startInternalClearReturn()
 
         else:
 
-            return_option_two_splitted = return_option_three.split('-')
+            return_option_three_splitted = return_option_three.split('-')
 
-            if return_option_two_splitted[0] == 'send':
+            if return_option_three_splitted[0] == 'send':
 
                 " CATCH THE USERS SELECTED "
                 file_directory = 'controller/communication_file/return_user_manipulation/return_users_selected.txt'
@@ -308,10 +303,16 @@ class UserOption:
             start_main_menu = StartMainMenu(app_version)
             start_main_menu.startMainMenu()
 
+        start_main_menu = StartMainMenu(app_version)
+        start_main_menu.startMainMenu()
+
 
 class StartEmail:
 
     def __init__(self, app_version, password_status, password, login):
+
+        clear_return = InternalClearReturn()
+        clear_return.startInternalClearReturn()
         
         self.__app_version = app_version
         self.__password_status = password_status
@@ -373,9 +374,13 @@ class StartEmail:
                     start_main_menu = StartMainMenu(app_version)
                     start_main_menu.startMainMenu()
 
+
 class StartMainMenu:
 
     def __init__(self, app_version, **kws):
+
+        clear_return = InternalClearReturn()
+        clear_return.startInternalClearReturn()
         
         self.__app_version = app_version
         self.__flag = kws.get('flag')
@@ -426,6 +431,9 @@ class StartAutoLike:
     this class starts AutoLike
     """
     def __init__(self):
+
+        clear_return = InternalClearReturn()
+        clear_return.startInternalClearReturn()
 
         variables = StartDatabase()
         variables = variables.readDatabase()

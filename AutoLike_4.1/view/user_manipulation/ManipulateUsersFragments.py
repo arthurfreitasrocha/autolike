@@ -70,7 +70,7 @@ class MasterWidgets:
         
         if type_message == 'database_options-no_user':
 
-            file_directory = 'controller/system_files/option_two/n_selected_users.txt'
+            file_directory = 'controller/system_files/user_manipulation/n_selected_users.txt'
 
             file_reader = FileReader(file_directory=file_directory)
             file_content = file_reader.startFileReader()
@@ -88,7 +88,7 @@ class MasterWidgets:
 
         elif type_message == 'database_options':
 
-            file_directory = 'controller/system_files/option_two/n_selected_users.txt'
+            file_directory = 'controller/system_files/user_manipulation/n_selected_users.txt'
 
             file_reader = FileReader(file_directory=file_directory)
             file_content = file_reader.startFileReader()

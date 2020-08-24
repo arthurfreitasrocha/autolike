@@ -10,6 +10,7 @@ from model.clear_user_publications import ClearUserPublications
 # CONTROLLER
 from controller.verifications import VerifyUserDatabase
 from controller.file_manipulator import FileReader
+from controller.file_manipulator import FileWriter
 from controller.file_manipulator import FileAppender
 
 # EXTRA LIBRARY'S
@@ -18,61 +19,149 @@ import os
 
 class GeneralOptions:
 
-    def __init__(self):
-
-        pass
-
-
-    def startCloseDialogBox(self):
-
-        " this method just closes the dialog boxes that will appear during the bot's execution "
-
-        " INSTANCES THE DRIVER "
-        driver = self.__driver
-
-        box_one = driver.find_element(By.CLASS_NAME, 'sqdOP.yWX7d.y3zKF')
-        box_one.click()
-
-        time.sleep(3)
-
-        box_two = driver.find_element(By.CLASS_NAME, 'aOOlW.HoLwm')
-        box_two.click()
-
-
-    def startLogin(self, user_instagram, password_instagram):
-
-        " this method login the user in the Instagram "
-
-        " INSTANCES THE DRIVER "
-        driver = self.__driver
+    def __init__(self, driver, user_instagram, password_instagram):
 
         " INSTANCES THE VARIABLES "
         user_instagram = user_instagram
         password_instagram = password_instagram
 
-        " WRITE THE USER EMAIL AND THE USER PASSWORD IN THE ENTRIES "
-        driver.find_element(By.NAME, 'username').send_keys(user_instagram)
-        driver.find_element(By.NAME, 'password').send_keys(password_instagram)
+        first_return = False
+        second_return = False
+        third_return = False
 
-        " SEARCH AND CLICK IN THE LOGIN BUTTON "
-        login_button = driver.find_elements(By.TAG_NAME, 'button')
-        login_button[1].click()
+        self.__driver = driver
 
 
-    def startConfigurationAndAccessTheWebsite(self):
+        " ACCESS THE INSTAGRAM WEBSITE "
+        first_return = self.__startAccessTheWebsite()
 
-        " this method configures the Selenium and access the Instagram "
+        time.sleep(2)
 
-        " CONFIGURATION "
-        options = Options()
-        options.headless = False
-        self.__driver = webdriver.Chrome(executable_path='C:\chromedriver.exe', chrome_options=options)
-        driver = self.__driver
+        " EACH ACTION JUST WILL CONTINUE IF THE PREVIOUS ACTION RETURNS TRUE "
+        if first_return == True:
 
-        " ACCESS THE INSTAGRAM "
-        driver.get('https://www.instagram.com/')
+            " DOES LOGIN IN INSTAGRAM "
+            second_return = self.__startLogin(user_instagram, password_instagram)
 
-        return driver
+        time.sleep(2)
+
+        if second_return == True:
+
+            " CLOSES THE BORING DIALOG BOXES "
+            third_return = self.__startCloseDialogBox()
+
+
+        " IF ALL ACTION RETURNS TRUE, THE FINAL RETURN IS WRITTED - IF NOT, ALL THE RETURNS OF EACH ACTION WILL BE WRITTEN "
+        if first_return == True and second_return == True and third_return == True:
+
+            " WRITE THE RETURN OF FINAL RETURN "
+            file_directory = 'controller/communication_file/return_bot.txt'
+            file_content = 'True'
+
+            file_writer = FileWriter(file_content, file_directory)
+            file_writer.startFileWriter()
+
+        else:
+
+            returns = [
+                first_return,
+                second_return,
+                third_return
+            ]
+
+            for each_return in returns:
+                if each_return == True:
+                    each_return = 'True'
+
+                else:
+                    each_return = 'False'
+
+
+            " WRITE THE RETURN OF FINAL RETURN "
+            file_directory = 'controller/communication_file/return_bot.txt'
+            file_content = f'{first_return}-{second_return}-{third_return}'
+
+            file_writer = FileWriter(file_content, file_directory)
+            file_writer.startFileWriter()
+
+
+    def __startCloseDialogBox(self):
+
+        " this method just closes the dialog boxes that will appear during the bot's execution "
+
+        try:
+
+            " INSTANCES THE WEBDRIVER "
+            driver = self.__driver
+
+            box_one = driver.find_element(By.CLASS_NAME, 'sqdOP.yWX7d.y3zKF')
+            box_one.click()
+
+            time.sleep(3)
+
+            box_two = driver.find_element(By.CLASS_NAME, 'aOOlW.HoLwm')
+            box_two.click()
+
+            return True
+
+        except:
+
+            return False
+
+
+    def __startLogin(self, user_instagram, password_instagram):
+
+        " this method login the user in the Instagram "
+
+        try:
+
+            " INSTANCES THE WEBDRIVER "
+            driver = self.__driver
+
+            " INSTANCES THE VARIABLES "
+            user_instagram = user_instagram
+            password_instagram = password_instagram
+
+            " WRITE THE USER EMAIL AND THE USER PASSWORD IN THE ENTRIES "
+            driver.find_element(By.NAME, 'username').send_keys(user_instagram)
+            driver.find_element(By.NAME, 'password').send_keys(password_instagram)
+
+            " SEARCH AND CLICK IN THE LOGIN BUTTON "
+            login_button = driver.find_elements(By.TAG_NAME, 'button')
+            login_button[1].click()
+
+            try:
+
+                driver.find_element_by_id('slfErrorAlert')
+
+                return False
+
+            except:
+
+                return True
+
+        except:
+
+            return False
+
+
+    def __startAccessTheWebsite(self):
+
+        " this method access the Instagram "
+
+        try:
+
+            " INSTANCES THE DRIVER "
+            driver = self.__driver
+
+            " ACCESS THE INSTAGRAM "
+            driver.get('https://www.instagram.com/')
+
+            return True
+
+        except:
+
+            return False
 
 
 class VerifyInstagramUser:
@@ -125,7 +214,7 @@ class VerifyInstagramUser:
         try:
             
             " TRY TO FIND THE ERROR MESSAGE "
-            invalid_account = driver.find_element_by_id('slfErrorAlert')
+            driver.find_element_by_id('slfErrorAlert')
             print(f'FAILED TO LOGIN INTO [{user_login}] INSTAGRAM ACCOUNT')
 
             " CLOSES THE DRIVER "
@@ -144,21 +233,121 @@ class VerifyInstagramUser:
             " IF NOT, THE INSTAGRAM LOGIN WILL BE A SUCCESS "
             return True
 
+
 class LikePhotosByHashtag:
 
-    """
-    this class like N photos based in the hashtag passed by the user
-    """
     def __init__(self, hashtag, n_likes):
-        
+
+        """
+        this class like N photos based in the hashtag passed by the user
+        """
+
+        " NECESSARY FUNCTIONS "
+        def webDriverConfiguration():
+
+            """
+            this function is responsible to configures and returns the webdriver
+            """
+
+            " CONFIGURATION "
+            options = Options()
+            options.headless = False
+
+            " INSTANCES THE WEBDRIVER "
+            driver = webdriver.Chrome(executable_path='C:\chromedriver.exe', chrome_options=options)
+
+            return driver
+
+        def userInformation():
+
+            """
+            this function is responsible to catch the user and password Instagram of the current AutoLike's user
+            """
+            
+            " CATCHING THE USER "
+            file_directory = 'controller/system_files/user_instagram.txt'
+
+            file_reader = FileReader(file_directory=file_directory)
+            user_instagram = file_reader.startFileReader()
+
+            " CATCHING THE PASSWORD "
+            file_directory = f'controller/users/{user_instagram}/{user_instagram}.txt'
+
+            file_reader = FileReader(file_directory=file_directory)
+            return_file_reader = file_reader.startFileReader()
+
+            password_instagram = return_file_reader.split('-')
+            password_instagram = password_instagram[1]
+
+
+            user_information = [user_instagram, password_instagram]
+
+            return user_information
+
+
+        " INSTANCES THE VARIABLES "
+        self.__driver = webDriverConfiguration()
+        user_information = userInformation()
+
+        self.__user_instagram = user_information[0]
+        self.__password_instagram = user_information[1]
         self.__hashtag = hashtag
         self.__n_likes = n_likes
 
 
     def __startLikePhotos(self):
 
-        " this method verify if the 'moment user' is already liked "
-        " if the moment user not is in the database, the same is appended at the database "
+        """
+        this method verify if the 'moment user' is already liked
+        if the moment user not is in the database, the same is appended at the database
+        """
+
+        " NECESSARY FUNCTIONS "
+        def printProgress(type_progress, liked_photos, n_likes, **kws):
+
+            os.system('cls')
+
+            " INSTANCES THE VARIABLES "
+            type_progress = type_progress
+            liked_photos = liked_photos
+            n_likes = n_likes
+
+            print('\n===== PROGRESS =====')
+            print(f'{liked_photos} OF {n_likes} PHOTOS LIKED\n')
+
+
+            if type_progress == 'user_skipped':
+
+                print('USER SKIPPED')
+
+            elif type_progress == 'user_liked':
+
+                moment_user = kws.get('moment_user')
+
+                print(f'PUBLICATION OF {moment_user} LIKED')
+
+        def registerMomentUser(moment_user):
+
+            " INSTANCES THE VARIABLE "
+            moment_user = moment_user
+
+            " READ THE DATABASE "
+            file_directory = f'controller/users/{user_instagram}/database.txt'
+
+            file_reader = FileReader(file_directory=file_directory)
+            file_content = file_reader.startFileReader()
+
+
+            " IF THE DATABASE IS EMPTY, THE 'MOMENT USER' IS INSERTED WITHOUT THE HYPPEN "
+            if file_content == '':
+                file_content = moment_user
+
+            else:
+                file_content = f'-{moment_user}'
+
+            file_appender = FileAppender(file_content=file_content, file_directory=file_directory)
+            file_appender.startFileAppender()
+
 
         " INSTANCES THE DRIVER "
         driver = self.__driver
@@ -167,98 +356,98 @@ class LikePhotosByHashtag:
         n_likes = int(self.__n_likes)
         user_instagram = self.__user_instagram
 
-        liked_photos = 0
-        while(liked_photos <= n_likes):
+        try:
 
-            os.system('cls')
+            liked_photos = 0
+            n_photos = 0
+            while(liked_photos < n_likes):
 
-            print('\n===== PROGRESS =====')
-            print(f'{liked_photos} OF {n_likes} PHOTOS LIKED\n')
-            
-            " CATCH THE 'MOMENT USER' "
-            moment_user = driver.find_element(By.CLASS_NAME, 'sqdOP.yWX7d._8A5w5.ZIAjV').text
-            
-            " CHECK THE 'MOMENT USER' "
-            verify_user_database = VerifyUserDatabase(user_instagram=user_instagram, moment_user=moment_user)
-            return_verify_user_database = verify_user_database.startVerifyUserDatabase()
+                printProgress(type_progress='all_progress', liked_photos=n_photos, n_likes=n_likes)
 
-            " IF THE USER IS ALREADY IN THE DATABASE, THE BOT SWITCH TO THE NEXT PHOTO "
-            if return_verify_user_database == True:
+                " CATCH THE 'MOMENT USER' "
+                moment_user = driver.find_element(By.CLASS_NAME, 'sqdOP.yWX7d._8A5w5.ZIAjV').text
 
-                print('SKIPPED')
+                " CHECK THE 'MOMENT USER' "
+                verify_user_database = VerifyUserDatabase(user_instagram=user_instagram, moment_user=moment_user)
+                return_verify_user_database = verify_user_database.startVerifyUserDatabase()
 
-                right_arrow = driver.find_element(By.CLASS_NAME, '_65Bje.coreSpriteRightPaginationArrow')
-                right_arrow.click()
+                " IF THE USER IS ALREADY IN THE DATABASE, THE BOT SWITCH TO THE NEXT PHOTO "
+                if return_verify_user_database == True:
 
-                liked_photos -= 1
+                    printProgress(type_progress='user_skipped', liked_photos=n_photos, n_likes=n_likes)
 
-            else:
+                    right_arrow = driver.find_element(By.CLASS_NAME, '_65Bje.coreSpriteRightPaginationArrow')
+                    right_arrow.click()
 
-                " LIKES THE CURRENT PHOTO AND SWITCH TO THE NEXT PHOTO "
-                heart = driver.find_elements(By.CLASS_NAME, 'wpO6b')
-                heart[1].click()
-
-                print(f'CURRENT INSTAGRAM PROFILE: {moment_user}')
-                print(f'PHOTOS LIKED: {liked_photos}')
-
-
-                " IF NOT, THE 'MOMENT USER' IS REGISTERED IN THE DATABASE - START "
-
-                " READ THE DATABASE "
-                file_directory = f'controller/users/{user_instagram}/database.txt'
-
-                file_reader = FileReader(file_directory=file_directory)
-                file_content = file_reader.startFileReader()
-
-                " IF THE DATABASE IS EMPTY, THE 'MOMENT USER' IS INSERTED WITHOUT THE HYPPEN "
-                if file_content == '':
-                    file_content = moment_user
+                    liked_photos -= 1
 
                 else:
-                    file_content = f'-{moment_user}'
 
-                file_appender = FileAppender(file_content=file_content, file_directory=file_directory)
-                file_appender.startFileAppender()
+                    n_photos += 1
 
-                " IF NOT, THE 'MOMENT USER' IS REGISTERED IN THE DATABASE - END "
+                    printProgress(type_progress='user_liked', liked_photos=n_photos, n_likes=n_likes, moment_user=moment_user)
+
+                    " LIKES THE CURRENT PHOTO AND SWITCH TO THE NEXT PHOTO "
+                    heart = driver.find_elements(By.CLASS_NAME, 'wpO6b')
+                    heart[1].click()
+
+                    registerMomentUser(moment_user=moment_user)
+
+                    right_arrow = driver.find_element(By.CLASS_NAME, '_65Bje.coreSpriteRightPaginationArrow')
+                    right_arrow.click()
 
 
-                right_arrow = driver.find_element(By.CLASS_NAME, '_65Bje.coreSpriteRightPaginationArrow')
-                right_arrow.click()
+                time.sleep(3)
 
+                " INCREMENT THE 'LIKED PHOTO' VAR TO SIGNAL THE NUMBER OF PHOTOS IS ALREADY LIKED "
+                liked_photos += 1
 
-            time.sleep(3)
+        except:
 
-            " INCREMENT THE 'LIKED PHOTO' VAR TO SIGNAL THE NUMBER OF PHOTOS IS ALREADY LIKED "
-            liked_photos += 1
+            driver.close()
+            return False
+
+        return True
 
 
     def __startPutTheHashtagAndSelectTheFirstPhoto(self):
 
-        " this method put the hashtag informed by the user in the Instagram 'search input' "
-        " after find a corresponding hashtag to the hashtag reported "
-        " the bot clicks at the first photo which he can see "
+        """
+        this method put the hashtag informed by the user in the Instagram 'search input'.
+
+        after find a corresponding hashtag to the hashtag reported
+        the bot clicks at the first photo which he can see
+        """
 
         " INSTANCES THE DRIVER "
         driver = self.__driver
 
-        " INSTANCES THE HASHTAG "
-        hashtag = self.__hashtag
+        try:
 
-        " PUT THE HASHTAG INTO THE SEARCH INPUT "
-        search_input = driver.find_elements(By.TAG_NAME, 'input')
-        search_input[2].send_keys(hashtag)
+            " INSTANCES THE HASHTAG "
+            hashtag = self.__hashtag
 
-        time.sleep(2)
+            " PUT THE HASHTAG INTO THE SEARCH INPUT "
+            search_input = driver.find_elements(By.TAG_NAME, 'input')
+            search_input[2].send_keys(hashtag)
 
-        " CLICK ON THE CORRESPONDING RESULT "
-        search_result = driver.find_element(By.CLASS_NAME, 'Ap253')
-        search_result.click()
+            time.sleep(2)
 
-        time.sleep(5)
+            " CLICK ON THE CORRESPONDING RESULT "
+            search_result = driver.find_element(By.CLASS_NAME, 'Ap253')
+            search_result.click()
 
-        first_photo = driver.find_element(By.CLASS_NAME, 'v1Nh3.kIKUG._bz0w')
-        first_photo.click()
+            time.sleep(5)
+
+            first_photo = driver.find_element(By.CLASS_NAME, 'v1Nh3.kIKUG._bz0w')
+            first_photo.click()
+
+        except:
+
+            driver.close()
+            return False
+
+        return True
 
 
     def startLikePhotosByHashtag(self):
@@ -266,125 +455,88 @@ class LikePhotosByHashtag:
         " this method like N photos based in the hashtag passed by the user "
 
         " VARIABLES "
-        hashtag = self.__hashtag
-        n_likes = self.__n_likes
+        driver = self.__driver
+        user_instagram = self.__user_instagram
+        password_instagram = self.__password_instagram
         error = ''
 
 
-        " CATCHING THE CURRENT INSTAGRAM USER INFORMATION - START "
-        
-        " CATCHING THE USER"
-        file_directory = 'controller/system_files/user_instagram.txt'
+        " BOT - START "
 
-        file_reader = FileReader(file_directory=file_directory)
-        self.__user_instagram = file_reader.startFileReader()
+        GeneralOptions(driver, user_instagram, password_instagram)
 
-        " USER INSTAGRAM "
-        user_instagram = self.__user_instagram
+        file_directory = 'controller/communication_file/return_bot.txt'
 
-        " CATCHING THE PASSWORD "
-        file_directory = f'controller/users/{user_instagram}/{user_instagram}.txt'
+        file_reader = FileReader(file_directory)
+        file_content = file_reader.startFileReader()
 
-        file_reader = FileReader(file_directory=file_directory)
-        return_file_reader = file_reader.startFileReader()
+        " VERIFY IF THE INITIAL ACTION ENDED WELL "
+        if file_content != 'True':
 
-        password_instagram = return_file_reader.split('-')
-        self.__password_instagram = password_instagram[1]
+            " SPLITS THE FILE CONTENT TO FILTER THE RETURNS "
+            file_content = file_content.split('-')
 
-        " PASSWORD INSTAGRAM "
-        password_instagram = self.__password_instagram
+            " INSTANCES THE RETURNS "
+            first_return = file_content[0]
+            second_return = file_content[1]
+            third_return = file_content[2]
 
-        " CATCHING THE CURRENT INSTAGRAM USER INFORMATION - END "
+            " CATCHES THE ERROR BASED IN THE RETURNS "
+            if first_return == False:
 
-
-        " THE BOT - START "
-        general_options = GeneralOptions()
-
-        try:
-            " CONFIGURATION "
-            driver = general_options.startConfigurationAndAccessTheWebsite()
-
-        except:
-            error = 'configuration'
-
-            driver.close()
-            return_list = [False, error]
-            return return_list
-
-        self.__driver = driver
-        driver = self.__driver
-
-
-        try:
-
-            time.sleep(2)
-
-            try:
-                " LOGIN "
-                general_options.startLogin(user_instagram=user_instagram, password_instagram=password_instagram)
-
-            except:
-                error = 'login'
-
-                driver.close()
+                error = 'general_options-first_return'
                 return_list = [False, error]
-                return return_list
+                return error
 
-            time.sleep(3)
+            else:
 
-            try:
-                driver.find_element_by_id('slfErrorAlert')
+                " IF 'first_return == True' "
+                if second_return == False:
 
-                error = 'instagram_block'
+                    error = 'general_options-second_return'
+                    return_list = [False, error]
+                    return error
 
-                driver.close()
-                return_list = [False, error]
-                return return_list
+                else:
 
-            except:
-                pass
+                    " IF 'first_return == True' AND 'second_return == True' "
+                    if third_return == False:
 
-            try:
-                " CLOSE THE DIALOG BOXES "
-                general_options.startCloseDialogBox()
+                        error = 'general_options-third_return'
+                        return_list = [False, error]
+                        return error
 
-            except:
-                error = 'dialog_boxes'
 
-                driver.close()
-                return_list = [False, error]
-                return return_list
+        time.sleep(2)
 
-            time.sleep(2)
+        " PUT THE HASHTAG AND CLICK AT THE FIRST PHOTO "
+        return_first_photo = self.__startPutTheHashtagAndSelectTheFirstPhoto()
 
-            try:
-                " PUT THE HASHTAG AND CLICK AT THE FIRST PHOTO "
-                self.__startPutTheHashtagAndSelectTheFirstPhoto()
+        if return_first_photo == False:
 
-            except:
-                error = 'first_photo'
-
-                driver.close()
-                return_list = [False, error]
-                return return_list
-
-            time.sleep(2)
-
-            self.__startLikePhotos()
-
-            " THE BOT - END "
-        except:
-            error = 'unknown'
-
-            driver.close()
+            error = 'first_photo'
             return_list = [False, error]
             return return_list
 
         time.sleep(2)
 
+
+        " START THE 'LIKE PHOTO' PROCESS "
+        return_like_photos_process = self.__startLikePhotos()
+
+        if return_like_photos_process == False:
+
+            error = 'like_photo_process'
+            return_list = [False, error]
+            return return_list
+
+
+        " BOT - END "
+
         driver.close()
 
         return True
+
 
 class LikePhotosByUsers:
 
@@ -394,6 +546,55 @@ class LikePhotosByUsers:
         this class one by one Instagram profile and likes a X number of photos
         """
 
+        " NECESSARY FUNCTIONS "
+        def webDriverConfiguration():
+
+            """
+            this function is responsible to configures and returns the webdriver
+            """
+
+            " CONFIGURATION "
+            options = Options()
+            options.headless = False
+
+            " INSTANCES THE WEBDRIVER "
+            driver = webdriver.Chrome(executable_path='C:\chromedriver.exe', chrome_options=options)
+
+            return driver
+
+        def userInformation():
+
+            """
+            this function is responsible to catch the user and password Instagram of the current AutoLike's user
+            """
+            
+            " CATCHING THE USER "
+            file_directory = 'controller/system_files/user_instagram.txt'
+
+            file_reader = FileReader(file_directory=file_directory)
+            user_instagram = file_reader.startFileReader()
+
+            " CATCHING THE PASSWORD "
+            file_directory = f'controller/users/{user_instagram}/{user_instagram}.txt'
+
+            file_reader = FileReader(file_directory=file_directory)
+            return_file_reader = file_reader.startFileReader()
+
+            password_instagram = return_file_reader.split('-')
+            password_instagram = password_instagram[1]
+
+
+            user_information = [user_instagram, password_instagram]
+
+            return user_information
+
+
+        " INSTANCES THE VARIABLES "
+        self.__driver = webDriverConfiguration()
+        user_information = userInformation()
+
+        self.__user_instagram = user_information[0]
+        self.__password_instagram = user_information[1]
         self.__users_selected = users_selected
         self.__kind_likes = kind_likes
         self.__n_photos = n_photos
@@ -462,7 +663,7 @@ class LikePhotosByUsers:
         else:
             file_content = 'Here will appear\nthe number of selected users'
 
-        file_directory = 'controller/system_files/option_two/n_selected_users.txt'
+        file_directory = 'controller/system_files/user_manipulation/n_selected_users.txt'
 
         file_writer = FileWriter(file_content=file_content, file_directory=file_directory)
         file_writer.startFileWriter()
@@ -677,171 +878,135 @@ class LikePhotosByUsers:
 
         " this method likes N photos in N instagram users selecteds by the program user "
 
-        " VARIABLE "
-        users_selected = self.__users_selected # STORES THE USERS WHO WILL HAVE THEIR PHOTOS LIKED
+        " VARIABLES "
+        driver = self.__driver
+        users_selected = self.__users_selected # STORES THE USERS WHO WILL HAVE THEIR PUBLICATIONS LIKED
         n_photos = self.__n_photos # STORES THE NUMBER OF PHOTOS
-
-        " CATCHING THE CURRENT INSTAGRAM USER INFORMATION - START "
-        
-        " CATCHING THE USER"
-        file_directory = 'controller/system_files/user_instagram.txt'
-
-        file_reader = FileReader(file_directory=file_directory)
-        self.__user_instagram = file_reader.startFileReader()
-
-        " USER INSTAGRAM "
         user_instagram = self.__user_instagram
-
-        " CATCHING THE PASSWORD "
-        file_directory = f'controller/users/{user_instagram}/{user_instagram}.txt'
-
-        file_reader = FileReader(file_directory=file_directory)
-        return_file_reader = file_reader.startFileReader()
-
-        password_instagram = return_file_reader.split('-')
-        self.__password_instagram = password_instagram[1]
-
-        " PASSWORD INSTAGRAM "
         password_instagram = self.__password_instagram
 
-        " CATCHING THE CURRENT INSTAGRAM USER INFORMATION - END "
+        " BOT - START "
 
-        " THE BOT - START "
-        general_options = GeneralOptions()
+        GeneralOptions(driver, user_instagram, password_instagram)
 
-        try:
-            " CONFIGURATION "
-            driver = general_options.startConfigurationAndAccessTheWebsite()
+        file_directory = 'controller/communication_file/return_bot.txt'
 
-        except:
-            error = 'configuration'
+        file_reader = FileReader(file_directory)
+        file_content = file_reader.startFileReader()
 
-            driver.close()
-            return_list = [False, error]
-            return return_list
+        " VERIFY IF THE INITIAL ACTION ENDED WELL "
+        if file_content != 'True':
 
-        self.__driver = driver
-        driver = self.__driver
+            " SPLITS THE FILE CONTENT TO FILTER THE RETURNS "
+            file_content = file_content.split('-')
+
+            " INSTANCES THE RETURNS "
+            first_return = file_content[0]
+            second_return = file_content[1]
+            third_return = file_content[2]
+
+            " CATCHES THE ERROR BASED IN THE RETURNS "
+            if first_return == False:
+
+                error = 'general_options-first_return'
+                return_list = [False, error]
+                return error
+
+            else:
+
+                " IF 'first_return == True' "
+                if second_return == False:
+
+                    error = 'general_options-second_return'
+                    return_list = [False, error]
+                    return error
+
+                else:
+
+                    " IF 'first_return == True' AND 'second_return == True' "
+                    if third_return == False:
+
+                        error = 'general_options-third_return'
+                        return_list = [False, error]
+                        return error
 
 
-        try:
+        time.sleep(2)
+
+        profiles = 0
+        for user in users_selected:
+
+            os.system('cls')
+
+            print('\n===== PROGRESS =====')
+            print(f'{profiles} OF {len(users_selected)} PROFILES ACCESSED\n')
+
+            print(f'CURRENT INSTAGRAM PROFILE: {user}')
+
+            " VERIFY IF THE 'user' EXISTS "
+            return_verify_user = self.__startVerifyUserExistence(current_user=user)
+
+            if return_verify_user == False:
+                continue
+
 
             time.sleep(2)
 
             try:
-                " LOGIN "
-                general_options.startLogin(user_instagram=user_instagram, password_instagram=password_instagram)
+                " IF THE 'user' EXISTS, THE PROGRAM VERIFY SOME CONDITIONS "
+                return_individual_user_validation = ''
+                if return_verify_user == True:
+                    return_individual_user_validation = self.__startIndividualUserValidation(current_user=user)
 
             except:
-                error = 'login'
+                continue
+
+            try:
+                " IF THE 'return_individual_user_validation' RETURNS THE NUMBER OF "
+                " PUBLICATIONS OF THE USER, THE PROGRAM CATCH THIS NUMBER AND USE IT "
+                " TO RANDOMIZE THE PUBLICATIONS WHICH WILL BE LIKED "
+                photos_randomized = ''
+                if return_individual_user_validation != False and return_individual_user_validation != '':
+                    n_user_publications = return_individual_user_validation # CONTAINS THE NUMBER OF PUBLICATIONS
+                                                                            # WHAT THE INSTAGRAM USER HAS
+                    photos_randomized = self.__startRandomizePublications(n_photos=n_photos, n_user_publications=n_user_publications)
+            
+            except:
+                error = 'individual_user_validation'
 
                 driver.close()
                 return_list = [False, error]
                 return return_list
 
-            time.sleep(3)
-
-            try:
-                driver.find_element_by_id('slfErrorAlert')
-
-                error = 'instagram_block'
-
-                driver.close()
-                return_list = [False, error]
-                return return_list
-
-            except:
-                pass
-
             time.sleep(2)
 
-            try:
-                " CLOSE THE DIALOG BOXES "
-                general_options.startCloseDialogBox()
-
-            except:
-                error = 'dialog_boxes'
-
-                driver.close()
-                return_list = [False, error]
-                return return_list
-
-            time.sleep(2)
-
-            profiles = 0
-            for user in users_selected:
-
-                os.system('cls')
-
-                print('\n===== PROGRESS =====')
-                print(f'{profiles} OF {len(users_selected)} PROFILES ACCESSED\n')
-
-                print(f'CURRENT INSTAGRAM PROFILE: {user}')
-
+            if photos_randomized != '':
                 try:
-                    " VERIFY IF THE 'user' EXISTS "
-                    return_verify_user = self.__startVerifyUserExistence(current_user=user)
+                    " LIKES THE PHOTOS IN EACH INSTAGRAM USER PROFILE "
+                    self.__startLikesRandomUserPublications(photos_randomized=photos_randomized)
 
                 except:
-                    continue
-
-                time.sleep(2)
-
-                try:
-                    " IF THE 'user' EXISTS, THE PROGRAM VERIFY SOME CONDITIONS "
-                    return_individual_user_validation = ''
-                    if return_verify_user == True:
-                        return_individual_user_validation = self.__startIndividualUserValidation(current_user=user)
-
-                except:
-                    continue
-
-                try:
-                    " IF THE 'return_individual_user_validation' RETURNS THE NUMBER OF "
-                    " PUBLICATIONS OF THE USER, THE PROGRAM CATCH THIS NUMBER AND USE IT "
-                    " TO RANDOMIZE THE PUBLICATIONS WHICH WILL BE LIKED "
-                    photos_randomized = ''
-                    if return_individual_user_validation != False and return_individual_user_validation != '':
-                        n_user_publications = return_individual_user_validation # CONTAINS THE NUMBER OF PUBLICATIONS
-                                                                                # WHAT THE INSTAGRAM USER HAS
-                        photos_randomized = self.__startRandomizePublications(n_photos=n_photos, n_user_publications=n_user_publications)
-                
-                except:
-                    error = 'individual_user_validation'
+                    error = 'likes_random_publications'
 
                     driver.close()
                     return_list = [False, error]
                     return return_list
 
-                time.sleep(2)
+                try:
+                    " UPDATES THE SECOND DATABASE "
+                    " REMOVING THE USERS IS ALREADY LIKED "
+                    self.__startUpdateSecondDatabase(current_user=user)
+                
+                except:
+                    error = 'update_second_database'
 
-                if photos_randomized != '':
-                    try:
-                        " LIKES THE PHOTOS IN EACH INSTAGRAM USER PROFILE "
-                        self.__startLikesRandomUserPublications(photos_randomized=photos_randomized)
+                    driver.close()
+                    return_list = [False, error]
+                    return return_list
 
-                    except:
-                        error = 'likes_random_publications'
+            profiles += 1
 
-                        driver.close()
-                        return_list = [False, error]
-                        return return_list
-
-                    try:
-                        " UPDATES THE SECOND DATABASE "
-                        " REMOVING THE USERS IS ALREADY LIKED "
-                        self.__startUpdateSecondDatabase(current_user=user)
-                    
-                    except:
-                        error = 'update_second_database'
-
-                        driver.close()
-                        return_list = [False, error]
-                        return return_list
-
-                profiles += 1
-
-                time.sleep(2)
+            time.sleep(2)
 
             " THE BOT - END "
         except:
@@ -856,5 +1021,3 @@ class LikePhotosByUsers:
         driver.close()
 
         return True
-
-
