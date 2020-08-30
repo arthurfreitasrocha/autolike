@@ -58,42 +58,85 @@ class ErrorHandlingOptionOne:
 
 class ErrorHandlingOptionTwo:
 
-    def __init__(self, users_selected, n_photos):
+    def __init__(self, users_selected, n_photos, checkbutton_value):
         
         self.__users_selected = users_selected
         self.__n_photos = n_photos
+        self.__checkbutton_value = checkbutton_value
 
 
-    def startErrorHandling(self):
+    def startErrorHandling(self, **kws):
 
         " this method verify if the information what the user writted (in Option Two window) is valid "
 
         " INSTANCES THE VARIABLES "
         users_selected = self.__users_selected
         n_photos = self.__n_photos
-        validation = [False, False]
+        checkbutton_value = self.__checkbutton_value
 
 
-        " VALIDATES IF THE USER SELECTED AT LEAST ONE INSTAGRAM PROFILE "
-        if users_selected != '':
-            validation[0] = True
-        
-        else:
-            validation[0] = False
+        if checkbutton_value == 0:
 
-        " VALIDATES THE ENTRY AND THE KIND OF LIKES OPTION "
-        if n_photos != '' and n_photos.isnumeric() == True:
-            validation[1] = True
-
-        else:
-            validation[1] = False
+            validation = [False, False]
 
 
-        if validation[0] == True and validation[1] == True:
-            return True
-        
-        else:
-            return False
+            " VALIDATES IF THE USER SELECTED AT LEAST ONE INSTAGRAM PROFILE "
+            if users_selected != '':
+                validation[0] = True
+            
+            else:
+                validation[0] = False
+
+            " VALIDATES THE ENTRY AND THE KIND OF LIKES OPTION "
+            if n_photos != '' and n_photos.isnumeric() == True:
+                validation[1] = True
+
+            else:
+                validation[1] = False
+
+
+            if validation[0] == True and validation[1] == True:
+                return True
+            
+            else:
+                return False
+
+
+        elif checkbutton_value == 1:
+
+            " INSTANCES THE WRITTED TEXT "
+            writted_text = kws.get('writted_text')
+
+            validation = [False, False, False]
+
+
+            " VALIDATES IF THE USER SELECTED AT LEAST ONE INSTAGRAM PROFILE "
+            if users_selected != '':
+                validation[0] = True
+            
+            else:
+                validation[0] = False
+
+            " VALIDATES THE ENTRY AND THE KIND OF LIKES OPTION "
+            if n_photos != '' and n_photos.isnumeric() == True:
+                validation[1] = True
+
+            else:
+                validation[1] = False
+
+            " VALIDATES THE TEXT WRITTED BY THE USER "
+            if writted_text != '' and writted_text != '\n':
+                validation[2] = True
+            
+            else:
+                validation[2] = False
+
+
+            if validation[0] == True and validation[1] == True and validation[2] == True:
+                return True
+            
+            else:
+                return False
 
 
 class ErrorHandlingOptionThree:

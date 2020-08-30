@@ -104,46 +104,124 @@ class ReturnOptionOne:
 
 class ReturnOptionTwo:
 
-    def __init__(self, window, n_photos):
+    def __init__(self, window, n_photos, checkbutton_value):
         
         self.__window = window
         self.__n_photos = n_photos
+        self.__checkbutton_value = checkbutton_value
 
 
-    def startReturnOption(self, type_return):
+    def startReturnOption(self, type_return, **kws):
 
         " INSTANCE THE VARIABLES "
         window = self.__window
         n_photos = self.__n_photos
+        checkbutton_value = self.__checkbutton_value
 
-        if type_return == True:
 
-            " WRITE THE OPTION TWO RETURN " 
-            file_directory = 'controller/communication_file/return_option_two.txt'
-            file_content = f'send-random-{n_photos}'
+        if type_return == 'show-hide-text':
 
-            file_writer = FileWriter(file_content=file_content, file_directory=file_directory)
-            file_writer.startFileWriter()
+            if checkbutton_value == 1:
 
-            " SHOWS A MESSAGE "
-            type_message = 'info'
-            title_message = 'Logging into Instagram'
-            text_message = 'We are logging into Instagram\nYou can close this window'
+                " WRITE THE USERS SELECTEDS IN THE SECOND DATABASE, WHICH WILL USED LATER "
+                file_directory = 'controller/communication_file/return_text_window/return_text_window.txt'
+                file_content = 'True'
 
-            message = Message(type_message=type_message, title_message=title_message, text_message=text_message)
-            message.startMessage()
+                file_writer = FileWriter(file_content=file_content, file_directory=file_directory)
+                file_writer.startFileWriter()
+
+
+                file_directory = 'controller/communication_file/return_option_two.txt'
+                file_content = ''
+
+                file_writer = FileWriter(file_content=file_content, file_directory=file_directory)
+                file_writer.startFileWriter()
+
+            elif checkbutton_value == 0:
+
+                " WRITE THE USERS SELECTEDS IN THE SECOND DATABASE, WHICH WILL USED LATER "
+                file_directory = 'controller/communication_file/return_text_window/return_text_window.txt'
+                file_content = 'False'
+
+                file_writer = FileWriter(file_content=file_content, file_directory=file_directory)
+                file_writer.startFileWriter()
+
+
+                file_directory = 'controller/communication_file/return_option_two.txt'
+                file_content = ''
+
+                file_writer = FileWriter(file_content=file_content, file_directory=file_directory)
+                file_writer.startFileWriter()
 
             window.destroy()
 
-        else:
+            return True
 
-            " SHOWS A MESSAGE "
-            type_message = 'warning'
-            title_message = 'Warning'
-            text_message = 'One or more information invalid\n\nNOTE: Are you sure you have selected any Instagram profile?'
 
-            message = Message(type_message=type_message, title_message=title_message, text_message=text_message)
-            message.startMessage()
+        if checkbutton_value == 0:
+
+            if type_return == True:
+
+                " WRITE THE OPTION TWO RETURN " 
+                file_directory = 'controller/communication_file/return_option_two.txt'
+                file_content = f'send-random-{n_photos}'
+
+                file_writer = FileWriter(file_content=file_content, file_directory=file_directory)
+                file_writer.startFileWriter()
+
+                " SHOWS A MESSAGE "
+                type_message = 'info'
+                title_message = 'Logging into Instagram'
+                text_message = 'We are logging into Instagram\nYou can close this window'
+
+                message = Message(type_message=type_message, title_message=title_message, text_message=text_message)
+                message.startMessage()
+
+                window.destroy()
+
+            else:
+
+                " SHOWS A MESSAGE "
+                type_message = 'warning'
+                title_message = 'Warning'
+                text_message = 'One or more information invalid\n\nNOTE: Are you sure you have selected any Instagram profile?'
+
+                message = Message(type_message=type_message, title_message=title_message, text_message=text_message)
+                message.startMessage()
+
+        elif checkbutton_value == 1:
+
+            if type_return == True:
+
+                " INSTANCES THE WRITTED TEXT "
+                writted_text = kws.get('writted_text')
+
+                " WRITE THE OPTION TWO RETURN " 
+                file_directory = 'controller/communication_file/return_option_two.txt'
+                file_content = f'send2-random-{n_photos}-{writted_text}'
+
+                file_writer = FileWriter(file_content=file_content, file_directory=file_directory)
+                file_writer.startFileWriter()
+
+                " SHOWS A MESSAGE "
+                type_message = 'info'
+                title_message = 'Logging into Instagram'
+                text_message = 'We are logging into Instagram\nYou can close this window'
+
+                message = Message(type_message=type_message, title_message=title_message, text_message=text_message)
+                message.startMessage()
+
+                window.destroy()
+
+            else:
+
+                " SHOWS A MESSAGE "
+                type_message = 'warning'
+                title_message = 'Warning'
+                text_message = 'One or more information invalid\n\nNOTE: Are you sure you have selected any Instagram profile?'
+
+                message = Message(type_message=type_message, title_message=title_message, text_message=text_message)
+                message.startMessage()
 
 
 class ReturnOptionThree:

@@ -35,20 +35,36 @@ class InternalClearReturn:
 
         user = file_content
         
-        " INSTANCES THE LIST WITH THE NAME FILES"
-        self.__names_file = [
-            'controller/communication_file/return_bot.txt',
-            'controller/communication_file/return_email.txt',
-            'controller/communication_file/return_main_menu.txt',
-            'controller/communication_file/return_option_one.txt',
-            'controller/communication_file/return_option_two.txt',
-            'controller/communication_file/return_option_three.txt',
-            'controller/communication_file/return_user_manipulation/return_users_selected.txt',
-            'controller/communication_file/return_user_manipulation/return_window_selected.txt',
-            f'controller/users/{user}/second_database.txt',
-            f'controller/users/{user}/temp_database.txt',
-            f'controller/users/{user}/users_accessed.txt'
-        ]
+        if user != 'Your Email will be shown here!':
+            " INSTANCES THE LIST WITH THE NAME FILES"
+            self.__names_file = [
+                'controller/communication_file/return_bot.txt',
+                'controller/communication_file/return_email.txt',
+                'controller/communication_file/return_main_menu.txt',
+                'controller/communication_file/return_option_one.txt',
+                'controller/communication_file/return_option_two.txt',
+                'controller/communication_file/return_option_three.txt',
+                'controller/communication_file/return_text_window/return_text_window.txt',
+                'controller/communication_file/return_user_manipulation/return_users_selected.txt',
+                'controller/communication_file/return_user_manipulation/return_window_selected.txt',
+                f'controller/users/{user}/second_database.txt',
+                f'controller/users/{user}/temp_database.txt',
+                f'controller/users/{user}/users_accessed.txt'
+            ]
+
+        else:
+            " INSTANCES THE LIST WITH THE NAME FILES"
+            self.__names_file = [
+                'controller/communication_file/return_bot.txt',
+                'controller/communication_file/return_email.txt',
+                'controller/communication_file/return_main_menu.txt',
+                'controller/communication_file/return_option_one.txt',
+                'controller/communication_file/return_option_two.txt',
+                'controller/communication_file/return_option_three.txt',
+                'controller/communication_file/return_text_window/return_text_window.txt',
+                'controller/communication_file/return_user_manipulation/return_users_selected.txt',
+                'controller/communication_file/return_user_manipulation/return_window_selected.txt',
+            ]
 
 
     def startInternalClearReturn(self):
@@ -175,6 +191,9 @@ class UserOption:
                     if return_option_two_splitted[0] == 'send':
                         break
 
+                    elif return_option_two_splitted[0] == 'send2':
+                        break
+
 
         if return_option_two == 'window_closed':
 
@@ -196,11 +215,44 @@ class UserOption:
                 users_selected = file_content.split('-')
 
                 " CATCH THE RETURN OF OPTION TWO "
-                kind_likes = return_option_two[1]
-                n_photos = return_option_two[2]
+                kind_likes = return_option_two_splitted[1]
+                n_photos = return_option_two_splitted[2]
 
-                like_photos_by_users = LikePhotosByUsers(users_selected=users_selected, kind_likes=kind_likes, n_photos=n_photos)
+                like_photos_by_users = LikePhotosByUsers(users_selected=users_selected, kind_likes=kind_likes, n_photos=n_photos, checkbutton_value=0)
                 return_like_photos_by_users = like_photos_by_users.startLikesPhotosByUsers()
+
+                if return_like_photos_by_users == True:
+
+                    start_option_two = OptionTwo(app_version)
+                    start_option_two.startInterface(flag='success', n_profiles=len(users_selected), n_likes=n_photos)
+
+                else:
+
+                    error = return_like_photos_by_users[1]
+
+                    start_option_two = OptionTwo(app_version)
+                    start_option_two.startInterface(flag='failed', error=error)
+
+            elif return_option_two_splitted[0] == 'send2':
+
+                " CATCH THE USERS SELECTED "
+                file_directory = 'controller/communication_file/return_user_manipulation/return_users_selected.txt'
+
+                file_reader = FileReader(file_directory=file_directory)
+                file_content = file_reader.startFileReader()
+
+                users_selected = file_content.split('-')
+
+                " CATCH THE RETURN OF OPTION TWO "
+                kind_likes = return_option_two_splitted[1]
+                n_photos = return_option_two_splitted[2]
+                writted_text = return_option_two_splitted[3]
+
+                print(writted_text)
+
+
+                like_photos_by_users = LikePhotosByUsers(users_selected=users_selected, kind_likes=kind_likes, n_photos=n_photos, checkbutton_value=1)
+                return_like_photos_by_users = like_photos_by_users.startLikesPhotosByUsers(writted_text=writted_text)
 
                 if return_like_photos_by_users == True:
 

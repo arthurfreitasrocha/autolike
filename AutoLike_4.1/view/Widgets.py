@@ -156,7 +156,15 @@ class Widgets:
             elif command == 'error-handling-option-two':
 
                 self.__n_photos = kws.get('n_photos')
-                ButtonCommands(command, window=window, n_photos=self.__n_photos)
+                self.__checkbutton = kws.get('checkbutton')
+                checkbutton_value = self.__checkbutton.get()
+
+                if checkbutton_value == 0:
+                    ButtonCommands(command, window=window, n_photos=self.__n_photos, checkbutton=self.__checkbutton)
+
+                elif checkbutton_value == 1:
+                    self.__writted_text = kws.get('writted_text')
+                    ButtonCommands(command, window=window, n_photos=self.__n_photos, checkbutton=self.__checkbutton, writted_text=self.__writted_text)
 
             elif command == 'error-handling-option-three':
 
@@ -183,14 +191,21 @@ class Widgets:
         return button
 
 
-    def startCheckButton(self, frame, text, font, background, activebackground, activeforeground, variable, command, x, y):
+    def startCheckButton(self, frame, text, font, background, activebackground, activeforeground, variable, command, x, y, **kws):
 
         def startCommand(command):
 
             command = command
             
             if command == 'select-all-users':
-                CheckButtonCommands(command, checkbutton=variable)
+
+                window = kws.get('window')
+                CheckButtonCommands(command, window=window , checkbutton=variable)
+
+            elif command == 'show-hide-text':
+
+                window = kws.get('window')
+                CheckButtonCommands(command, window=window , checkbutton=variable)
 
         " INSTANCES THE VARIABLES "
         frame = frame
@@ -278,7 +293,20 @@ class ButtonCommands:
             n_photos = kws.get('n_photos')
             n_photos = n_photos.get()
 
-            self.startErrorHandlingOptionTwo(window, users_selected, n_photos)
+            " INSTANCES THE CHECKBUTTON VALUE "
+            checkbutton = kws.get('checkbutton')
+            checkbutton_value = checkbutton.get()
+
+            if checkbutton_value == 0:
+                self.startErrorHandlingOptionTwo(window, users_selected, n_photos, checkbutton_value)
+
+            elif checkbutton_value == 1:
+
+                " INSTANCES THE WRITTED TEXT "
+                self.__writted_text = kws.get('writted_text')
+                writted_text = self.__writted_text.get("1.0", "1.1")
+
+                self.startErrorHandlingOptionTwo(window, users_selected, n_photos, checkbutton_value, writted_text=self.__writted_text)
 
         elif command == 'error-handling-option-three':
 
@@ -500,7 +528,7 @@ class ButtonCommands:
             return_option_one.startReturnOption(False)
 
 
-    def startErrorHandlingOptionTwo(self, window, users_selected, n_photos):
+    def startErrorHandlingOptionTwo(self, window, users_selected, n_photos, checkbutton_value, **kws):
 
         " this method execute the Error Hanling of the Option Two "
 
@@ -508,21 +536,43 @@ class ButtonCommands:
         window = window
         users_selected = users_selected
         n_photos = n_photos
+        checkbutton_value = checkbutton_value
 
-        " INSTANCES THE ERROR HANDLING CLASS "
-        error_handling = ErrorHandlingOptionTwo(users_selected, n_photos)
-        return_error_handling = error_handling.startErrorHandling()
+        if checkbutton_value == 0:
+
+            " INSTANCES THE ERROR HANDLING CLASS "
+            error_handling = ErrorHandlingOptionTwo(users_selected, n_photos, checkbutton_value)
+            return_error_handling = error_handling.startErrorHandling()
+
+        elif checkbutton_value == 1:
+
+            " INSTANCES THE WRITTED TEXT "
+            writted_text = kws.get('writted_text')
+
+            " INSTANCES THE ERROR HANDLING CLASS "
+            error_handling = ErrorHandlingOptionTwo(users_selected, n_photos, checkbutton_value)
+            return_error_handling = error_handling.startErrorHandling(writted_text=writted_text)
+
 
         " EXECUTE THE RETURN OPTION WITH THE RETURN OF THE ERROR HANDLING CLASS "
         if return_error_handling == True:
 
-            return_option_three = ReturnOptionTwo(window, n_photos)
-            return_option_three.startReturnOption(True)
+            if checkbutton_value == 0:
+
+                return_option_two = ReturnOptionTwo(window, n_photos, checkbutton_value)
+                return_option_two.startReturnOption(True)
+
+            elif checkbutton_value == 1:
+
+                writted_text = self.__writted_text.get("1.0", END)
+
+                return_option_two = ReturnOptionTwo(window, n_photos, checkbutton_value)
+                return_option_two.startReturnOption(True, writted_text=writted_text)
 
         elif return_error_handling == False:
 
-            return_option_three = ReturnOptionTwo(window, n_photos)
-            return_option_three.startReturnOption(False)
+            return_option_two = ReturnOptionTwo(window, n_photos, checkbutton_value)
+            return_option_two.startReturnOption(False)
 
 
     def startErrorHandlingOptionThree(self, window, users_selected, writted_text):
@@ -575,10 +625,21 @@ class CheckButtonCommands:
             checkbutton = kws.get('checkbutton')
             checkbutton_value = checkbutton.get()
 
-            self.startSelectAllUsers(window, checkbutton_value)
+            self.__startSelectAllUsers(window, checkbutton_value)
+
+        elif command == 'show-hide-text':
+
+            " INSTANCES THE WINDOW "
+            window = kws.get('window')
+            
+            " INSTANCES THE CHECK BUTTON "
+            checkbutton = kws.get('checkbutton')
+            checkbutton_value = checkbutton.get()
+
+            self.__startShowHideText(window, checkbutton_value)
 
 
-    def startSelectAllUsers(self, window, checkbutton_value):
+    def __startSelectAllUsers(self, window, checkbutton_value):
 
         " INSTANCES THE WINDOW "
         window = window
@@ -591,3 +652,18 @@ class CheckButtonCommands:
 
         select_all_users = ReturnUserManipulationOption(window)
         select_all_users.startReturnOption(type_button, checkbutton_value=checkbutton_value)
+
+
+    def __startShowHideText(self, window, checkbutton_value):
+
+        " INSTANCES THE WINDOW "
+        window = window
+
+        " INSTANCES THE CHECK BUTTON "
+        checkbutton_value = checkbutton_value
+
+        " INSTANCES THE TYPE BUTTON"
+        type_button = 'show-hide-text'
+
+        select_all_users = ReturnOptionTwo(window, 0, checkbutton_value)
+        select_all_users.startReturnOption(type_button)

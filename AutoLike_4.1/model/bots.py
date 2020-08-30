@@ -14,6 +14,7 @@ from controller.file_manipulator import FileWriter
 from controller.file_manipulator import FileAppender
 
 # EXTRA LIBRARY'S
+from random import randrange
 import time
 import os
 
@@ -42,6 +43,7 @@ class GeneralOptions:
 
             " DOES LOGIN IN INSTAGRAM "
             second_return = self.__startLogin(user_instagram, password_instagram)
+
 
         time.sleep(2)
 
@@ -162,6 +164,120 @@ class GeneralOptions:
         except:
 
             return False
+
+
+class GeneralOptionsInstagramUser:
+
+    def __init__(self, driver, option, **kws):
+
+        " INSTANCES THE VARIABLES "
+        self.__driver = driver
+        self.__option = option
+        self.__user = kws.get('user')
+        self.__n_photos = kws.get('n_photos')
+
+
+    def __startIndividualUserValidation(self, current_user, n_photos):
+
+        " this method verify if the 'current user' has the prerequisites to like him publications "
+
+        " INSTANCES THE DRIVER "
+        driver = self.__driver
+
+        " VARIABLES "
+        current_user = current_user # STORES THE CURRENT USER
+        n_photos = int(n_photos) # STORES THE NUMBER OF PHOTOS
+        validation = [True, True] # VERIFY THE USER CONDITIONS
+
+        " CHECKS IF THE USER ACCOUNT IS PRIVATE "
+        try:
+            private_account = driver.find_element_by_xpath('/html/body/div[1]/section/main/div/div/article/div[1]/div/h2').text
+        
+            if private_account == 'Esta conta é privada':
+                validation[0] = False
+        
+        except:
+            pass
+
+
+        " VARIABLE WHICH CATCH THE NUMBER OF PUBLICATIONS WHICH THE 'current user' HAVES "
+        current_user_publications = driver.find_elements_by_class_name('g47SY')
+        current_user_publications = current_user_publications[0].text
+
+
+        " CLEAR THE STRING WHICH HAVE THE NUMBER OF PUBLICATIONS WHAT THE INSTAGRAM USER HAS "
+        clear_user_publications = ClearUserPublications(n_user_publications=current_user_publications)
+        n_user_publications = clear_user_publications.startClearUserPublications()
+
+
+        " VERIFY IF THE NUMBER OF PHOTOS PASSED BY THE PROGRAM USER "
+        " IS LESS OR EQUAL THE NUMBER OF PUBLICATIONS WHAT THE INSTAGRAM USER HAS "
+        if not n_photos <= n_user_publications:
+            validation[1] = False
+
+
+        " IF ALL CONDITIONS ARE SATISFIED, THE 'n_user_publications' IS RETURNED "
+        if validation[0] == True and validation[1] == True:
+            return n_user_publications
+
+        else:
+            return False
+
+
+    def __startVerifyUserExistence(self, current_user):
+
+        " this method verify if the 'current user' already exists "
+
+        " INSTANCES THE DRIVER "
+        driver = self.__driver
+
+        " VARIABLE WHICH WILL STORESS THE CURRENT USER "
+        current_user = current_user
+
+        " TRY TO FIND IN INSTAGRAM THE CURRENT USER "
+        try:
+
+            " PUT THE CURRENT USER IN THE INSTAGRAM INPUT "
+            search_input = driver.find_element(By.CLASS_NAME, 'XTCLo.x3qfX')
+            search_input.clear()
+            search_input.send_keys(current_user)
+
+            time.sleep(2)
+
+            " CLICK ON THE CORRESPONDING RESULT "
+            search_result = driver.find_element(By.CLASS_NAME, 'Ap253')
+            search_result.click()
+
+        except:
+
+            return False
+
+        return True
+
+
+    def returnOption(self):
+
+        " INSTANCES THE OPTION "
+        option = self.__option
+
+        if option == 1:
+
+            " INSTANCES THE USER "
+            user = self.__user
+
+            " CALLS THE METHOD "
+            return_option = self.__startVerifyUserExistence(user)
+            return return_option
+
+        elif option == 2:
+
+            " INSTANCES THE USER "
+            user = self.__user
+            n_photos = self.__n_photos
+
+            " CALLS THE METHOD "
+            return_option = self.__startIndividualUserValidation(user, n_photos)
+            return return_option
 
 
 class VerifyInstagramUser:
@@ -540,7 +656,7 @@ class LikePhotosByHashtag:
 
 class LikePhotosByUsers:
 
-    def __init__(self, users_selected, kind_likes, n_photos):
+    def __init__(self, users_selected, kind_likes, n_photos, **kws):
         
         """
         this class one by one Instagram profile and likes a X number of photos
@@ -598,6 +714,7 @@ class LikePhotosByUsers:
         self.__users_selected = users_selected
         self.__kind_likes = kind_likes
         self.__n_photos = n_photos
+        self.__checkbutton_value = kws.get('checkbutton_value')
 
 
     def __startUpdateSecondDatabase(self, current_user):
@@ -605,73 +722,81 @@ class LikePhotosByUsers:
         " INSTANCES THE CURRENT INSTAGRAM USER "
         current_user = current_user
 
-        " CATCH THE CURRENT PROGRAM USER "
-        file_directory = 'controller/system_files/user_instagram.txt'
+        try:
 
-        file_reader = FileReader(file_directory=file_directory)
-        file_content = file_reader.startFileReader()
+            " CATCH THE CURRENT PROGRAM USER "
+            file_directory = 'controller/system_files/user_instagram.txt'
 
-        user = file_content
+            file_reader = FileReader(file_directory=file_directory)
+            file_content = file_reader.startFileReader()
+
+            user = file_content
 
 
-        " UPDATES THE SECOND DATABASE - START "
+            " UPDATES THE SECOND DATABASE - START "
 
-        " READ THE SECOND DATABASE"
-        file_directory = f'controller/users/{user}/second_database.txt'
+            " READ THE SECOND DATABASE"
+            file_directory = f'controller/users/{user}/second_database.txt'
 
-        file_reader = FileReader(file_directory=file_directory)
-        file_content = file_reader.startFileReader()
+            file_reader = FileReader(file_directory=file_directory)
+            file_content = file_reader.startFileReader()
 
-        second_database = file_content.split('-')
+            second_database = file_content.split('-')
 
-        " REMOVE THE CURRENT INSTAGRAM USER FROM THE SECOND DATABASE "
-        second_database.remove(current_user)
+            " REMOVE THE CURRENT INSTAGRAM USER FROM THE SECOND DATABASE "
+            second_database.remove(current_user)
 
-        " CREATES THE SECOND DATABASE STRING WHICH WILL BE WRITTED IN THE SECOND DATABASE FILE "
-        second_database_text = ''
-        count_user = 0
-        for instagram_user in second_database:
+            " CREATES THE SECOND DATABASE STRING WHICH WILL BE WRITTED IN THE SECOND DATABASE FILE "
+            second_database_text = ''
+            count_user = 0
+            for instagram_user in second_database:
 
-            instagram_user_text = f'-{instagram_user}'
+                instagram_user_text = f'-{instagram_user}'
 
-            if count_user == 0:
-                second_database_text += instagram_user
+                if count_user == 0:
+                    second_database_text += instagram_user
 
+                else:
+                    second_database_text += instagram_user_text
+
+                count_user += 1
+
+            " WRITE THE NEW SECOND DATABASE FILE "
+            file_directory = file_directory = f'controller/users/{user}/second_database.txt'
+            file_content = second_database_text
+
+            file_writer = FileWriter(file_content=file_content, file_directory=file_directory)
+            file_writer.startFileWriter()
+
+            " UPDATES THE SECOND DATABASE - END "
+
+
+            " UPDATES THE USERS SELECTED - START "
+            
+            " VARIABLE WHICH CATCH THE REMAINING NUMBER OF USERS "
+            n_second_database = len(second_database)
+            
+            if n_second_database > 0:
+                file_content = f'{n_second_database} users selected'
+            
             else:
-                second_database_text += instagram_user_text
+                file_content = 'Here will appear\nthe number of selected users'
 
-            count_user += 1
+            file_directory = 'controller/system_files/user_manipulation/n_selected_users.txt'
 
-        " WRITE THE NEW SECOND DATABASE FILE "
-        file_directory = file_directory = f'controller/users/{user}/second_database.txt'
-        file_content = second_database_text
+            file_writer = FileWriter(file_content=file_content, file_directory=file_directory)
+            file_writer.startFileWriter()
 
-        file_writer = FileWriter(file_content=file_content, file_directory=file_directory)
-        file_writer.startFileWriter()
+            " UPDATES THE USERS SELECTED - END "
 
-        " UPDATES THE SECOND DATABASE - END "
+        except:
 
+            return False
 
-        " UPDATES THE USERS SELECTED - START "
-        
-        " VARIABLE WHICH CATCH THE REMAINING NUMBER OF USERS "
-        n_second_database = len(second_database)
-        
-        if n_second_database > 0:
-            file_content = f'{n_second_database} users selected'
-        
-        else:
-            file_content = 'Here will appear\nthe number of selected users'
-
-        file_directory = 'controller/system_files/user_manipulation/n_selected_users.txt'
-
-        file_writer = FileWriter(file_content=file_content, file_directory=file_directory)
-        file_writer.startFileWriter()
-
-        " UPDATES THE USERS SELECTED - END "
+        return True
 
 
-    def __startLikesRandomUserPublications(self, photos_randomized):
+    def __startLikesRandomUserPublications(self, photos_randomized, **kws):
 
         " this method likes random users photos "
 
@@ -680,71 +805,106 @@ class LikePhotosByUsers:
         
         " INSTANCES VARIABLES "
         photos_randomized = photos_randomized # STORES THE LIST OF PHOTOS WHICH WILL BE LIKED
+        checkbutton_value = kws.get('checkbutton_value')
 
-        " OPEN THE FIRS PUBLICATION "
-        first_publication = driver.find_elements(By.CLASS_NAME, 'v1Nh3.kIKUG._bz0w')
-        first_publication[0].click()
+        try:
 
-        current_position = 0
-        photos_liked = 0
-        " LOOP WHICH LIKES THE INSTAGRAM USER PUBLICATIONS"
-        for current_photo in photos_randomized:
+            " OPEN THE FIRS PUBLICATION "
+            first_publication = driver.find_elements(By.CLASS_NAME, 'v1Nh3.kIKUG._bz0w')
+            first_publication[0].click()
 
-            " GOES TO THE SELECTED PUBLICATION - START "
+            current_position = 0
+            photos_liked = 0
+            sended_messages = 0
+            " LOOP WHICH LIKES THE INSTAGRAM USER PUBLICATIONS"
+            for current_photo in photos_randomized:
 
-            count_position = 0 # CONTROLS THE LIKES FLOW
-            if current_position != current_photo:
+                " GOES TO THE SELECTED PUBLICATION - START "
 
-                while(True):
+                count_position = 0 # CONTROLS THE LIKES FLOW
+                if current_position != current_photo:
 
-                    if current_position == current_photo:
-                        break
+                    while(True):
 
-                    if current_position > current_photo:
-                        current_position -= 1
-                        count_position -= 1
+                        if current_position == current_photo:
+                            break
 
-                    else:
-                        current_position += 1
-                        count_position += 1
+                        if current_position > current_photo:
+                            current_position -= 1
+                            count_position -= 1
+
+                        else:
+                            current_position += 1
+                            count_position += 1
 
 
-            if count_position != 0:
+                if count_position != 0:
 
-                while(True):
+                    while(True):
 
-                    if count_position == 0:
-                        break
+                        if count_position == 0:
+                            break
 
-                    elif count_position > 0:
-                        right_arrow = driver.find_elements(By.CLASS_NAME, '_65Bje.coreSpriteRightPaginationArrow')
-                        right_arrow[0].click()
+                        elif count_position > 0:
+                            right_arrow = driver.find_elements(By.CLASS_NAME, '_65Bje.coreSpriteRightPaginationArrow')
+                            right_arrow[0].click()
 
-                        count_position -= 1
+                            count_position -= 1
 
-                    elif count_position < 0:
-                        left_arrow = driver.find_elements(By.CLASS_NAME, 'ITLxV.coreSpriteLeftPaginationArrow')
-                        left_arrow[0].click()
+                        elif count_position < 0:
+                            left_arrow = driver.find_elements(By.CLASS_NAME, 'ITLxV.coreSpriteLeftPaginationArrow')
+                            left_arrow[0].click()
 
-                        count_position += 1
+                            count_position += 1
+
+                        time.sleep(2)
+
+                " GOES TO THE SELECTED PUBLICATION - END "
+
+                time.sleep(1)
+
+
+                if checkbutton_value == 1 and sended_messages == 0:
+
+                    " INSTANCES THE WRITTED TEXT "
+                    writted_text = kws.get('writted_text')
+
+                    comment_box_click = driver.find_element(By.CLASS_NAME, 'Ypffh')
+                    comment_box_click.click()
 
                     time.sleep(1)
 
-            " GOES TO THE SELECTED PUBLICATION - END "
+                    comment_box_write = driver.find_element(By.CLASS_NAME, 'Ypffh.focus-visible')
+                    comment_box_write.send_keys(writted_text)
 
-            time.sleep(1)
+                    time.sleep(3)
 
-            heart = driver.find_elements(By.CLASS_NAME, 'wpO6b')
-            heart[2].click()
+                    button_send = driver.find_element(By.CLASS_NAME, 'sqdOP.yWX7d.y3zKF')
+                    button_send.click()
 
-            photos_liked += 1
+                    time.sleep(3)
 
-            print(f'PHOTOS LIKED: {photos_liked}')
+                    sended_messages = 1
 
-        print('')
+                #os.system('pause')
 
-        close_window = driver.find_element_by_xpath('/html/body/div[4]/div[3]/button')
-        close_window.click()
+                heart = driver.find_elements(By.CLASS_NAME, 'wpO6b')
+                heart[2].click()
+
+                photos_liked += 1
+
+                print(f'PHOTOS LIKED: {photos_liked}')
+
+            print('')
+
+            close_window = driver.find_element_by_xpath('/html/body/div[4]/div[3]/button')
+            close_window.click()
+
+        except:
+
+            return False
+
+        return True
 
 
     def __startRandomizePublications(self, n_user_publications, n_photos):
@@ -796,6 +956,308 @@ class LikePhotosByUsers:
         return random_publications
 
 
+    def __startPrintProgress(self, user, profiles, users_selected):
+
+        " INSTANCES THE VARIABLES "
+        user = user
+        profiles = profiles
+        users_selected = users_selected
+
+        os.system('cls')
+
+        print('\n===== PROGRESS =====')
+        print(f'{profiles} OF {len(users_selected)} PROFILES ACCESSED\n')
+
+        print(f'CURRENT INSTAGRAM PROFILE: {user}')
+
+
+    def startLikesPhotosByUsers(self, **kws):
+
+        " this method likes N photos in N instagram users selecteds by the program user "
+
+        " VARIABLES "
+        driver = self.__driver
+        users_selected = self.__users_selected # STORES THE USERS WHO WILL HAVE THEIR PUBLICATIONS LIKED
+        n_photos = self.__n_photos # STORES THE NUMBER OF PHOTOS
+        user_instagram = self.__user_instagram
+        password_instagram = self.__password_instagram
+
+
+        " BOT - START "
+
+        GeneralOptions(driver, user_instagram, password_instagram)
+
+        file_directory = 'controller/communication_file/return_bot.txt'
+
+        file_reader = FileReader(file_directory)
+        file_content = file_reader.startFileReader()
+
+        " VERIFY IF THE INITIAL ACTION ENDED WELL "
+        if file_content != 'True':
+
+            " SPLITS THE FILE CONTENT TO FILTER THE RETURNS "
+            file_content = file_content.split('-')
+
+            " INSTANCES THE RETURNS "
+            first_return = file_content[0]
+            second_return = file_content[1]
+            third_return = file_content[2]
+
+            " CATCHES THE ERROR BASED IN THE RETURNS "
+            if first_return == False:
+
+                error = 'general_options-first_return'
+                return_list = [False, error]
+                return error
+
+            else:
+
+                " IF 'first_return == True' "
+                if second_return == False:
+
+                    error = 'general_options-second_return'
+                    return_list = [False, error]
+                    return error
+
+                else:
+
+                    " IF 'first_return == True' AND 'second_return == True' "
+                    if third_return == False:
+
+                        error = 'general_options-third_return'
+                        return_list = [False, error]
+                        return error
+
+
+        time.sleep(3)
+
+        profiles = 1
+        for user in users_selected:
+
+            " PRINT THE LIKES PROGRESS "
+            self.__startPrintProgress(user, profiles, users_selected)
+
+            " INSTAGRAM USER VERIFICATION "
+            general_options_one = GeneralOptionsInstagramUser(driver, 1, user=user)
+            return_general_options_one = general_options_one.returnOption()
+
+            if return_general_options_one == False:
+                continue
+
+            time.sleep(3)
+
+            photos_randomized = ''
+            return_general_options_two = ''
+            if return_general_options_one == True:
+                general_options_two = GeneralOptionsInstagramUser(driver, 2, user=user, n_photos=n_photos)
+                return_general_options_two = general_options_two.returnOption()
+
+                if return_general_options_two != '':
+
+                    " RANDOMIZE PHOTOS PROCESS "
+                    n_user_publications = return_general_options_two
+                    photos_randomized = self.__startRandomizePublications(n_user_publications, n_photos)
+
+            else:
+                continue    
+
+
+            time.sleep(2)
+
+            if photos_randomized != '':
+
+                " INSTANCES THE CHECKBUTTON "
+                checkbutton_value = self.__checkbutton_value
+
+
+                if checkbutton_value == 0:
+
+                    " LIKES THE PHOTOS IN EACH INSTAGRAM USER PROFILE "
+                    return_random_user_publication = self.__startLikesRandomUserPublications(photos_randomized=photos_randomized)
+
+                    if return_random_user_publication == False:
+
+                        error = 'likes_random_publications'
+                        return_list = [False, error]
+                        return return_list
+
+                elif checkbutton_value == 1:
+
+                    " INSTANCES THE WRITTED TEXT "
+                    writted_text = kws.get('writted_text')
+
+                    " LIKES THE PHOTOS IN EACH INSTAGRAM USER PROFILE AND WRITE A COMMENT "
+                    return_random_user_publication = self.__startLikesRandomUserPublications(photos_randomized=photos_randomized, checkbutton_value=1, writted_text=writted_text)
+
+                    if return_random_user_publication == False:
+
+                        error = 'likes_random_publications'
+                        return_list = [False, error]
+                        return return_list
+
+
+                " UPDATES THE SECOND DATABASE "
+                " REMOVING THE USERS IS ALREADY LIKED "
+                return_update_second_database = self.__startUpdateSecondDatabase(current_user=user)
+                
+                if return_update_second_database == False:
+
+                    error = 'update_second_database'
+                    return_list = [False, error]
+                    return return_list
+
+
+            profiles += 1
+
+            time.sleep(2)
+
+            " THE BOT - END "
+
+        driver.close()
+
+        return True
+
+
+class SendDirectMessage:
+
+    def __init__(self, users_selected, writted_text):
+        
+        """
+        this class one by one Instagram profile and likes a X number of photos
+        """
+
+        " NECESSARY FUNCTIONS "
+        def webDriverConfiguration():
+
+            """
+            this function is responsible to configures and returns the webdriver
+            """
+
+            " CONFIGURATION "
+            options = Options()
+            options.headless = False
+
+            " INSTANCES THE WEBDRIVER "
+            driver = webdriver.Chrome(executable_path='C:\chromedriver.exe', chrome_options=options)
+
+            return driver
+
+        def userInformation():
+
+            """
+            this function is responsible to catch the user and password Instagram of the current AutoLike's user
+            """
+            
+            " CATCHING THE USER "
+            file_directory = 'controller/system_files/user_instagram.txt'
+
+            file_reader = FileReader(file_directory=file_directory)
+            user_instagram = file_reader.startFileReader()
+
+            " CATCHING THE PASSWORD "
+            file_directory = f'controller/users/{user_instagram}/{user_instagram}.txt'
+
+            file_reader = FileReader(file_directory=file_directory)
+            return_file_reader = file_reader.startFileReader()
+
+            password_instagram = return_file_reader.split('-')
+            password_instagram = password_instagram[1]
+
+
+            user_information = [user_instagram, password_instagram]
+
+            return user_information
+
+
+        " INSTANCES THE VARIABLES "
+        self.__driver = webDriverConfiguration()
+        user_information = userInformation()
+
+        self.__user_instagram = user_information[0]
+        self.__password_instagram = user_information[1]
+        self.__users_selected = users_selected
+        self.__writted_text = writted_text
+
+
+    def __startUpdateSecondDatabase(self, current_user):
+
+        " INSTANCES THE CURRENT INSTAGRAM USER "
+        current_user = current_user
+
+        try:
+
+            " CATCH THE CURRENT PROGRAM USER "
+            file_directory = 'controller/system_files/user_instagram.txt'
+
+            file_reader = FileReader(file_directory=file_directory)
+            file_content = file_reader.startFileReader()
+
+            user = file_content
+
+
+            " UPDATES THE SECOND DATABASE - START "
+
+            " READ THE SECOND DATABASE"
+            file_directory = f'controller/users/{user}/second_database.txt'
+
+            file_reader = FileReader(file_directory=file_directory)
+            file_content = file_reader.startFileReader()
+
+            second_database = file_content.split('-')
+
+            " REMOVE THE CURRENT INSTAGRAM USER FROM THE SECOND DATABASE "
+            second_database.remove(current_user)
+
+            " CREATES THE SECOND DATABASE STRING WHICH WILL BE WRITTED IN THE SECOND DATABASE FILE "
+            second_database_text = ''
+            count_user = 0
+            for instagram_user in second_database:
+
+                instagram_user_text = f'-{instagram_user}'
+
+                if count_user == 0:
+                    second_database_text += instagram_user
+
+                else:
+                    second_database_text += instagram_user_text
+
+                count_user += 1
+
+            " WRITE THE NEW SECOND DATABASE FILE "
+            file_directory = file_directory = f'controller/users/{user}/second_database.txt'
+            file_content = second_database_text
+
+            file_writer = FileWriter(file_content=file_content, file_directory=file_directory)
+            file_writer.startFileWriter()
+
+            " UPDATES THE SECOND DATABASE - END "
+
+
+            " UPDATES THE USERS SELECTED - START "
+            
+            " VARIABLE WHICH CATCH THE REMAINING NUMBER OF USERS "
+            n_second_database = len(second_database)
+            
+            if n_second_database > 0:
+                file_content = f'{n_second_database} users selected'
+            
+            else:
+                file_content = 'Here will appear\nthe number of selected users'
+
+            file_directory = 'controller/system_files/user_manipulation/n_selected_users.txt'
+
+            file_writer = FileWriter(file_content=file_content, file_directory=file_directory)
+            file_writer.startFileWriter()
+
+            " UPDATES THE USERS SELECTED - END "
+
+        except:
+
+            return False
+
+        return True
+
+
     def __startIndividualUserValidation(self, current_user):
 
         " this method verify if the 'current user' has the prerequisites to like him publications "
@@ -819,7 +1281,7 @@ class LikePhotosByUsers:
             pass
 
 
-        " VARIABLE WHICH CATCH THE NUMBER OF PUBLICATIONS WHICH THE 'current user' HAVES"
+        " VARIABLE WHICH CATCH THE NUMBER OF PUBLICATIONS WHICH THE 'current user' HAVES "
         current_user_publications = driver.find_elements_by_class_name('g47SY')
         current_user_publications = current_user_publications[0].text
 
@@ -874,14 +1336,29 @@ class LikePhotosByUsers:
         return True
 
 
-    def startLikesPhotosByUsers(self):
+    def __startPrintProgress(self, user, profiles, users_selected):
 
-        " this method likes N photos in N instagram users selecteds by the program user "
+        " INSTANCES THE VARIABLES "
+        user = user
+        profiles = profiles
+        users_selected = users_selected
+
+        os.system('cls')
+
+        print('\n===== PROGRESS =====')
+        print(f'{profiles} OF {len(users_selected)} PROFILES ACCESSED\n')
+
+        print(f'CURRENT INSTAGRAM PROFILE: {user}')
+
+
+    def startSendDirectMessage(self):
+
+        " this method sends a direct message to N instagram users selecteds by the program user "
 
         " VARIABLES "
         driver = self.__driver
         users_selected = self.__users_selected # STORES THE USERS WHO WILL HAVE THEIR PUBLICATIONS LIKED
-        n_photos = self.__n_photos # STORES THE NUMBER OF PHOTOS
+        writted_text = self.__writted_text
         user_instagram = self.__user_instagram
         password_instagram = self.__password_instagram
 
@@ -931,17 +1408,14 @@ class LikePhotosByUsers:
                         return error
 
 
-        time.sleep(2)
+        time.sleep(3)
 
-        profiles = 0
+
+        profiles = 1
         for user in users_selected:
 
-            os.system('cls')
-
-            print('\n===== PROGRESS =====')
-            print(f'{profiles} OF {len(users_selected)} PROFILES ACCESSED\n')
-
-            print(f'CURRENT INSTAGRAM PROFILE: {user}')
+            " PRINT THE LIKES PROGRESS "
+            self.__startPrintProgress(user, profiles, users_selected)
 
             " VERIFY IF THE 'user' EXISTS "
             return_verify_user = self.__startVerifyUserExistence(current_user=user)
@@ -952,71 +1426,58 @@ class LikePhotosByUsers:
 
             time.sleep(2)
 
-            try:
-                " IF THE 'user' EXISTS, THE PROGRAM VERIFY SOME CONDITIONS "
-                return_individual_user_validation = ''
-                if return_verify_user == True:
-                    return_individual_user_validation = self.__startIndividualUserValidation(current_user=user)
 
-            except:
+            " IF THE 'user' EXISTS, THE PROGRAM VERIFY SOME CONDITIONS "
+            return_individual_user_validation = ''
+            if return_verify_user == True:
+                return_individual_user_validation = self.__startIndividualUserValidation(current_user=user)
+
+            if return_individual_user_validation == False:
                 continue
 
-            try:
+            else:
+
                 " IF THE 'return_individual_user_validation' RETURNS THE NUMBER OF "
                 " PUBLICATIONS OF THE USER, THE PROGRAM CATCH THIS NUMBER AND USE IT "
                 " TO RANDOMIZE THE PUBLICATIONS WHICH WILL BE LIKED "
                 photos_randomized = ''
-                if return_individual_user_validation != False and return_individual_user_validation != '':
+                if return_individual_user_validation != '':
+
                     n_user_publications = return_individual_user_validation # CONTAINS THE NUMBER OF PUBLICATIONS
                                                                             # WHAT THE INSTAGRAM USER HAS
                     photos_randomized = self.__startRandomizePublications(n_photos=n_photos, n_user_publications=n_user_publications)
-            
-            except:
-                error = 'individual_user_validation'
 
-                driver.close()
-                return_list = [False, error]
-                return return_list
 
             time.sleep(2)
 
             if photos_randomized != '':
-                try:
-                    " LIKES THE PHOTOS IN EACH INSTAGRAM USER PROFILE "
-                    self.__startLikesRandomUserPublications(photos_randomized=photos_randomized)
 
-                except:
+                " LIKES THE PHOTOS IN EACH INSTAGRAM USER PROFILE "
+                return_random_user_publication = self.__startLikesRandomUserPublications(photos_randomized=photos_randomized)
+
+                if return_random_user_publication == False:
+
                     error = 'likes_random_publications'
-
-                    driver.close()
                     return_list = [False, error]
                     return return_list
 
-                try:
-                    " UPDATES THE SECOND DATABASE "
-                    " REMOVING THE USERS IS ALREADY LIKED "
-                    self.__startUpdateSecondDatabase(current_user=user)
+
+                " UPDATES THE SECOND DATABASE "
+                " REMOVING THE USERS IS ALREADY LIKED "
+                return_update_second_database = self.__startUpdateSecondDatabase(current_user=user)
                 
-                except:
-                    error = 'update_second_database'
+                if return_update_second_database == False:
 
-                    driver.close()
+                    error = 'update_second_database'
                     return_list = [False, error]
                     return return_list
+
 
             profiles += 1
 
             time.sleep(2)
 
             " THE BOT - END "
-        except:
-            error = 'unknown'
-
-            driver.close()
-            return_list = [False, error]
-            return return_list
-
-        time.sleep(2)
 
         driver.close()
 

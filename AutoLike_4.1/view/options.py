@@ -193,6 +193,15 @@ class OptionTwo:
         clear_return = ClearReturn(name_file)
         clear_return.startClearReturn()
 
+
+        file_directory = 'controller/communication_file/return_text_window/return_text_window.txt'
+
+        file_reader = FileReader(file_directory)
+        file_content = file_reader.startFileReader()
+
+        self.__checkbutton_value = file_content
+
+
         " INSTANCES THE APP VERSION "
         self.__app_version = app_version
 
@@ -284,6 +293,7 @@ class OptionTwo:
         window = self.__window
         widget = self.__widget
 
+        checkbutton_text = 'Show/Hide Text'
         message_text = 'Inform the amount of photos\nwill be liked of each user'
         text_button = 'Send'
 
@@ -303,17 +313,54 @@ class OptionTwo:
         logo_fragment.startLogoAppFragment(logo_image)
 
 
+        " VARIABLES "
+        width = 500
+        height = 400
+        width_distance = 3
+        height_distance = 5
+        checkbutton = IntVar()
+
+        if self.__checkbutton_value == 'False':
+            checkbutton.set(0)
+
+        elif self.__checkbutton_value == 'True':
+            checkbutton.set(1)
+
+
+        if checkbutton.get() == 1:
+
+            second_message_text = 'Inform the text which will be writted\nin the comments'
+
+            text_frame = widget.startFrame(500, 260, 'floral white', TOP)
+
+            widget.startLabel(text_frame, second_message_text, 'arial-15-bold', 'floral white', 80, 15)
+
+            text_widget = widget.startText(text_frame, 'arial-15-bold', 43, 7, 10, 80)
+
+            width = 500
+            height = 660
+            width_distance = 3
+            height_distance = 7
+
+
         " INSTANCES THE FRAME "
         message_frame = widget.startFrame(500, 150, 'floral white', TOP)
 
         " INSTANCES THE LABEL "
-        widget.startLabel(message_frame, message_text, 'arial-15-bold', 'floral white', 110, 15)
+        widget.startLabel(message_frame, message_text, 'arial-15-bold', 'floral white', 50, 15)
 
         " INSTANCES THE ENTRY "
-        self.__send_entry = widget.startEntry(message_frame, 'arial-15-bold', 10, 150, 98)
+        self.__send_entry = widget.startEntry(message_frame, 'arial-15-bold', 10, 100, 98)
 
         " INSTANCES THE BUTTON "
-        widget.startButton(message_frame, text_button, 'arial-15-bold', 'dark salmon', 'salmon', 'white', 'error-handling-option-two', 280, 90, n_photos=self.__send_entry)
+        if checkbutton.get() == 0:
+            widget.startButton(message_frame, text_button, 'arial-15-bold', 'dark salmon', 'salmon', 'white', 'error-handling-option-two', 230, 90, n_photos=self.__send_entry, checkbutton=checkbutton)
+
+        elif checkbutton.get() == 1:
+            widget.startButton(message_frame, text_button, 'arial-15-bold', 'dark salmon', 'salmon', 'white', 'error-handling-option-two', 230, 90, n_photos=self.__send_entry, checkbutton=checkbutton, writted_text=text_widget)
+
+        " INSTANCES THE CHECK BUTTON "
+        widget.startCheckButton(message_frame, checkbutton_text, 'arial-12-bold', 'dark salmon', 'salmon', 'white', checkbutton, 'show-hide-text', 320, 95, window=window)
 
         """
         FRAGMENTS - END
@@ -321,7 +368,7 @@ class OptionTwo:
 
 
         " CONFIGURES THE WINDOW "
-        window_configuration = WindowConfiguration(window, width=500, height=400, width_distance=3, height_distance=5)
+        window_configuration = WindowConfiguration(window, width=width, height=height, width_distance=width_distance, height_distance=height_distance)
         window_configuration = window_configuration.fullWindowConfiguration()
 
         " CATCH THE WINDOW GEOMETRY AND THE APP TITLE WITH THE 'window_configuration' RETURNS - lines 32, 33 "
