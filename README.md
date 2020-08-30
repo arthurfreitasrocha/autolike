@@ -23,9 +23,9 @@
  - Bug Fix
     
 ====== NEW UPDATE v4.1.0 =====
+
 |
-|
-|
+
 ====== INTRODUCTION & HOW TO USE ======
 
 A simple robot that can be like a number of photos in Instagram (and more)
@@ -58,9 +58,9 @@ Options:
 03 - Abandoned.
 
 ====== INTRODUCTION & HOW TO USE ======
+
 |
-|
-|
+
 ====== THANKS & COPYRIGHT ======
 
 Thanks to:
