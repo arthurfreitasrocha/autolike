@@ -278,7 +278,7 @@ class EmailFragments:
 
         " INSTANCES THE ERROR HANDLING "
         error_handling = ErrorHandlingEmail(login_entry=login_entry, password_entry=password_entry)
-        return_error_handling = error_handling.startEmailErrorHandling()
+        return_error_handling = error_handling.startErrorHandling()
 
 
         if return_error_handling == True:
