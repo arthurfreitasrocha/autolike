@@ -6,7 +6,7 @@
  - Now all the project uses the MVC software design pattern.
  - All the project now is translated to english.
  - Now all the project have comments in english, but some comments are out of date. Son I will update it.
- - Some buttons won externaly update
+ - Some buttons won externaly update (visual)
  - All the code is refactored with principles of Clean Code to improve the reading and understanding.
  - Consenquentely, the AutoLike now is more fast than before.
  
