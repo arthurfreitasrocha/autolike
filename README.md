@@ -46,12 +46,12 @@ How to Install?
 
 How to Use?
 
-To use AutoLike first you need to make login into Instagram. Do it clicking in 'Switch Instagram Email' button. After do it, select one option and have fun.
+To use AutoLike first you need to make login into Instagram. Do it clicking in 'Switch Instagram Email' button. After did it, select one of the three options and have fun.
 
 Options:
 - 01 'Like photos using a hashtag'
-- 02 'Curtir Fotos de um perfil Específico'
-- 03 'Curtir Fotos e Enviar Mensagens no Direct'
+- 02 'Like photos of an specific Instagram profile'
+- 03 'Send message in Direct'
 
 01 - This function search the profiles based in the hashtag informed by the user. After, AutoLike access the Instagram publications which haves the hashtag and likes 'x' number of photos (you informs the number of photos). The name of the profiles was liked, will be saved in the DB (DataBase) to be used in the second option.
 02 - This function work based on the DB acquired with option 01. The user selects 'n' users from the DB and informs what number of photos will be liked in each profile. Son, the AutoLike access profile by profile and likes a 'x' number of photos by the current profile (Test the option, you will understand better).
