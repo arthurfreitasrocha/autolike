@@ -39,7 +39,7 @@ Steps to run
 How to Install?
 
 - First download Python entering in this link: https://www.python.org/downloads/.
-- After download it, install Python. Don't forget to mark the "Add Python 3.x to PATH" checkbutton in the installation box (You need to mark it to all commands run ok in the CMD).
+- After download it, install Python. Don't forget to mark the "Add Python 3.x to PATH" checkbutton in the installation box (You need to mark it to all commands run fine in the CMD).
 - After installing Python, you have to install Selenium. To do it open a CMD and write: pip install selenium. Please wait until the installation finish.
 - After all this steps, you can start AutoLike. Enter in the AutoLike's folder and open the "__init__.py" file. This file will load all the requirements of AutoLike and start him.
 
