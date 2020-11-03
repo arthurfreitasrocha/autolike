@@ -2,22 +2,23 @@
 from tkinter import *
 
 # MODEL
-from model.ErrorHandling import ErrorHandlingEmail
-from model.ErrorHandling import ErrorHandlingOptionOne
-from model.ErrorHandling import ErrorHandlingOptionTwo
-from model.ErrorHandling import ErrorHandlingOptionThree
-
-from model.ReturnOption import ReturnOptionOne
-from model.ReturnOption import ReturnOptionTwo
-from model.ReturnOption import ReturnOptionThree
-from model.ReturnOption import ReturnUserManipulationOption
+from model.file_manipulator import FileReader
+from model.file_manipulator import FileWriter
 
 # VIEW
 from view.Message import Message
 
 # CONTROLLER
-from controller.file_manipulator import FileReader
-from controller.file_manipulator import FileWriter
+from controller.ErrorHandling import ErrorHandlingEmail
+from controller.ErrorHandling import ErrorHandlingOptionOne
+from controller.ErrorHandling import ErrorHandlingOptionTwo
+from controller.ErrorHandling import ErrorHandlingOptionThree
+
+from controller.ReturnOption import ReturnOptionOne
+from controller.ReturnOption import ReturnOptionTwo
+from controller.ReturnOption import ReturnOptionThree
+from controller.ReturnOption import ReturnUserManipulationOption
+
 
 class Widgets:
 

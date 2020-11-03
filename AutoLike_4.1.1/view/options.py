@@ -5,9 +5,11 @@ from tkinter import *
 from PIL import ImageTk, Image
 
 # MODEL
-from model.ErrorHandling import ErrorHandlingOptionOne
-from model.ErrorHandling import ErrorHandlingOptionTwo
-from model.ErrorHandling import ErrorHandlingOptionThree
+from model.clear_return import ClearReturn
+
+from model.file_manipulator import FileReader
+from model.file_manipulator import FileWriter
+
 
 # VIEW
 from view.user_manipulation.start_user_manipulation import UserManipulation
@@ -17,10 +19,9 @@ from view.WindowConfiguration import WindowConfiguration
 from view.Message import Message
 
 # CONTROLLER
-from controller.clear_return import ClearReturn
-
-from controller.file_manipulator import FileReader
-from controller.file_manipulator import FileWriter
+from controller.ErrorHandling import ErrorHandlingOptionOne
+from controller.ErrorHandling import ErrorHandlingOptionTwo
+from controller.ErrorHandling import ErrorHandlingOptionThree
 
 class OptionOne:
 

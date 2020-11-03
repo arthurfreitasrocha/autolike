@@ -9,9 +9,9 @@ from view.LogoFragment import LogoFragment
 from view.WindowConfiguration import WindowConfiguration
 from view.Message import Message
 
-# CONTROLLER
-from controller.file_manipulator import FileReader
-from controller.file_manipulator import FileWriter
+# MODEL
+from model.file_manipulator import FileReader
+from model.file_manipulator import FileWriter
 
 class MainMenu:
 

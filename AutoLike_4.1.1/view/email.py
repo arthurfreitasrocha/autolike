@@ -6,7 +6,8 @@ from tkinter import messagebox
 from PIL import ImageTk, Image
 
 # MODEL
-from model.ErrorHandling import ErrorHandlingEmail
+from model.file_manipulator import FileReader
+from model.file_manipulator import FileWriter
 
 # VIEW
 from view.LogoFragment import LogoFragment
@@ -14,8 +15,7 @@ from view.WindowConfiguration import WindowConfiguration
 from view.Message import Message
 
 # CONTROLLER
-from controller.file_manipulator import FileReader
-from controller.file_manipulator import FileWriter
+from controller.ErrorHandling import ErrorHandlingEmail
 
 
 class Email:

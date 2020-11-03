@@ -2,7 +2,7 @@
 from tkinter import *
 
 # MODEL
-from model.ErrorHandling import ErrorHandlingEmail
+from controller.ErrorHandling import ErrorHandlingEmail
 
 # VIEW
 from view.Widgets import Widgets
