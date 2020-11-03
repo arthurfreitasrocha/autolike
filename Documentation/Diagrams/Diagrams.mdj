@@ -181,7 +181,7 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": -368,
+											"left": -400,
 											"top": 144,
 											"height": 13
 										},
@@ -192,11 +192,11 @@
 												"$ref": "AAAAAAF1jiEvzHQ3OuM="
 											},
 											"font": "Arial;13;1",
-											"left": 373,
+											"left": 357,
 											"top": 255,
-											"width": 63.34326171875,
+											"width": 101.61962890625,
 											"height": 13,
-											"text": "Tela Email"
+											"text": "Tela Início-Email"
 										},
 										{
 											"_type": "LabelView",
@@ -206,7 +206,7 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": -368,
+											"left": -400,
 											"top": 144,
 											"width": 86.6708984375,
 											"height": 13,
@@ -220,16 +220,16 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": -368,
+											"left": -400,
 											"top": 144,
 											"height": 13,
 											"horizontalAlignment": 1
 										}
 									],
 									"font": "Arial;13;0",
-									"left": 368,
+									"left": 352,
 									"top": 248,
-									"width": 73.34326171875,
+									"width": 111.61962890625,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAF1jiEvzHQ4iSw="
@@ -247,9 +247,9 @@
 							],
 							"font": "Arial;13;0",
 							"containerChangeable": true,
-							"left": 368,
+							"left": 352,
 							"top": 248,
-							"width": 73.34326171875,
+							"width": 111.61962890625,
 							"height": 41,
 							"nameCompartment": {
 								"$ref": "AAAAAAF1jiEvzHQ3OuM="
@@ -480,7 +480,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 388,
+									"left": 390,
 									"top": 309,
 									"height": 13,
 									"alpha": 1.5707963267948966,
@@ -501,7 +501,7 @@
 									},
 									"visible": null,
 									"font": "Arial;13;0",
-									"left": 373,
+									"left": 375,
 									"top": 308,
 									"height": 13,
 									"alpha": 1.5707963267948966,
@@ -522,7 +522,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 417,
+									"left": 419,
 									"top": 310,
 									"height": 13,
 									"alpha": -1.5707963267948966,
@@ -541,7 +541,7 @@
 								"$ref": "AAAAAAF1jiEQ/HQbXeA="
 							},
 							"lineStyle": 1,
-							"points": "403:343;404:289",
+							"points": "404:343;406:289",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAF1jiK/UnSK4mA="
@@ -574,8 +574,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 417,
-									"top": 309,
+									"left": 419,
+									"top": 310,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -595,8 +595,8 @@
 									},
 									"visible": null,
 									"font": "Arial;13;0",
-									"left": 432,
-									"top": 309,
+									"left": 434,
+									"top": 311,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -616,8 +616,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 388,
-									"top": 310,
+									"left": 390,
+									"top": 309,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -635,7 +635,7 @@
 								"$ref": "AAAAAAF1jiEvzHQ2W+8="
 							},
 							"lineStyle": 1,
-							"points": "404:289;403:343",
+							"points": "406:289;404:343",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAF1jiLJ0nSbxyM="
@@ -1433,7 +1433,7 @@
 					"_parent": {
 						"$ref": "AAAAAAF1jd0zeHQFX+M="
 					},
-					"name": "Tela Email"
+					"name": "Tela Início-Email"
 				},
 				{
 					"_type": "UMLAction",
