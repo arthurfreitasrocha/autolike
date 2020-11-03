@@ -1,5 +1,5 @@
 # MODEL
-from controller.start_autolike import StartAutoLike
+from model.start_autolike import StartAutoLike
 
 # VIEW
 from view.email import Email
