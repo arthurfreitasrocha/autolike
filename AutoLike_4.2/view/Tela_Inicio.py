@@ -1,5 +1,8 @@
 from tkinter import *
+from tkinter import messagebox
 import os
+
+from controller.bots import ValidarContaInstagram
 
 
 def gerarInterface():
@@ -9,7 +12,7 @@ def gerarInterface():
     """
     diretorio_atual = os.getcwd()
 
-    with open(f"{diretorio_atual}\\AutoLike_4.2\\model\\system_files\\user_instagram.txt") as file:
+    with open(f"{diretorio_atual}\\model\\system_files\\user_instagram.txt") as file:
         usuario = file.read()
 
 
@@ -17,14 +20,14 @@ def gerarInterface():
 
 
     " IMAGEM "
-    logo = PhotoImage(file=f"{diretorio_atual}\\AutoLike_4.2\\view\\images\\logo.png")
+    logo = PhotoImage(file=f"{diretorio_atual}\\view\\images\\logo.png")
 
     frame_imagem = Frame(janela, width=900, height=100, bg="Salmon").pack(side=TOP)
     Label(frame_imagem, image=logo, bg="salmon").place(x=400, y=15)
 
 
     " EMAIL "
-    imagem_editar = PhotoImage(file=f"{diretorio_atual}\\AutoLike_4.2\\view\\images\\lapis.png")
+    imagem_editar = PhotoImage(file=f"{diretorio_atual}\\view\\images\\lapis.png")
 
     frame_email = Frame(janela, width=900, height=100, bg="Peach Puff").pack(side=TOP)
     Label(frame_email, text="E-mail atual", font=("arial", 13, "bold"), bg="Peach Puff").place(x=20, y=120)
@@ -63,6 +66,15 @@ def gerarInterface():
 
 def __gerarInterfaceLogin(janela):
 
+    def validarInstagram():
+        login, senha = entry_login.get(), entry_senha.get()
+
+        retorno = ValidarContaInstagram(login, senha)
+
+        if retorno == True: messagebox.showinfo("Sucesso", "Login realizado com sucesso!")
+        else: messagebox.showwarning("Erro", "Login mal-sucedido")
+
+
     janela.destroy()
     
     """
@@ -75,11 +87,11 @@ def __gerarInterfaceLogin(janela):
 
     def on_closing():
         top.destroy()
-        __gerarInterface()
+        gerarInterface()
 
 
     " IMAGEM "
-    logo = PhotoImage(file=f"{diretorio_atual}\\AutoLike_4.2\\view\\images\\logo.png")
+    logo = PhotoImage(file=f"{diretorio_atual}\\view\\images\\logo.png")
 
     frame_imagem = Frame(top, width=500, height=100, bg="Salmon").pack(side=TOP)
     Label(frame_imagem, image=logo, bg="salmon").place(x=210, y=15)
@@ -89,17 +101,19 @@ def __gerarInterfaceLogin(janela):
     frame_login_senha = Frame(top, width=500, height=100, bg="Peach Puff").pack(side=TOP)
 
     Label(frame_login_senha, text="Login", font=("arial", 13, "bold"), bg="Peach Puff").place(x=30, y=130)
-    entry_login = Entry(frame_login_senha, font=("arial", 12), width=40).place(x=90, y=130)
+    entry_login = Entry(frame_login_senha, font=("arial", 12), width=40)
+    entry_login.place(x=90, y=130)
 
     Label(frame_login_senha, text="Senha", font=("arial", 13, "bold"), bg="Peach Puff").place(x=30, y=170)
-    entry_senha = Entry(frame_login_senha, font=("arial", 12), width=40).place(x=90, y=170)
+    entry_senha = Entry(frame_login_senha, font=("arial", 12), width=40)
+    entry_senha.place(x=90, y=170)
 
 
     " BOTÃO ENVIAR "
     frame_enviar = Frame(top, width=900, height=70, bg="Peach Puff").pack(side=TOP)
 
     Button(frame_enviar, text="Enviar", font=("arial", 11, "bold"),
-    bg="AntiqueWhite2", activebackground="AntiqueWhite").place(x=230, y=220)
+    bg="AntiqueWhite2", activebackground="AntiqueWhite", command=validarInstagram).place(x=230, y=220)
 
 
     top.resizable(width=False, height=False)
