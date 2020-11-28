@@ -85,7 +85,7 @@ def __gerarInterfaceLogin(janela):
 
     top = Tk()
 
-    def on_closing():
+    def fechar_janela():
         top.destroy()
         gerarInterface()
 
@@ -123,7 +123,7 @@ def __gerarInterfaceLogin(janela):
     largura, altura = (top.winfo_screenwidth()), (top.winfo_screenheight())
     top.geometry(f"500x270+{int(largura/2.5)}+{int(altura/3.5)}")
 
-    top.protocol("WM_DELETE_WINDOW", on_closing)
+    top.protocol("WM_DELETE_WINDOW", fechar_janela)
     top.mainloop()
 
 
