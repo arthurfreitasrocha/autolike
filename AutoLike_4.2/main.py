@@ -1,3 +1,4 @@
-from view.Tela_Inicio import gerarInterface
+from TelaInicial import gerarTelaInicial
 
-gerarInterface()
+gerarTelaInicial()
+
