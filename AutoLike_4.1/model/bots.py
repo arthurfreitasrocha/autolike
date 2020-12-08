@@ -3,6 +3,8 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
 
 # MODEL
 from model.clear_user_publications import ClearUserPublications
@@ -119,14 +121,23 @@ class GeneralOptions:
 
             " INSTANCES THE WEBDRIVER "
             driver = self.__driver
+            delay = 3
 
             " INSTANCES THE VARIABLES "
             user_instagram = user_instagram
             password_instagram = password_instagram
 
             " WRITE THE USER EMAIL AND THE USER PASSWORD IN THE ENTRIES "
+            try:
+                myElem = WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.NAME, 'username')))
+            
+            except TimeoutException:
+                return False
+
             driver.find_element(By.NAME, 'username').send_keys(user_instagram)
             driver.find_element(By.NAME, 'password').send_keys(password_instagram)
+
+            time.sleep(2)
 
             " SEARCH AND CLICK IN THE LOGIN BUTTON "
             login_button = driver.find_elements(By.TAG_NAME, 'button')
@@ -320,6 +331,8 @@ class VerifyInstagramUser:
         " WRITE THE USER EMAIL AND THE USER PASSWORD IN THE ENTRIES "
         driver.find_element(By.NAME, 'username').send_keys(user_login)
         driver.find_element(By.NAME, 'password').send_keys(user_password)
+
+        time.sleep(2)
 
         " SEARCH AND CLICK IN THE LOGIN BUTTON "
         login_button = driver.find_elements(By.TAG_NAME, 'button')
@@ -1116,6 +1129,7 @@ class LikePhotosByUsers:
         driver.close()
 
         return True
+
 
 
 class SendDirectMessage:
