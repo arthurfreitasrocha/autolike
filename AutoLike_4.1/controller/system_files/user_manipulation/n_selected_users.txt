@@ -1,2 +1,0 @@
-Here will appear
-the number of selected users
