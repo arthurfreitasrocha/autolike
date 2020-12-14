@@ -121,18 +121,12 @@ class GeneralOptions:
 
             " INSTANCES THE WEBDRIVER "
             driver = self.__driver
-            delay = 3
 
             " INSTANCES THE VARIABLES "
             user_instagram = user_instagram
             password_instagram = password_instagram
 
             " WRITE THE USER EMAIL AND THE USER PASSWORD IN THE ENTRIES "
-            try:
-                myElem = WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.NAME, 'username')))
-            
-            except TimeoutException:
-                return False
 
             driver.find_element(By.NAME, 'username').send_keys(user_instagram)
             driver.find_element(By.NAME, 'password').send_keys(password_instagram)
@@ -142,6 +136,8 @@ class GeneralOptions:
             " SEARCH AND CLICK IN THE LOGIN BUTTON "
             login_button = driver.find_elements(By.TAG_NAME, 'button')
             login_button[1].click()
+
+            time.sleep(2)
 
             try:
 
@@ -503,6 +499,8 @@ class LikePhotosByHashtag:
                 " IF THE USER IS ALREADY IN THE DATABASE, THE BOT SWITCH TO THE NEXT PHOTO "
                 if return_verify_user_database == True:
 
+                    time.sleep(2)
+
                     printProgress(type_progress='user_skipped', liked_photos=n_photos, n_likes=n_likes)
 
                     right_arrow = driver.find_element(By.CLASS_NAME, '_65Bje.coreSpriteRightPaginationArrow')
@@ -511,6 +509,8 @@ class LikePhotosByHashtag:
                     liked_photos -= 1
 
                 else:
+
+                    time.sleep(2)
 
                     n_photos += 1
 
@@ -1496,3 +1496,4 @@ class SendDirectMessage:
         driver.close()
 
         return True
+
