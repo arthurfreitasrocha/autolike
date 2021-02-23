@@ -1,0 +1,13 @@
+Fórmula final para centralizar widget
+
+
+Centro = (1920x1080)/2 => 960x540
+Widget: 375x650
+
+Widget_metade = 375/2x650/1.8 = 187.5x361
+Centro: (960-187.5)x(540-361) => 772.5x179
+
+
+FÓRMULA:
+largura_central = ((largura/2)-(largura_widget/2))
+altura_central = ((altura/2)-(altura_widget/1.8))

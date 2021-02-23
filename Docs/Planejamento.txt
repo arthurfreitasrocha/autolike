@@ -1,0 +1,30 @@
+Planejamento AutoLike v5.0
+
+-> As 2 (duas) pricipais opções da versão 4 serão compactadas em 1 (uma). A 3º será descontinuada.
+	-> Opção 01: Curtir fotos baseado em uma hashtag;
+	-> Opção 02: Curtir fotos individuais de cada usuário/comentar em foto.
+-> Layout básico.
+
+
+
+Objetivo do AutoLike
+
+1º Login no Instagram (CONCLUÍDO):
+	-> Informar e-mail e senha;
+	-> Clicar em "login".
+
+2º Fechar caixas de diálogo (CONCLUÍDO):
+	-> Clicar no botão para fechar.
+
+3º Acessar a URL das fotos da Hashtag: Exemplo: 'https://www.instagram.com/explore/tags/{advocacia}/'
+	A) Clicar na primeira publicão publicação;
+	B) Ir para publicação de acordo com o contador;
+	C) Salvar o nome do usuário da publicação no BD para que o mesmo não seja acessado novamente;
+	D) Acessar usuário;
+	E) Validar se usuário tem (fotos >= 10):
+		E.1) Se não, retornar e ir para a próxima publicação;
+		E.2) Se sim, curtir aleatoriamente 3 (três) das 10 (dez) primeiras publicações. Comentar na última publicação curtida.
+	F) Fechar a página das publicações.
+	G) Verificar se contador chegou a quantidade de perfis que serão acessados:
+		G.1) Se não, voltar para o passo B.
+		G.2) Se sim, fechar navegador.

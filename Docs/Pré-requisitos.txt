@@ -1,0 +1,8 @@
+Sistema:
+	-> Python;
+	-> Selenium;
+	-> EdgeDriver;
+	-> Variável de ambiente com o local do EdgeDriver.
+
+Layout:
+	-> Fontes: Adam CG.Pro e Open Sans.
