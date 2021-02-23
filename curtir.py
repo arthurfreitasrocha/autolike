@@ -121,7 +121,7 @@ def iniciarInterface(janela, usuario, senha):
     button = Button(background_button)
     button["width"] = 268
     button["bd"] = 0
-    button["text"] = "FAZER LOGIN"
+    button["text"] = "INICIAR"
     button["font"] = ("Open Sans Bold", 12)
     button["fg"] = PRIMARY
     button["bg"] = BUTTON
