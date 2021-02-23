@@ -1,61 +1,37 @@
 # autolike
 
-====== NEW UPDATE v4.1.0 ======
+====== NEW UPDATE v5.0 ======
 
  What's new?
- - Now all the project uses the MVC software design pattern.
- - All the project now is translated to english.
- - Now all the project have comments in english, but some comments are out of date. Son I will update it.
- - Some buttons won externaly update (visual).
- - All the code is refactored with principles of Clean Code to improve the reading and understanding (but I need to improve more).
- - Consenquentely, the AutoLike now is more fast than before.
- 
- 
- - Button 'Switch Instagram Email' updated.
- - - Now when you click at 'Switch Instagram Email' button, you can show and hide your password clicking at the "eye".
- 
- - Button 'Like photos of an specific Instagram profile' updated.
- - - Now you can comment the posts you have been liked. But just one post by profile. To use this option, click at 'Show/Hide Text' checkbutton, and will open a text widget what you can write your comment.
- 
- - Button 'Send message in Direct' abandoned.
- - - I tried to implement this function but the Instagram don't have a option to send Messages to people what I not follow. So, I abandoned this function. The function is still avaible in menu but she don't do nothing.
-
+ - This version merged all AutoLike's options in one. Are you curious? Test him :v
  - Bug Fix
     
-====== NEW UPDATE v4.1.0 =====
+====== NEW UPDATE v5.0 =====
 
 |
 
-====== INTRODUCTION & HOW TO USE ======
+====== INTRODUCTION & HOW TO RUN/USE ======
 
-A simple robot that can be like a number of photos in Instagram (and more)
+A robot that can be like a number of photos in Instagram (and more)
 
-Steps to run
+How to run:
 
-- 01º Install Python
-- 02º Install Selenium (A Python Library)
-- 03º Have fun!
+- You need to have Microsoft Edge installed and the Edge webdriver (https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/). The webdriver need to be the same version of your browser.
+- Put the webdriver into your root. Example: 'C:\msedgedriver.exe'.
+- Add the webdriver adress into your PATH.
+- Enter in the 'Docs\Fonts' of AutoLike folder and install the fonts.
 
-How to Install?
+- Install Python (https://www.python.org/downloads/). Don't forget to mark the 'add Python 3.x to the path' option.
+- Using the CMD, install Selenium (command: pip install selenium).
 
-- First download Python entering in this link: https://www.python.org/downloads/.
-- After download it, install Python. Don't forget to mark the "Add Python 3.x to PATH" checkbutton in the installation box (You need to mark it to all commands run fine in the CMD).
-- After installing Python, you have to install Selenium. To do it open a CMD and write: pip install selenium. Please wait until the installation finish.
-- After all this steps, you can start AutoLike. Enter in the AutoLike's folder and open the "__init__.py" file. This file will load all the requirements of AutoLike and start him.
+- Start AutoLike clicking the 'main.py' file.
 
 
 How to Use?
 
-To use AutoLike first you need to make login into Instagram. Do it clicking in 'Switch Instagram Email' button. After did it, select one of the three options and have fun.
-
-Options:
-- 01 'Like photos using a hashtag'
-- 02 'Like photos of an specific Instagram profile'
-- 03 'Send message in Direct'
-
-01 - This function search the profiles based in the hashtag informed by the user. After, AutoLike access the Instagram publications which haves the hashtag and likes 'x' number of photos (you informs the number of photos). The name of the profiles was liked, will be saved in the DB (DataBase) to be used in the second option.
-02 - This function work based on the DB acquired with option 01. The user selects 'n' users from the DB and informs what number of photos will be liked in each profile. Son, the AutoLike access profile by profile and likes a 'x' number of photos by the current profile (Test the option, you will understand better).
-03 - Abandoned.
+- First you need to do the Instagram Login. Inform you user and password. Click the 'Fazer Login' button.
+- Inform a Hashtag which will be accessed, inform a number of profiles that will be accessed, and a comment which will be writted. Click the 'Iniciar' button.
+- Have fun!
 
 ====== INTRODUCTION & HOW TO USE ======
 
