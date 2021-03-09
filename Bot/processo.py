@@ -169,76 +169,83 @@ def curtirPublicacoes(driver, comentario):
             print("AUTOLIKE: Falha ao clicar no elemento 'eLAPa' (primeira publicação do usuário).")
 
 
-        # Armazena numa lista as fotos que serão curtidas
-        sleep(3)
-        posicao = 0
-        random_publications = []
-        i = 0
-        while(i < 3):
+        # Verifica se o perfil é bloqueado para publicações, se sim, ele ignora o perfil, se não, ele curte as fotos e comenta
+        try:
+            myElem = WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.CLASS_NAME, '_7UhW9.xLCgt.MMzan.mDXrS.uL8Hv.l4b0S')))
+            print("AUTOLIKE: Este perfil está bloqueado para escrever comentários. Pulando ele.")
 
-            valor_aleatorio = randint(0,9)
-            if i == 0:
-                random_publications.append(valor_aleatorio)
-                i += 1
+        except TimeoutException:
 
-            else:
-                if valor_aleatorio in random_publications:
-                    continue
-                else:
+            # Armazena numa lista as fotos que serão curtidas
+            sleep(3)
+            posicao = 0
+            random_publications = []
+            i = 0
+            while(i < 3):
+
+                valor_aleatorio = randint(0,9)
+                if i == 0:
                     random_publications.append(valor_aleatorio)
                     i += 1
 
-
-        # Loop para avançar ou regredir nas publicações
-        for item in random_publications:
-
-            while(posicao != item):
-
-                if item > posicao:
-                    try:
-                        myElem = WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.CLASS_NAME, '_65Bje.coreSpriteRightPaginationArrow')))
-                        right_arrow = driver.find_element(By.CLASS_NAME, '_65Bje.coreSpriteRightPaginationArrow').click()
-
-                    except TimeoutException:
-                        print("AUTOLIKE: Falha ao clicar no elemento '_65Bje.coreSpriteRightPaginationArrow' (flecha apontando para a direita).")
-
-                    posicao += 1
                 else:
-                    try:
-                        myElem = WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.CLASS_NAME, 'ITLxV.coreSpriteLeftPaginationArrow')))
-                        right_arrow = driver.find_element(By.CLASS_NAME, 'ITLxV.coreSpriteLeftPaginationArrow').click()
-
-                    except TimeoutException:
-                        print("AUTOLIKE: Falha ao clicar no elemento 'ITLxV.coreSpriteLeftPaginationArrow' (flecha apontando para a esquerda).")
-
-                    posicao -= 1
-
-                sleep(2)
+                    if valor_aleatorio in random_publications:
+                        continue
+                    else:
+                        random_publications.append(valor_aleatorio)
+                        i += 1
 
 
-            # Curte a publicação
-            sleep(3)
-            try:
-                myElem = WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.CLASS_NAME, 'wpO6b')))
-                heart = driver.find_element(By.CLASS_NAME, 'fr66n').find_element(By.CLASS_NAME, 'wpO6b')
-                heart.click()
+            # Loop para avançar ou regredir nas publicações
+            for item in random_publications:
 
-            except TimeoutException:
-                print("AUTOLIKE: Falha ao clicar no elemento 'wpO6b' (coração).")
+                while(posicao != item):
+
+                    if item > posicao:
+                        try:
+                            myElem = WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.CLASS_NAME, '_65Bje.coreSpriteRightPaginationArrow')))
+                            right_arrow = driver.find_element(By.CLASS_NAME, '_65Bje.coreSpriteRightPaginationArrow').click()
+
+                        except TimeoutException:
+                            print("AUTOLIKE: Falha ao clicar no elemento '_65Bje.coreSpriteRightPaginationArrow' (flecha apontando para a direita).")
+
+                        posicao += 1
+                    else:
+                        try:
+                            myElem = WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.CLASS_NAME, 'ITLxV.coreSpriteLeftPaginationArrow')))
+                            right_arrow = driver.find_element(By.CLASS_NAME, 'ITLxV.coreSpriteLeftPaginationArrow').click()
+
+                        except TimeoutException:
+                            print("AUTOLIKE: Falha ao clicar no elemento 'ITLxV.coreSpriteLeftPaginationArrow' (flecha apontando para a esquerda).")
+
+                        posicao -= 1
+
+                    sleep(2)
 
 
-            # Caso seja a última publicação, será feito um comentário
-            sleep(3)
-            if item == random_publications[-1]:
-                driver.find_element(By.CLASS_NAME, 'Ypffh').click()
-                sleep(2)
+                # Curte a publicação
+                sleep(3)
+                try:
+                    myElem = WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.CLASS_NAME, 'wpO6b')))
+                    heart = driver.find_element(By.CLASS_NAME, 'fr66n').find_element(By.CLASS_NAME, 'wpO6b')
+                    heart.click()
 
-                for caracter in comentario:
-                    sleep(randint(0, 1))
-                    driver.find_element(By.CLASS_NAME, 'Ypffh').send_keys(caracter)
-
-                sleep(2)
-                #driver.find_element(By.CLASS_NAME, 'sqdOP.yWX7d.y3zKF').click()
+                except TimeoutException:
+                    print("AUTOLIKE: Falha ao clicar no elemento 'wpO6b' (coração).")
 
 
-        print("AUTOLIKE: 3 (três) publicações curtidas com sucesso!")
+                # Caso seja a última publicação, será feito um comentário
+                sleep(3)
+                if item == random_publications[-1]:
+                    driver.find_element(By.CLASS_NAME, 'Ypffh').click()
+                    sleep(2)
+
+                    for caracter in comentario:
+                        sleep(randint(0, 1))
+                        driver.find_element(By.CLASS_NAME, 'Ypffh').send_keys(caracter)
+
+                    sleep(2)
+                    #driver.find_element(By.CLASS_NAME, 'sqdOP.yWX7d.y3zKF').click()
+
+
+            print("AUTOLIKE: 3 (três) publicações curtidas e 1 (um) comentário realizado com sucesso!")
