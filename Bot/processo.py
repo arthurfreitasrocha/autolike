@@ -5,8 +5,9 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 
 from time import sleep
-from os import system
+from os import system, mkdir
 from random import randint
+from datetime import datetime
 
 
 def __incrementarBD(usuario, profile_user):
@@ -48,6 +49,7 @@ def __incrementarBD(usuario, profile_user):
         return user_in_database
 
 
+
 def __acessarPagina(driver, link):
 
     # Acessa a página da Hashtag
@@ -64,6 +66,30 @@ def __acessarPagina(driver, link):
 
     except TimeoutException:
         print("AUTOLIKE: Falha ao clicar no elemento 'v1Nh3.kIKUG._bz0w' (primeira publicação da hashtag).")
+
+
+
+def __registraProgresso(usuario, usuarios_acessados, perfis):
+
+    # Converte para string os parâmetros
+    usuarios_acessados = str(usuarios_acessados)
+    perfis = str(perfis)
+
+
+    # Captura a data
+    data_hora = datetime.now()
+    data_completa = data_hora.strftime("%d/%m/%Y")
+
+    temp = data_completa.split("/")
+    data_completa = f"{temp[0]}-{temp[1]}-{temp[2]}"
+
+
+    # Escreve no arquivo o progresso do AutoLike
+    conta_usuario = f"Users\\{usuario}\\Relatórios\\{data_completa}.txt"
+
+    conteudo = f"DIA: {data_completa} -- PERFIS ACESSADOS: {usuarios_acessados}/{perfis}"
+    with open(conta_usuario, "w") as file: file.write(conteudo)
+
 
 
 def iniciarProcesso(driver, usuario, hashtag, perfis, comentario):
@@ -108,7 +134,10 @@ def iniciarProcesso(driver, usuario, hashtag, perfis, comentario):
 
             print(f"\nAUTOLIKE: Acessando perfil de {profile_user}...")
             sleep(2)
-            curtirPublicacoes(driver, comentario)
+
+            curtirPublicacoes(driver, comentario) # Curte as publicações do usuário atual e faz um comentário
+            __registraProgresso(usuario, usuarios_acessados, perfis) # Escreve num bloco de notas o progresso do AutoLike
+
             usuarios_acessados += 1
             usuarios_gerais += 1
 
@@ -130,6 +159,7 @@ def iniciarProcesso(driver, usuario, hashtag, perfis, comentario):
 
                     sleep(2)
                     i += 1
+
 
 
 def curtirPublicacoes(driver, comentario):

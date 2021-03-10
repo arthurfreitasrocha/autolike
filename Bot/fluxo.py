@@ -28,6 +28,9 @@ def __verificarExistenciaUsuario(usuario, senha):
             conteudo_usuario = f'{usuario}-{senha}'
             f.write('')
 
+        diretorio_pasta = f'{diretorio_raiz}\\Users\\{usuario}\\Relatórios'
+        mkdir(diretorio_pasta)
+
         print(f"AUTOLIKE: Usuário {usuario} criado com sucesso")
 
     except:
